@@ -1,0 +1,19 @@
+# Composer dependencies
+/vendor/
+/Vendor/
+
+# Node.js dependencies
+/node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

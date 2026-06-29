@@ -1,0 +1,54 @@
+body {
+        background: linear-gradient(145deg, #f0f5fa 0%, #dce8f0 100%);
+    }
+
+    .card-shadow {
+        box-shadow: 0 20px 50px rgba(0, 20, 40, 0.10), 0 6px 18px rgba(0, 20, 40, 0.05);
+    }
+
+    .form-input {
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        outline: none;
+    }
+
+    select.form-input {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235b8cba' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        padding-right: 2.6rem;
+        cursor: pointer;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(135deg, #1e3a6b 0%, #2b5a8a 100%);
+        transition: all 0.2s ease;
+    }
+
+    .btn-gradient:hover {
+        background: linear-gradient(135deg, #14315a 0%, #1f4a74 100%);
+        box-shadow: 0 8px 22px rgba(30, 58, 107, 0.30);
+        transform: translateY(-1px);
+    }
+
+    .btn-gradient:active {
+        transform: scale(0.97);
+    }
+
+    .label-icon svg {
+        width: 0.9rem;
+        height: 0.9rem;
+        color: #3b7cb0;
+    }
+
+    /* ensure card fits in viewport on desktop */
+    @media (min-height: 700px) {
+        .register-card {
+            max-height: 96vh;
+            overflow-y: auto;
+        }
+    }

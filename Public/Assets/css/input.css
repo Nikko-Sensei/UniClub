@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* Tell Tailwind where your PHP views are */
+@source "../../../App";
+@source "../../";
+
+@import "./pages/home.css";
+@import "./pages/register.css";
