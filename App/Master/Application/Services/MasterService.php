@@ -10,10 +10,7 @@ class MasterService
 
     public function __construct(
         private MasterRepositoryInterface $masterRepository
-    )
-    {
-
-    }
+    ) {}
 
 
     public function getDepartments(): array
@@ -27,4 +24,12 @@ class MasterService
         return $this->masterRepository->getAcademicYears();
     }
 
+    public function getDepartmentCode(
+        int $departmentId
+    ): ?string {
+
+        return $this->masterRepository->findDepartmentCodeById(
+                $departmentId
+            );
+    }
 }

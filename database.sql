@@ -543,27 +543,31 @@ CREATE TABLE notifications
 );
 
 
-CREATE TABLE audit_logs
-(
+CREATE TABLE password_reset_tokens (
+
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
+    user_id BIGINT NOT NULL,
 
-    user_id BIGINT,
+    otp_code CHAR(6) NOT NULL,
 
+    expires_at TIMESTAMP NOT NULL,
 
-    action VARCHAR(255),
-
-
-    entity VARCHAR(100),
-
-
-    entity_id BIGINT,
-
+    used_at TIMESTAMP NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
 
-    FOREIGN KEY(user_id)
-    REFERENCES users(id)
-    ON DELETE SET NULL
+    INDEX idx_otp (otp_code),
+    INDEX idx_user (user_id)
+
 );
+
+CREATE TABLE audit_logs ( id BIGINT AUTO_INCREMENT PRIMARY KEY,
+ user_id BIGINT, action VARCHAR(255), 
+ entity VARCHAR(100), entity_id BIGINT, 
+ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+ FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE SET NULL );

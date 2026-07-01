@@ -2,17 +2,26 @@
 
 namespace App\Shared\Middleware;
 
+
 use App\Shared\Core\Response;
+
 
 class AuthMiddleware
 {
+
     public function handle(): void
     {
-        if (!isset($_SESSION['user'])) {
+
+        if(empty($_SESSION['user']))
+        {
 
             Response::redirect(
                 '/login'
             );
+
+            exit;
         }
+
     }
+
 }

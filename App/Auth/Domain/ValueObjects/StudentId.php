@@ -11,7 +11,7 @@ final class StudentId
 
     private const RULES = [
 
-        'CST' => [
+        '1CST' => [
             'min' => 1,
             'max' => 200,
         ],
@@ -62,14 +62,6 @@ final class StudentId
     {
 
         $value = strtoupper(trim($value));
-
-
-        if ($value === '') {
-
-            throw new InvalidStudentIdException(
-                "Student ID is required."
-            );
-        }
 
         /*
         |--------------------------------------------------------------------------
@@ -137,5 +129,35 @@ final class StudentId
     public function __toString(): string
     {
         return $this->value;
+    }
+
+    public function getYearNumber(): ?int
+    {
+        if (
+            preg_match(
+                '/^(\d+)/',
+                $this->value,
+                $matches
+            )
+        ) {
+            return (int)$matches[1];
+        }
+
+        return null;
+    }
+
+    public function getDepartmentCode(): ?string
+    {
+        if (
+            preg_match(
+                '/^\d+([A-Z]+)-\d+$/',
+                $this->value,
+                $matches
+            )
+        ) {
+            return $matches[1];
+        }
+
+        return null;
     }
 }

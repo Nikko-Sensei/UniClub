@@ -40,6 +40,18 @@
                 </div>
 
                 <div class="mb-8">
+                    <?php if (!empty($success)): ?>
+
+                    <div
+                        class="mb-3 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700 flex items-center gap-2">
+
+                        <i data-lucide="check-circle" class="h-4 w-4"></i>
+
+                        <?= htmlspecialchars($success) ?>
+
+                    </div>
+
+                    <?php endif; ?>
                     <p class="text-sm font-semibold uppercase text-slate-600">Welcome Back</p>
                     <h2 class="mt-3 text-4xl font-bold text-slate-950">Sign in to continue</h2>
                     <p class="mt-3 text-slate-600">Sign in with your UniClub account to manage clubs, events, and
@@ -91,7 +103,8 @@
                             <input type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-600">
                             Remember me
                         </label>
-                        <a href="#" class="font-semibold text-blue-600 hover:text-blue-700">Forgot password?</a>
+                        <a href="<?= BASE_URL ?>/forgot-password" class=" font-semibold text-blue-600
+                            hover:text-blue-700">Forgot password?</a>
                     </div>
 
                     <button type="submit"
@@ -117,4 +130,26 @@ function togglePassword() {
     const input = document.getElementById('password');
     input.type = input.type === 'password' ? 'text' : 'password';
 }
+
+setTimeout(() => {
+
+    const flash =
+        document.getElementById('flash-message');
+
+    if (flash) {
+
+        flash.style.transition =
+            "opacity 0.5s ease";
+
+        flash.style.opacity = "0";
+
+        setTimeout(() => {
+
+            flash.remove();
+
+        }, 500);
+
+    }
+
+}, 5000);
 </script>

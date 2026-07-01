@@ -2,16 +2,110 @@
 
 use App\Home\Presentation\Controller\HomeController;
 use App\Auth\Presentation\Controllers\AuthController;
+use App\Auth\Presentation\Controllers\PasswordResetController;
 
-$router->get('/', [HomeController::class, 'index']);
+use App\Shared\Middleware\AuthMiddleware;
+use App\Shared\Middleware\GuestMiddleware;
 
-//$router->get('/', [AuthController::class, 'showLogin']);
-//$router->post('/', [AuthController::class, 'login']);
+/*
+|--------------------------------------------------------------------------
+| Home
+|--------------------------------------------------------------------------
+*/
+$router->get(
+    '/',
+    [HomeController::class, 'index']
+);
 
-$router->get('/login', [AuthController::class, 'showLogin']);
-$router->post('/login', [AuthController::class, 'login']);
+/*
+|--------------------------------------------------------------------------
+| AUTH (GUEST ONLY)
+|--------------------------------------------------------------------------
+*/
+$router->get(
+    '/login',
+    [AuthController::class, 'showLogin'],
+    [GuestMiddleware::class]
+);
 
-$router->get('/register', [AuthController::class, 'showRegister']);
-$router->post('/register', [AuthController::class, 'register']);
+$router->post(
+    '/login',
+    [AuthController::class, 'login'],
+    [GuestMiddleware::class]
+);
 
-$router->get('/logout', [AuthController::class, 'logout']);
+$router->get(
+    '/register',
+    [AuthController::class, 'showRegister'],
+    [GuestMiddleware::class]
+);
+
+$router->post(
+    '/register',
+    [AuthController::class, 'register'],
+    [GuestMiddleware::class]
+);
+
+/*
+|--------------------------------------------------------------------------
+| LOGOUT (AUTH ONLY)
+|--------------------------------------------------------------------------
+*/
+$router->get(
+    '/logout',
+    [AuthController::class, 'logout'],
+    [AuthMiddleware::class]
+);
+
+/*
+|--------------------------------------------------------------------------
+| PASSWORD RESET (OTP FLOW)
+|--------------------------------------------------------------------------
+*/
+
+// STEP Forgot Password form
+$router->get(
+    '/forgot-password',
+    [PasswordResetController::class, 'showForgotPassword'],
+    [GuestMiddleware::class]
+);
+
+// STEP Send OTP
+$router->post(
+    '/forgot-password',
+    [PasswordResetController::class, 'forgotPassword'],
+    [GuestMiddleware::class]
+);
+
+// STEP Show OTP verification page
+$router->get(
+    '/verify-otp',
+    [PasswordResetController::class, 'showVerifyOtp'],
+    [GuestMiddleware::class]
+);
+
+// STEP Verify OTP
+$router->post(
+    '/verify-otp',
+    [PasswordResetController::class, 'verifyOtp'],
+    [GuestMiddleware::class]
+);
+
+// STEP Show reset password page
+$router->get(
+    '/reset-password',
+    [PasswordResetController::class, 'showResetPassword'],
+    [GuestMiddleware::class]
+);
+
+// Reset password
+$router->post(
+    '/reset-password',
+    [PasswordResetController::class, 'resetPassword'],
+    [GuestMiddleware::class]
+);
+
+$router->get(
+    '/password-reset-success',
+    [PasswordResetController::class, 'showSuccess']
+);

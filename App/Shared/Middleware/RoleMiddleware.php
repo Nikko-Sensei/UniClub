@@ -2,18 +2,33 @@
 
 namespace App\Shared\Middleware;
 
+
 use App\Shared\Core\Response;
+
 
 class RoleMiddleware
 {
-    public static function check(string $role): void
-    {
-        if (!isset($_SESSION['user'])) {
+
+    public function handle(
+        string $role
+    ): void {
+
+        if (empty($_SESSION['user'])) {
+
             Response::redirect('/login');
+
+            exit;
         }
 
-        if ($_SESSION['user']['role_id'] != $role) {
+        if (
+            $_SESSION['user']['role']
+            !==
+            $role
+        ) {
+
             Response::redirect('/');
+
+            exit;
         }
     }
 }

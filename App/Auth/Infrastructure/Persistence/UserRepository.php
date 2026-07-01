@@ -125,7 +125,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
         return $this->mapToUser($row);
     }
-    
+
     public function updateLastLogin(int $id): bool
     {
         $stmt = $this->db->prepare("
@@ -136,6 +136,32 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
         return $stmt->execute([
             'id' => $id
+        ]);
+    }
+
+    public function updatePassword(
+        int $userId,
+        string $password
+    ): bool {
+
+        $sql = "
+
+        UPDATE users
+
+        SET password = :password
+
+        WHERE id = :id
+
+    ";
+
+        $statement = $this->db->prepare($sql);
+
+        return $statement->execute([
+
+            'password' => $password,
+
+            'id' => $userId
+
         ]);
     }
 

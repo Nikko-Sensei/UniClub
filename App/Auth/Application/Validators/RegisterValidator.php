@@ -8,6 +8,8 @@ use App\Auth\Application\DTOs\RegisterDTO;
 use App\Auth\Domain\Exceptions\AuthException;
 use App\Auth\Domain\Exceptions\InvalidUserNameException;
 use App\Auth\Domain\Exceptions\InvalidPhoneNumberException;
+use App\Auth\Domain\Exceptions\InvalidStudentIdException;
+use App\Auth\Domain\Exceptions\InvalidEmailException;
 
 use App\Auth\Domain\ValueObjects\UserName;
 use App\Auth\Domain\ValueObjects\StudentId;
@@ -67,7 +69,7 @@ class RegisterValidator extends BaseValidator
                 $this->studentId = new StudentId(
                     $data['student_id']
                 );
-            } catch (AuthException $exception) {
+            } catch (InvalidStudentIdException $exception) {
 
                 $this->errors['student_id'] =
                     $exception->getMessage();
@@ -111,7 +113,7 @@ class RegisterValidator extends BaseValidator
                 $this->email = new Email(
                     $data['email']
                 );
-            } catch (AuthException $exception) {
+            } catch (InvalidEmailException $exception) {
 
                 $this->errors['email'] =
                     $exception->getMessage();

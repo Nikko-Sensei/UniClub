@@ -17,14 +17,9 @@ use App\Bootstrap;
 
 $container = Bootstrap::create();
 
-
-$container = Bootstrap::create();
-
-
 $router = new Router(
     $container
 );
-
 
 require BASE_PATH . '/Routes/web.php';
 

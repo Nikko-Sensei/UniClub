@@ -7,13 +7,17 @@ use App\Shared\Core\Response;
 use App\Auth\Application\Services\AuthService;
 use App\Auth\Application\Validators\RegisterValidator;
 use App\Auth\Application\Validators\LoginValidator;
-use App\Auth\Infrastructure\Persistence\UserRepository;
 use App\Shared\Core\Auth;
 use App\Shared\Security\Csrf;
 use App\Auth\Domain\Exceptions\AuthException;
+use App\Auth\Domain\Exceptions\DuplicateStudentIdException;
+use App\Auth\Domain\Exceptions\DuplicateEmailException;
+use App\Auth\Domain\Exceptions\InvalidAcademicYearException;
+use App\Auth\Domain\Exceptions\InvalidDepartmentException;
 use Throwable;
 use App\Master\Application\Services\MasterService;
-use App\Master\Infrastructure\Persistence\MasterRepository;
+use App\Shared\Middleware\RateLimitMiddleware;
+use App\Shared\Helpers\Flash;
 
 class AuthController extends BaseController
 {
@@ -21,18 +25,18 @@ class AuthController extends BaseController
 
     private MasterService $masterService;
 
+    private RateLimitMiddleware $rateLimiter;
 
     public function __construct(
         AuthService $authService,
-        MasterService $masterService
+        MasterService $masterService,
+        RateLimitMiddleware $rateLimiter
     ) {
-
         parent::__construct();
 
-
         $this->authService = $authService;
-
         $this->masterService = $masterService;
+        $this->rateLimiter = $rateLimiter;
     }
 
     /**
@@ -46,13 +50,21 @@ class AuthController extends BaseController
                 'title' => 'Login',
                 'csrf' => new Csrf(),
                 'errors' => $_SESSION['errors'] ?? [],
+                'success' => Flash::get('success'),
                 'old' => $_SESSION['old'] ?? [],
                 'redirect' => $_GET['redirect'] ?? ''
             ],
             'auth'
         );
 
-        unset($_SESSION['errors'], $_SESSION['old']);
+        unset(
+            $_SESSION['errors'],
+            $_SESSION['old'],
+            $_SESSION['otp_email'],
+            $_SESSION['verified_email'],
+            $_SESSION['verified_otp'],
+            $_SESSION['old']
+        );
     }
 
     /**
@@ -60,35 +72,62 @@ class AuthController extends BaseController
      */
     public function login()
     {
+        $key = $_SERVER['REMOTE_ADDR'];
+
+        $this->rateLimiter->handle(
+            $key,
+            5,
+            5
+        );
+
         $validator = new LoginValidator();
 
         $data = $this->request->all();
 
-        // 1. Validate
         if (!$validator->validate($data)) {
+
             $_SESSION['errors'] = $validator->errors();
+
             $_SESSION['old'] = $data;
+
             return Response::redirect('/login');
         }
 
-        // 2. Create DTO (STRICT LAYER)
         $dto = $validator->getDTO($data);
 
         try {
-            // 3. Business Logic
+
             $user = $this->authService->login($dto);
+
+            $this->rateLimiter->clear($key);
         } catch (AuthException $exception) {
-            $_SESSION['errors'] = ['_' => $exception->getMessage()];
+
+            $this->rateLimiter->hit($key);
+
+            $_SESSION['errors'] = [
+                '_' => $exception->getMessage()
+            ];
+
             $_SESSION['old'] = $data;
+
             return Response::redirect('/login');
         } catch (Throwable $exception) {
-            error_log($exception->getMessage());
-            $_SESSION['errors'] = ['_' => 'Something went wrong. Please try again.'];
+
+            error_log(
+                $exception->getMessage()
+            );
+
+            $this->rateLimiter->hit($key);
+
+            $_SESSION['errors'] = [
+                '_' => 'Something went wrong. Please try again.'
+            ];
+
             $_SESSION['old'] = $data;
+
             return Response::redirect('/login');
         }
 
-        // 4. Session login
         Auth::login($user);
 
         return Response::redirect('/');
@@ -145,17 +184,34 @@ class AuthController extends BaseController
         $dto = $validator->getDTO($data);
 
         try {
+
             $this->authService->register($dto);
         } catch (AuthException $exception) {
-            $_SESSION['errors'] = ['_' => $exception->getMessage()];
+
+            $_SESSION['errors'] = [
+                $exception->getField() => $exception->getMessage()
+            ];
+
             $_SESSION['old'] = $data;
+
             return Response::redirect('/register');
         } catch (Throwable $exception) {
+
             error_log($exception->getMessage());
-            $_SESSION['errors'] = ['_' => 'Something went wrong. Please try again.'];
+
+            $_SESSION['errors'] = [
+                '_' => 'Something went wrong. Please try again.'
+            ];
+
             $_SESSION['old'] = $data;
+
             return Response::redirect('/register');
         }
+
+        Flash::set(
+            'success',
+            'Registration successful. Please login.'
+        );
 
         return Response::redirect('/login');
     }
@@ -165,7 +221,13 @@ class AuthController extends BaseController
      */
     public function logout()
     {
-        unset($_SESSION['user']);
+        $userId = $_SESSION['user']['id'] ?? null;
+
+
+        $this->authService->logout(
+            $userId
+        );
+
 
         return Response::redirect('/login');
     }

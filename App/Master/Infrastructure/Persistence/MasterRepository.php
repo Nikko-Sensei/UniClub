@@ -47,4 +47,24 @@ class MasterRepository extends BaseRepository implements MasterRepositoryInterfa
 
         return $stmt->fetchAll();
     }
+
+    public function findDepartmentCodeById(
+        int $id
+    ): ?string {
+
+        $stmt = $this->db->prepare(
+            "
+        SELECT code
+        FROM departments
+        WHERE id = :id
+        LIMIT 1
+        "
+        );
+
+        $stmt->execute([
+            'id' => $id
+        ]);
+
+        return $stmt->fetchColumn() ?: null;
+    }
 }
