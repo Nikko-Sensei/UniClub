@@ -67,4 +67,46 @@ class MasterRepository extends BaseRepository implements MasterRepositoryInterfa
 
         return $stmt->fetchColumn() ?: null;
     }
+
+    public function findDepartmentNameById(int $id): ?string
+    {
+        $stmt = $this->db->prepare("
+        SELECT name
+        FROM departments
+        WHERE id = :id
+        LIMIT 1
+    ");
+
+        $stmt->execute(['id' => $id]);
+
+        return $stmt->fetchColumn() ?: null;
+    }
+
+    public function findAcademicYearNameById(int $id): ?string
+    {
+        $stmt = $this->db->prepare("
+        SELECT name
+        FROM academic_years
+        WHERE id = :id
+        LIMIT 1
+    ");
+
+        $stmt->execute(['id' => $id]);
+
+        return $stmt->fetchColumn() ?: null;
+    }
+
+    public function findRoleNameById(int $id): ?string
+    {
+        $stmt = $this->db->prepare("
+        SELECT name
+        FROM roles
+        WHERE id = :id
+        LIMIT 1
+    ");
+
+        $stmt->execute(['id' => $id]);
+
+        return $stmt->fetchColumn() ?: null;
+    }
 }

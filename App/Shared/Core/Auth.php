@@ -2,7 +2,7 @@
 
 namespace App\Shared\Core;
 
-use App\Auth\Domain\Entity\User;
+use App\User\Domain\Entity\User;
 
 class Auth
 {

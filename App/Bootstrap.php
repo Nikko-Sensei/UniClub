@@ -14,8 +14,14 @@ use App\Shared\Database\Database;
 // Auth
 use App\Auth\Presentation\Controllers\AuthController;
 use App\Auth\Application\Services\AuthService;
-use App\Auth\Domain\Repository\UserRepositoryInterface;
-use App\Auth\Infrastructure\Persistence\UserRepository;
+
+// User
+use App\User\Domain\Repository\UserRepositoryInterface;
+use App\User\Infrastructure\Persistence\UserRepository;
+use App\User\Application\Services\UserService;
+use App\User\Presentation\Controllers\UserController;
+use App\User\Presentation\Controllers\ProfileController;
+
 
 // Master
 use App\Master\Application\Services\MasterService;
@@ -43,20 +49,13 @@ class Bootstrap
     {
         $container = new Container();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Home Controller
-        |--------------------------------------------------------------------------
-        */
+        // Home Controller
+
         $container->bind(HomeController::class, function () {
             return new HomeController();
         });
 
-        /*
-        |--------------------------------------------------------------------------
-        | Auth Controller
-        |--------------------------------------------------------------------------
-        */
+        //Auth Controller
         $container->bind(AuthController::class, function ($container) {
             return new AuthController(
                 $container->resolve(AuthService::class),
@@ -65,20 +64,26 @@ class Bootstrap
             );
         });
 
-        /*
-        |--------------------------------------------------------------------------
-        | User Repository
-        |--------------------------------------------------------------------------
-        */
+        // User Controller
+        $container->bind(UserController::class, function ($container) {
+            return new UserController(
+                $container->resolve(UserService::class)
+            );
+        });
+
+        // profile controller
+        $container->bind(ProfileController::class, function ($container) {
+            return new ProfileController(
+                $container->resolve(UserService::class)
+            );
+        });
+
+        //User Repository
         $container->bind(UserRepositoryInterface::class, function () {
             return new UserRepository();
         });
 
-        /*
-        |--------------------------------------------------------------------------
-        | Auth Service
-        |--------------------------------------------------------------------------
-        */
+        //Auth Service
         $container->bind(AuthService::class, function ($container) {
             return new AuthService(
                 $container->resolve(UserRepositoryInterface::class),
@@ -87,49 +92,37 @@ class Bootstrap
             );
         });
 
-        /*
-        |--------------------------------------------------------------------------
-        | Master Repository
-        |--------------------------------------------------------------------------
-        */
+        //User Service
+        $container->bind(UserService::class, function ($container) {
+            return new UserService(
+                $container->resolve(UserRepositoryInterface::class),
+                $container->resolve(MasterService::class)
+            );
+        });
+
+        //Master Repository
         $container->bind(MasterRepositoryInterface::class, function () {
             return new MasterRepository();
         });
 
-        /*
-        |--------------------------------------------------------------------------
-        | Master Service
-        |--------------------------------------------------------------------------
-        */
+        //Master Service
         $container->bind(MasterService::class, function ($container) {
             return new MasterService(
                 $container->resolve(MasterRepositoryInterface::class)
             );
         });
 
-        /*
-        |--------------------------------------------------------------------------
-        | Middleware
-        |--------------------------------------------------------------------------
-        */
+        //Middleware
         $container->bind(AuthMiddleware::class, fn() => new AuthMiddleware());
         $container->bind(GuestMiddleware::class, fn() => new GuestMiddleware());
         $container->bind(RateLimitMiddleware::class, fn() => new RateLimitMiddleware());
 
-        /*
-        |--------------------------------------------------------------------------
-        | Audit Logger
-        |--------------------------------------------------------------------------
-        */
+        //Audit Logger
         $container->bind(AuditLogger::class, function () {
             return new AuditLogger(Database::getConnection());
         });
 
-        /*
-        |--------------------------------------------------------------------------
-        | Password Reset (OTP FLOW)
-        |--------------------------------------------------------------------------
-        */
+        //Password Reset (OTP FLOW)
 
         $container->bind(PasswordResetRepositoryInterface::class, function () {
             return new PasswordResetRepository();
@@ -150,11 +143,7 @@ class Bootstrap
             );
         });
 
-        /*
-        |--------------------------------------------------------------------------
-        | Mail
-        |--------------------------------------------------------------------------
-        */
+        //Mail
         $container->bind(Mailer::class, fn() => new Mailer());
 
         $container->bind(EmailService::class, function ($container) {

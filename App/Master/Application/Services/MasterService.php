@@ -29,7 +29,22 @@ class MasterService
     ): ?string {
 
         return $this->masterRepository->findDepartmentCodeById(
-                $departmentId
-            );
+            $departmentId
+        );
+    }
+
+    public function getDepartmentName(int $id): ?string
+    {
+        return $this->masterRepository->findDepartmentNameById($id);
+    }
+
+    public function getAcademicYearName(int $id): ?string
+    {
+        return $this->masterRepository->findAcademicYearNameById($id);
+    }
+
+    public function getRoleName(int $id): ?string
+    {
+        return $this->masterRepository->findRoleNameById($id);
     }
 }

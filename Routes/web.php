@@ -3,25 +3,19 @@
 use App\Home\Presentation\Controller\HomeController;
 use App\Auth\Presentation\Controllers\AuthController;
 use App\Auth\Presentation\Controllers\PasswordResetController;
+use App\User\Presentation\Controllers\ProfileController;
+use App\User\Presentation\Controllers\UserController;
 
 use App\Shared\Middleware\AuthMiddleware;
 use App\Shared\Middleware\GuestMiddleware;
 
-/*
-|--------------------------------------------------------------------------
-| Home
-|--------------------------------------------------------------------------
-*/
+//Home
 $router->get(
     '/',
     [HomeController::class, 'index']
 );
 
-/*
-|--------------------------------------------------------------------------
-| AUTH (GUEST ONLY)
-|--------------------------------------------------------------------------
-*/
+//AUTH (GUEST ONLY)
 $router->get(
     '/login',
     [AuthController::class, 'showLogin'],
@@ -46,22 +40,12 @@ $router->post(
     [GuestMiddleware::class]
 );
 
-/*
-|--------------------------------------------------------------------------
-| LOGOUT (AUTH ONLY)
-|--------------------------------------------------------------------------
-*/
+//LOGOUT (AUTH ONLY)
 $router->get(
     '/logout',
     [AuthController::class, 'logout'],
     [AuthMiddleware::class]
 );
-
-/*
-|--------------------------------------------------------------------------
-| PASSWORD RESET (OTP FLOW)
-|--------------------------------------------------------------------------
-*/
 
 // STEP Forgot Password form
 $router->get(
@@ -109,3 +93,42 @@ $router->get(
     '/password-reset-success',
     [PasswordResetController::class, 'showSuccess']
 );
+
+$router->get(
+    '/admin/users',
+    [UserController::class, 'index'],
+    [AuthMiddleware::class]
+);
+
+$router->get(
+    '/admin/users/search',
+    [UserController::class, 'search'],
+    [AuthMiddleware::class]
+);
+
+$router->get(
+    '/profile',
+    [ProfileController::class, 'show'],
+    [AuthMiddleware::class]
+);
+
+$router->get(
+    '/profile/edit',
+    [ProfileController::class, 'edit'],
+    [AuthMiddleware::class]
+);
+
+$router->post(
+    '/profile/update',
+    [ProfileController::class, 'update'],
+    [AuthMiddleware::class]
+);
+$router->get('/profile/change-password', [
+    ProfileController::class,
+    'changePasswordForm'
+]);
+
+$router->post('/profile/change-password', [
+    ProfileController::class,
+    'changePassword'
+]);

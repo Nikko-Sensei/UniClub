@@ -7,7 +7,11 @@
 
     <title><?= $title ?? 'UniClub' ?></title>
 
+
     <link rel="stylesheet" href="<?= BASE_URL ?>/Assets/css/app.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     <script src="https://unpkg.com/lucide@latest"></script>
 

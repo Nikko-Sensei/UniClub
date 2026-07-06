@@ -9,4 +9,10 @@ interface MasterRepositoryInterface
     public function getAcademicYears(): array;
 
     public function findDepartmentCodeById(int $id): ?string;
+
+    public function findDepartmentNameById(int $id): ?string;
+
+    public function findAcademicYearNameById(int $id): ?string;
+
+    public function findRoleNameById(int $id): ?string;
 }

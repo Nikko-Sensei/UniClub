@@ -6,7 +6,7 @@ use App\Auth\Application\DTOs\ForgotPasswordDTO;
 use App\Auth\Application\DTOs\VerifyOtpDTO;
 use App\Auth\Application\DTOs\ResetPasswordDTO;
 
-use App\Auth\Domain\Repository\UserRepositoryInterface;
+use App\User\Domain\Repository\UserRepositoryInterface;
 use App\Auth\Domain\Repository\PasswordResetRepositoryInterface;
 
 use App\Auth\Domain\Entity\PasswordResetOtp;

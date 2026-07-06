@@ -2,8 +2,8 @@
 
 namespace App\Auth\Application\Services;
 
-use App\Auth\Domain\Entity\User;
-use App\Auth\Domain\Repository\UserRepositoryInterface;
+use App\User\Domain\Entity\User;
+use App\User\Domain\Repository\UserRepositoryInterface;
 use App\Shared\Security\PasswordHasher;
 
 use App\Auth\Application\DTOs\LoginDTO;

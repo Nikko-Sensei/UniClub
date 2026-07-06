@@ -45,7 +45,7 @@
                     Contact
                 </a>
 
-                <a href="/profile" class="hover:text-blue-200 transition">
+                <a href="<?= BASE_URL ?>/profile" class="hover:text-blue-200 transition">
                     Profile
                 </a>
             </nav>
