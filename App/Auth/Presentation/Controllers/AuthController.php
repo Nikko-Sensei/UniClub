@@ -130,7 +130,21 @@ class AuthController extends BaseController
 
         Auth::login($user);
 
-        return Response::redirect('/');
+        $roleId = Auth::roleId();
+
+        switch ($roleId) {
+
+            case 1:
+                return Response::redirect('/admin/dashboard');
+
+
+            case 2:
+                return Response::redirect('/dashboard');
+
+
+            default:
+                return Response::redirect('/');
+        }
     }
 
     /**

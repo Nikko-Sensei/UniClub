@@ -24,7 +24,6 @@ class Auth
         ];
     }
 
-
     public static function logout(): void
     {
         unset($_SESSION['user']);
@@ -53,4 +52,5 @@ class Auth
     {
         return $_SESSION['user']['role_id'] ?? null;
     }
+
 }

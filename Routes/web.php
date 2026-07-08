@@ -1,18 +1,32 @@
 <?php
 
-use App\Home\Presentation\Controller\HomeController;
+use App\Home\Presentation\Controllers\HomeController;
 use App\Auth\Presentation\Controllers\AuthController;
 use App\Auth\Presentation\Controllers\PasswordResetController;
 use App\User\Presentation\Controllers\ProfileController;
 use App\User\Presentation\Controllers\UserController;
+use App\Admin\Dashboard\Presentation\Controllers\DashboardController;
+use App\Admin\RBAC\Presentation\Controllers\RolePermissionController;
 
 use App\Shared\Middleware\AuthMiddleware;
 use App\Shared\Middleware\GuestMiddleware;
+use App\Shared\Middleware\RoleMiddleware;
+use App\Shared\Middleware\PermissionMiddleware;
 
 //Home
 $router->get(
-    '/',
+    '/dashboard',
     [HomeController::class, 'index']
+);
+
+// ADMIN DASHBOARD
+$router->get(
+    '/admin/dashboard',
+    [DashboardController::class, 'index'],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
 );
 
 //AUTH (GUEST ONLY)
@@ -131,4 +145,45 @@ $router->get('/profile/change-password', [
 $router->post('/profile/change-password', [
     ProfileController::class,
     'changePassword'
-]);
+]);// RBAC SETTINGS
+
+
+$router->get(
+    '/admin/settings/roles',
+    [
+        RolePermissionController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+
+$router->get(
+    '/admin/settings/roles/{id}/permissions',
+    [
+        RolePermissionController::class,
+        'permissions'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+
+$router->post(
+    '/admin/settings/roles/{id}/permissions',
+    [
+        RolePermissionController::class,
+        'update'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);

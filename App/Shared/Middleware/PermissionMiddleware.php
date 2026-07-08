@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Shared\Middleware;
+
+use App\Admin\RBAC\Application\Services\PermissionService;
+use App\Shared\Core\Auth;
+use App\Shared\Core\Response;
+
+
+class PermissionMiddleware
+{
+    private PermissionService $permissionService;
+
+
+    public function __construct(
+        PermissionService $permissionService
+    ) {
+        $this->permissionService = $permissionService;
+    }
+
+
+
+    public function handle(
+        string $permission
+    ): void {
+
+        // Check login
+        if (!Auth::check()) {
+
+            Response::redirect('/login');
+
+            exit;
+        }
+
+
+
+        // Get current user id
+
+        $userId = Auth::id();
+
+
+
+        if (!$userId) {
+
+            Response::redirect('/login');
+
+            exit;
+        }
+
+
+
+        // Check permission
+
+        $hasPermission =
+            $this->permissionService->can(
+                $userId,
+                $permission
+            );
+
+
+
+        if (!$hasPermission) {
+
+            http_response_code(403);
+
+            echo "403 Forbidden";
+
+            exit;
+        }
+    }
+}

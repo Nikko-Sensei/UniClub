@@ -5,7 +5,7 @@ namespace App;
 use App\Shared\Container\Container;
 
 // Home
-use App\Home\Presentation\Controller\HomeController;
+use App\Home\Presentation\Controllers\HomeController;
 
 // Auditlog + DB
 use App\Shared\Logging\AuditLogger;
@@ -22,6 +22,23 @@ use App\User\Application\Services\UserService;
 use App\User\Presentation\Controllers\UserController;
 use App\User\Presentation\Controllers\ProfileController;
 
+// Dashboard
+use App\Admin\Dashboard\Domain\Repository\DashboardRepositoryInterface;
+use App\Admin\Dashboard\Infrastructure\Persistence\DashboardRepository;
+use App\Admin\Dashboard\Application\Services\DashboardService;
+use App\Admin\Dashboard\Presentation\Controllers\DashboardController;
+
+// RBAC
+use App\Admin\RBAC\Domain\Repositories\RoleRepositoryInterface;
+use App\Admin\RBAC\Domain\Repositories\PermissionRepositoryInterface;
+use App\Admin\RBAC\Infrastructure\Persistence\RoleRepository;
+use App\Admin\RBAC\Infrastructure\Persistence\PermissionRepository;
+use App\Admin\RBAC\Application\Services\PermissionService;
+use App\Admin\RBAC\Domain\Repositories\RolePermissionRepositoryInterface;
+use App\Admin\RBAC\Infrastructure\Persistence\RolePermissionRepository;
+use App\Admin\RBAC\Application\Services\RolePermissionService;
+use App\Admin\RBAC\Presentation\Controllers\RolePermissionController;
+
 
 // Master
 use App\Master\Application\Services\MasterService;
@@ -32,6 +49,8 @@ use App\Master\Infrastructure\Persistence\MasterRepository;
 use App\Shared\Middleware\AuthMiddleware;
 use App\Shared\Middleware\GuestMiddleware;
 use App\Shared\Middleware\RateLimitMiddleware;
+use App\Shared\Middleware\RoleMiddleware;
+use App\Shared\Middleware\PermissionMiddleware;
 
 // Password Reset (OTP FLOW)
 use App\Auth\Application\Services\PasswordResetService;
@@ -100,6 +119,127 @@ class Bootstrap
             );
         });
 
+        // Dashboard Repository
+        $container->bind(
+            DashboardRepositoryInterface::class,
+            function () {
+                return new DashboardRepository();
+            }
+        );
+
+        // Dashboard Service
+        $container->bind(
+            DashboardService::class,
+            function ($container) {
+                return new DashboardService(
+                    $container->resolve(DashboardRepositoryInterface::class)
+                );
+            }
+        );
+
+        // Dashboard Controller
+        $container->bind(
+            DashboardController::class,
+            function ($container) {
+                return new DashboardController(
+                    $container->resolve(DashboardService::class)
+                );
+            }
+        );
+
+        // RBAC
+        // Permission Repository
+
+        $container->bind(
+            PermissionRepositoryInterface::class,
+            function () {
+
+                return new PermissionRepository();
+            }
+        );
+
+        // Role Repository
+
+        $container->bind(
+            RoleRepositoryInterface::class,
+            function ($container) {
+
+                return new RoleRepository(
+
+                    $container->resolve(
+                        PermissionRepositoryInterface::class
+                    )
+
+                );
+            }
+        );
+
+        // RBAC Permission Service
+
+        $container->bind(
+            PermissionService::class,
+            function ($container) {
+
+                return new PermissionService(
+
+                    $container->resolve(
+                        RoleRepositoryInterface::class
+                    )
+
+                );
+            }
+        );
+
+        // Role Permission Repository
+
+        $container->bind(
+            RolePermissionRepositoryInterface::class,
+            function () {
+
+                return new RolePermissionRepository();
+            }
+        );
+
+        // Role Permission Service
+
+        $container->bind(
+            RolePermissionService::class,
+            function ($container) {
+
+                return new RolePermissionService(
+
+                    $container->resolve(
+                        RolePermissionRepositoryInterface::class
+                    )
+
+                );
+            }
+        );
+
+        // RBAC Controller
+
+        $container->bind(
+            RolePermissionController::class,
+            function ($container) {
+
+                return new RolePermissionController(
+
+                    $container->resolve(
+                        RolePermissionService::class
+                    ),
+
+                    $container->resolve(
+                        RoleRepositoryInterface::class
+                    ),
+
+                    $container->resolve(
+                        PermissionRepositoryInterface::class
+                    )
+
+                );
+            }
+        );
+
         //Master Repository
         $container->bind(MasterRepositoryInterface::class, function () {
             return new MasterRepository();
@@ -112,10 +252,43 @@ class Bootstrap
             );
         });
 
-        //Middleware
-        $container->bind(AuthMiddleware::class, fn() => new AuthMiddleware());
-        $container->bind(GuestMiddleware::class, fn() => new GuestMiddleware());
-        $container->bind(RateLimitMiddleware::class, fn() => new RateLimitMiddleware());
+        // Middleware
+
+        $container->bind(
+            AuthMiddleware::class,
+            fn() => new AuthMiddleware()
+        );
+
+
+        $container->bind(
+            GuestMiddleware::class,
+            fn() => new GuestMiddleware()
+        );
+
+
+        $container->bind(
+            RateLimitMiddleware::class,
+            fn() => new RateLimitMiddleware()
+        );
+
+
+        $container->bind(
+            RoleMiddleware::class,
+            fn() => new RoleMiddleware()
+        );
+
+
+        $container->bind(
+            PermissionMiddleware::class,
+            function ($container) {
+
+                return new PermissionMiddleware(
+                    $container->resolve(
+                        PermissionService::class
+                    )
+                );
+            }
+        );
 
         //Audit Logger
         $container->bind(AuditLogger::class, function () {

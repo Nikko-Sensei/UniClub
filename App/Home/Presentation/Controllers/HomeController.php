@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Home\Presentation\Controller;
+namespace App\Home\Presentation\Controllers;
 
 use App\Shared\Core\BaseController;
 
