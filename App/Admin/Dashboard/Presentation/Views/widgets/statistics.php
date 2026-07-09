@@ -1,7 +1,7 @@
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
 
-    <div class="bg-white p-6 rounded-xl shadow">
+    <div class="bg-white border-slate-200/60 p-6 rounded-xl shadow">
 
         <p class="text-gray-500">
             Total Users
@@ -15,7 +15,7 @@
 
 
 
-    <div class="bg-white p-6 rounded-xl shadow">
+    <div class="bg-white border-slate-200/60 p-6 rounded-xl shadow">
 
         <p class="text-gray-500">
             Total Clubs
@@ -29,7 +29,7 @@
 
 
 
-    <div class="bg-white p-6 rounded-xl shadow">
+    <div class="bg-white border-slate-200/60 p-6 rounded-xl shadow">
 
         <p class="text-gray-500">
             Total Events
@@ -43,7 +43,7 @@
 
 
 
-    <div class="bg-white p-6 rounded-xl shadow">
+    <div class="bg-white border-slate-200/60 p-6 rounded-xl shadow">
 
         <p class="text-gray-500">
             Announcements
@@ -51,20 +51,6 @@
 
         <h2 class="text-3xl font-bold text-blue-600">
             <?= $dashboard->totalAnnouncements ?>
-        </h2>
-
-    </div>
-
-
-
-    <div class="bg-white p-6 rounded-xl shadow">
-
-        <p class="text-gray-500">
-            Memberships
-        </p>
-
-        <h2 class="text-3xl font-bold text-blue-600">
-            <?= $dashboard->totalMemberships ?>
         </h2>
 
     </div>

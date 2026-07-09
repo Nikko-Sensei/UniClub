@@ -8,37 +8,37 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-    .profile-card {
-        transition: box-shadow 0.2s ease;
-    }
-
-    .profile-card:hover {
-        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
-    }
-
-    .sidebar-stat {
-        transition: background 0.15s ease;
-    }
-
-    .sidebar-stat:hover {
-        background: #f1f5f9;
-    }
-
-    .badge-pulse {
-        animation: pulse-badge 2s infinite;
-    }
-
-    @keyframes pulse-badge {
-
-        0%,
-        100% {
-            opacity: 1;
+        .profile-card {
+            transition: box-shadow 0.2s ease;
         }
 
-        50% {
-            opacity: 0.7;
+        .profile-card:hover {
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
         }
-    }
+
+        .sidebar-stat {
+            transition: background 0.15s ease;
+        }
+
+        .sidebar-stat:hover {
+            background: #f1f5f9;
+        }
+
+        .badge-pulse {
+            animation: pulse-badge 2s infinite;
+        }
+
+        @keyframes pulse-badge {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
     </style>
 </head>
 
@@ -51,11 +51,11 @@
     ?>
 
     <?php if ($success): ?>
-    <div class="max-w-6xl mx-auto mt-4 px-4">
-        <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl shadow-sm">
-            <?= htmlspecialchars($success) ?>
+        <div class="max-w-6xl mx-auto mt-4 px-4">
+            <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl shadow-sm">
+                <?= htmlspecialchars($success) ?>
+            </div>
         </div>
-    </div>
     <?php endif; ?>
     <div class="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6">
 
@@ -71,12 +71,23 @@
 
                         <!-- avatar -->
                         <div
-                            class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-4xl sm:text-5xl font-bold text-white shadow-inner border-2 border-white/30 flex-shrink-0">
+                            class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-600 flex items-center justify-center text-4xl sm:text-5xl font-bold text-white shadow-lg border-2 border-blue-400 flex-shrink-0">
                             <?php if (!empty($user->getProfileImage())): ?>
-                            <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars($user->getProfileImage()) ?>"
-                                class="w-full h-full rounded-full object-cover" alt="Profile">
+                                <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars($user->getProfileImage()) ?>"
+                                    class="w-full h-full rounded-full object-cover" alt="Profile">
                             <?php else: ?>
-                            <?= strtoupper(substr($user->getName(), 0, 1)) ?>
+                                <?php
+                                $name = trim($user->getName());
+                                $words = preg_split('/\s+/', $name);
+
+                                if (count($words) >= 2) {
+                                    $initials = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
+                                } else {
+                                    $initials = strtoupper(substr($words[0], 0, 1));
+                                }
+
+                                echo htmlspecialchars($initials);
+                                ?>
                             <?php endif; ?>
                         </div>
 
@@ -238,20 +249,20 @@
 </body>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const el = document.querySelector('.flash-success');
+    document.addEventListener("DOMContentLoaded", function() {
+        const el = document.querySelector('.flash-success');
 
-    if (el) {
-        setTimeout(() => {
-            el.style.opacity = "0";
-            el.style.transition = "0.5s";
-
+        if (el) {
             setTimeout(() => {
-                el.remove();
-            }, 500);
-        }, 5000);
-    }
-});
+                el.style.opacity = "0";
+                el.style.transition = "0.5s";
+
+                setTimeout(() => {
+                    el.remove();
+                }, 500);
+            }, 5000);
+        }
+    });
 </script>
 
 </html>

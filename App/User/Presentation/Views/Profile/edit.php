@@ -1,6 +1,8 @@
 <?php
 $errors = $_SESSION['errors'] ?? [];
 unset($_SESSION['errors']); // clear after showing once
+// var_dump($user);
+// exit;
 ?>
 <div class="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6">
 
@@ -23,12 +25,23 @@ unset($_SESSION['errors']); // clear after showing once
                 <div class="flex flex-col items-center text-center">
 
                     <div
-                        class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-4xl sm:text-5xl font-bold text-white shadow-inner border-2 border-white/30 flex-shrink-0">
+                        class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-600 flex items-center justify-center text-4xl sm:text-5xl font-bold text-white shadow-lg border-2 border-blue-400 flex-shrink-0">
                         <?php if (!empty($user->getProfileImage())): ?>
-                        <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars($user->getProfileImage()) ?>"
-                            class="w-full h-full rounded-full object-cover" alt="Profile">
+                            <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars($user->getProfileImage()) ?>"
+                                class="w-full h-full rounded-full object-cover" alt="Profile">
                         <?php else: ?>
-                        <?= strtoupper(substr($user->getName(), 0, 1)) ?>
+                            <?php
+                            $name = trim($user->getName());
+                            $words = preg_split('/\s+/', $name);
+
+                            if (count($words) >= 2) {
+                                $initials = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
+                            } else {
+                                $initials = strtoupper(substr($words[0], 0, 1));
+                            }
+
+                            echo htmlspecialchars($initials);
+                            ?>
                         <?php endif; ?>
                     </div>
 
@@ -98,9 +111,9 @@ unset($_SESSION['errors']); // clear after showing once
                         focus:ring-2 focus:ring-blue-500 outline-none">
 
                         <?php if (!empty($errors['name'])): ?>
-                        <p class="text-red-500 text-sm mt-1">
-                            <?= $errors['name'] ?>
-                        </p>
+                            <p class="text-red-500 text-sm mt-1">
+                                <?= $errors['name'] ?>
+                            </p>
                         <?php endif; ?>
                     </div>
 
@@ -113,9 +126,9 @@ unset($_SESSION['errors']); // clear after showing once
                         focus:ring-2 focus:ring-blue-500 outline-none">
 
                         <?php if (!empty($errors['phone'])): ?>
-                        <p class="text-red-500 text-sm mt-1">
-                            <?= $errors['phone'] ?>
-                        </p>
+                            <p class="text-red-500 text-sm mt-1">
+                                <?= $errors['phone'] ?>
+                            </p>
                         <?php endif; ?>
                     </div>
 
@@ -126,9 +139,9 @@ unset($_SESSION['errors']); // clear after showing once
                         <input type="file" name="profile_image" class="w-full mt-1 px-4 py-2 border rounded-xl">
 
                         <?php if (!empty($errors['profile_image'])): ?>
-                        <p class="text-red-500 text-sm mt-1">
-                            <?= $errors['profile_image'] ?>
-                        </p>
+                            <p class="text-red-500 text-sm mt-1">
+                                <?= $errors['profile_image'] ?>
+                            </p>
                         <?php endif; ?>
                     </div>
 

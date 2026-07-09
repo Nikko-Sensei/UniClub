@@ -18,11 +18,6 @@ interface UserRepositoryInterface
 
     public function updatePassword(int $userId, string $password): bool;
 
-    public function findAll(): array;
-
-    public function updateStatus(int $id, string $status): bool;
-
-    public function search(string $keyword): array;
 
     public function updateProfile(
         int $id,

@@ -7,6 +7,8 @@ use App\User\Presentation\Controllers\ProfileController;
 use App\User\Presentation\Controllers\UserController;
 use App\Admin\Dashboard\Presentation\Controllers\DashboardController;
 use App\Admin\RBAC\Presentation\Controllers\RolePermissionController;
+use App\Admin\UserManagement\Infrastructure\Persistence\UserManagementRepository;
+use App\Admin\UserManagement\Presentation\Controllers\UserManagementController;
 
 use App\Shared\Middleware\AuthMiddleware;
 use App\Shared\Middleware\GuestMiddleware;
@@ -108,16 +110,57 @@ $router->get(
     [PasswordResetController::class, 'showSuccess']
 );
 
-$router->get(
-    '/admin/users',
-    [UserController::class, 'index'],
-    [AuthMiddleware::class]
-);
+// ADMIN USER MANAGEMENT
 
 $router->get(
-    '/admin/users/search',
-    [UserController::class, 'search'],
-    [AuthMiddleware::class]
+    '/admin/users',
+    [
+        UserManagementController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->get(
+    '/admin/users/{id}',
+    [
+        UserManagementController::class,
+        'show'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/users/update-role',
+    [
+        UserManagementController::class,
+        'updateRole'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/users/update-status',
+    [
+        UserManagementController::class,
+        'updateStatus'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
 );
 
 $router->get(
@@ -137,6 +180,7 @@ $router->post(
     [ProfileController::class, 'update'],
     [AuthMiddleware::class]
 );
+
 $router->get('/profile/change-password', [
     ProfileController::class,
     'changePasswordForm'
@@ -145,7 +189,7 @@ $router->get('/profile/change-password', [
 $router->post('/profile/change-password', [
     ProfileController::class,
     'changePassword'
-]);// RBAC SETTINGS
+]); // RBAC SETTINGS
 
 
 $router->get(
@@ -186,4 +230,10 @@ $router->post(
         AuthMiddleware::class,
         RoleMiddleware::class
     ]
+);
+
+$router->get(
+    '/admin/users',
+    [UserManagementController::class, 'search'],
+    // [AuthMiddleware::class]
 );

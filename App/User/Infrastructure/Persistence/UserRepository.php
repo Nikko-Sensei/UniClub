@@ -203,13 +203,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         );
     }
 
-    public function findAll(): array
-    {
-        $stmt = $this->db->query("SELECT * FROM users ORDER BY id DESC");
-        $rows = $stmt->fetchAll();
-
-        return array_map(fn($row) => $this->mapToUser($row), $rows);
-    }
 
     public function updateProfile(
         int $id,
@@ -257,39 +250,4 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return $stmt->execute($params);
     }
 
-    public function updateStatus(int $id, string $status): bool
-    {
-        $stmt = $this->db->prepare("
-        UPDATE users
-        SET status = :status,
-            updated_at = NOW()
-        WHERE id = :id
-    ");
-
-        return $stmt->execute([
-            'id' => $id,
-            'status' => $status
-        ]);
-    }
-
-    public function search(string $keyword): array
-    {
-        $stmt = $this->db->prepare("
-        SELECT * FROM users
-        WHERE name LIKE :keyword
-           OR email LIKE :keyword
-           OR student_id LIKE :keyword
-        ORDER BY id DESC
-    ");
-
-        $stmt->execute([
-            'keyword' => "%$keyword%"
-        ]);
-
-        $rows = $stmt->fetchAll();
-
-        return array_map(fn($row) => $this->mapToUser($row), $rows);
-    }
-
-  
 }

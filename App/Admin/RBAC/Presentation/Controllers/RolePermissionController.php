@@ -2,21 +2,36 @@
 
 namespace App\Admin\RBAC\Presentation\Controllers;
 
+use App\Shared\Core\BaseController;
+use App\Shared\Core\Response;
 
 use App\Admin\RBAC\Application\Services\RolePermissionService;
 use App\Admin\RBAC\Domain\Repositories\RoleRepositoryInterface;
 use App\Admin\RBAC\Domain\Repositories\PermissionRepositoryInterface;
-use App\Shared\Core\Response;
 
 
-class RolePermissionController
+class RolePermissionController extends BaseController
 {
 
+    private RolePermissionService $rolePermissionService;
+    private RoleRepositoryInterface $roleRepository;
+    private PermissionRepositoryInterface $permissionRepository;
+
+
     public function __construct(
-        private RolePermissionService $rolePermissionService,
-        private RoleRepositoryInterface $roleRepository,
-        private PermissionRepositoryInterface $permissionRepository
-    ) {}
+        RolePermissionService $rolePermissionService,
+        RoleRepositoryInterface $roleRepository,
+        PermissionRepositoryInterface $permissionRepository
+    ) {
+
+        parent::__construct();
+
+        $this->rolePermissionService = $rolePermissionService;
+        $this->roleRepository = $roleRepository;
+        $this->permissionRepository = $permissionRepository;
+    }
+
+
 
     /**
      * Show role list
@@ -28,9 +43,17 @@ class RolePermissionController
             ->findAll();
 
 
-        require BASE_PATH .
-            '/App/Admin/RBAC/Presentation/Views/roles/index.php';
+        $this->view(
+            'Admin/RBAC/Presentation/Views/roles/index',
+            [
+                'title' => 'Role Management',
+                'roles' => $roles
+            ],
+            'admin'
+        );
     }
+
+
 
     /**
      * Show permission assignment page
@@ -43,24 +66,41 @@ class RolePermissionController
         $role = $this->roleRepository
             ->findById($roleId);
 
+
         if (!$role) {
 
-            echo "Role not found";
-            exit;
+            Response::redirect(
+                '/admin/settings/roles'
+            );
+
+            return;
         }
 
+
+
         $permissions = $this->permissionRepository
-            ->findByRoleId($roleId);
+            ->findAll();
+
+
 
         $selectedPermissions = $this->rolePermissionService
             ->getRolePermissions(
                 $roleId
             );
 
-        require BASE_PATH .
-            '/App/Admin/RBAC/Presentation/Views/roles/permissions.php';
-    }
 
+
+        $this->view(
+            'Admin/RBAC/Presentation/Views/roles/permissions',
+            [
+                'title' => 'Role Permissions',
+                'role' => $role,
+                'permissions' => $permissions,
+                'selectedPermissions' => $selectedPermissions
+            ],
+            'admin'
+        );
+    }
 
 
 
@@ -84,9 +124,9 @@ class RolePermissionController
             );
 
 
-
         Response::redirect(
             '/admin/settings/roles'
         );
     }
+
 }

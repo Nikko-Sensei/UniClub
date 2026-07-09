@@ -29,11 +29,6 @@ class UserService
         return $this->userRepository->findByStudentId($studentId);
     }
 
-    public function getAll(): array
-    {
-        return $this->userRepository->findAll();
-    }
-
     public function updateProfile(UpdateProfileDTO $dto): bool
     {
         $user = $this->userRepository->findById($dto->userId);
@@ -50,20 +45,12 @@ class UserService
         );
     }
 
-    public function changeStatus(int $id, string $status): bool
-    {
-        return $this->userRepository->updateStatus($id, $status);
-    }
-
-    public function search(string $keyword): array
-    {
-        return $this->userRepository->search($keyword);
-    }
 
     public function getProfileData(int $userId): array
     {
         $user = $this->userRepository->findById($userId);
-
+        // var_dump($this->masterService->getDepartmentName($user->getDepartmentId()));
+        // exit;
         return [
             'user' => $user,
             'departmentName' => $this->masterService->getDepartmentName($user->getDepartmentId()),

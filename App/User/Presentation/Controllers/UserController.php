@@ -22,14 +22,14 @@ class UserController extends BaseController
         ]);
     }
 
-    public function search()
-    {
-        $keyword = $_GET['q'] ?? '';
+    // public function search()
+    // {
+    //     $keyword = $_GET['q'] ?? '';
 
-        $users = $this->userService->search($keyword);
+    //     $users = $this->userService->search($keyword);
 
-        return $this->view('User/index', [
-            'users' => $users
-        ]);
-    }
+    //     return $this->view('User/index', [
+    //         'users' => $users
+    //     ]);
+    // }
 }

@@ -22,6 +22,13 @@ use App\User\Application\Services\UserService;
 use App\User\Presentation\Controllers\UserController;
 use App\User\Presentation\Controllers\ProfileController;
 
+// User Management
+use App\Admin\UserManagement\Application\Services\UserManagementService;
+use App\Admin\UserManagement\Presentation\Controllers\UserManagementController;
+use App\Admin\UserManagement\Domain\Repository\UserManagementRepositoryInterface;
+use App\Admin\UserManagement\Infrastructure\Persistence\UserManagementRepository;
+
+
 // Dashboard
 use App\Admin\Dashboard\Domain\Repository\DashboardRepositoryInterface;
 use App\Admin\Dashboard\Infrastructure\Persistence\DashboardRepository;
@@ -102,6 +109,14 @@ class Bootstrap
             return new UserRepository();
         });
 
+        // Admin User Management Repository
+        $container->bind(
+            UserManagementRepositoryInterface::class,
+            function () {
+                return new UserManagementRepository();
+            }
+        );
+
         //Auth Service
         $container->bind(AuthService::class, function ($container) {
             return new AuthService(
@@ -118,6 +133,40 @@ class Bootstrap
                 $container->resolve(MasterService::class)
             );
         });
+
+        // User Management Service
+        $container->bind(
+            UserManagementService::class,
+            function ($container) {
+
+                return new UserManagementService(
+
+                    $container->resolve(
+                        UserManagementRepositoryInterface::class
+                    )
+
+                );
+            }
+        );
+
+        // User Management Controller
+        $container->bind(
+            UserManagementController::class,
+            function ($container) {
+
+                return new UserManagementController(
+
+                    $container->resolve(
+                        UserManagementService::class
+                    ),
+
+                    $container->resolve(
+                        MasterService::class
+                    )
+
+                );
+            }
+        );
 
         // Dashboard Repository
         $container->bind(
