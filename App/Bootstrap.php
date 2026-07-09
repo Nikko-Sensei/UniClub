@@ -29,6 +29,14 @@ use App\Admin\UserManagement\Domain\Repository\UserManagementRepositoryInterface
 use App\Admin\UserManagement\Infrastructure\Persistence\UserManagementRepository;
 
 
+// Club
+use App\Club\Domain\Repository\ClubRepositoryInterface;
+use App\Club\Infrastructure\Persistence\ClubRepository;
+use App\Club\Application\Services\ClubService;
+use App\Club\Application\Validators\ClubValidator;
+use App\Club\Presentation\Controllers\AdminClubController;
+
+
 // Dashboard
 use App\Admin\Dashboard\Domain\Repository\DashboardRepositoryInterface;
 use App\Admin\Dashboard\Infrastructure\Persistence\DashboardRepository;
@@ -300,6 +308,60 @@ class Bootstrap
                 $container->resolve(MasterRepositoryInterface::class)
             );
         });
+
+        // Club Repository
+        $container->bind(
+            ClubRepositoryInterface::class,
+            function () {
+                return new ClubRepository();
+            }
+        );
+
+        // Club Validator
+        $container->bind(
+            ClubValidator::class,
+            function () {
+                return new ClubValidator();
+            }
+        );
+
+        // Club Service
+        $container->bind(
+            ClubService::class,
+            function ($container) {
+
+                return new ClubService(
+
+                    $container->resolve(
+                        ClubRepositoryInterface::class
+                    ),
+
+                    $container->resolve(
+                        ClubValidator::class
+                    )
+
+                );
+            }
+        );
+
+        // AdminClub Controller
+        $container->bind(
+            AdminClubController::class,
+            function ($container) {
+
+                return new AdminClubController(
+
+                    $container->resolve(
+                        ClubService::class
+                    ),
+
+                    $container->resolve(
+                        MasterService::class
+                    )
+
+                );
+            }
+        );
 
         // Middleware
 

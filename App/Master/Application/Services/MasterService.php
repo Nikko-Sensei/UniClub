@@ -52,4 +52,10 @@ class MasterService
     {
         return $this->masterRepository->getRoles();
     }
+
+    public function getClubCategories(): array
+    {
+        return $this->masterRepository
+            ->getClubCategories();
+    }
 }

@@ -1,5 +1,6 @@
 DELIMITER $$
 
+
 /*
 |--------------------------------------------------------------------------
 | Check duplicate club name
@@ -9,9 +10,13 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS sp_club_exists_by_name $$
 
 CREATE PROCEDURE sp_club_exists_by_name(
+
     IN p_name VARCHAR(150)
+
 )
+
 BEGIN
+
 
     SELECT COUNT(*) AS total
 
@@ -21,11 +26,14 @@ BEGIN
 
     AND deleted_at IS NULL;
 
+
 END $$
+
+
 
 /*
 |--------------------------------------------------------------------------
-| Check duplicate name except current ID
+| Check duplicate club name except current ID
 |--------------------------------------------------------------------------
 */
 
@@ -38,7 +46,9 @@ CREATE PROCEDURE sp_club_exists_by_name_except(
     IN p_name VARCHAR(150)
 
 )
+
 BEGIN
+
 
     SELECT COUNT(*) AS total
 
@@ -50,7 +60,11 @@ BEGIN
 
     AND deleted_at IS NULL;
 
+
 END $$
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -92,167 +106,79 @@ CREATE PROCEDURE sp_club_create(
 
 BEGIN
 
-INSERT INTO clubs
-(
-    category_id,
-    name,
-    short_name,
-    description,
-    mission,
-    vision,
-    logo,
-    banner,
-    email,
-    phone,
-    established_date,
-    member_limit,
-    created_by
-)
 
-VALUES
-(
-    p_category_id,
-    p_name,
-    p_short_name,
-    p_description,
-    p_mission,
-    p_vision,
-    p_logo,
-    p_banner,
-    p_email,
-    p_phone,
-    p_established_date,
-    p_member_limit,
-    p_created_by
-);
+    INSERT INTO clubs
+    (
 
-SELECT LAST_INSERT_ID() AS id;
+        category_id,
 
-END $$
+        name,
 
-/*
-|--------------------------------------------------------------------------
-| Find Club By ID
-|--------------------------------------------------------------------------
-*/
+        short_name,
 
-DROP PROCEDURE IF EXISTS sp_club_find_by_id $$
+        description,
 
-CREATE PROCEDURE sp_club_find_by_id(
+        mission,
 
-    IN p_id BIGINT
+        vision,
 
-)
+        logo,
 
-BEGIN
+        banner,
 
-SELECT *
+        email,
 
-FROM clubs
+        phone,
 
-WHERE id = p_id
+        established_date,
 
-AND deleted_at IS NULL
+        member_limit,
 
-LIMIT 1;
+        created_by
 
-END $$
+    )
 
-/*
-|--------------------------------------------------------------------------
-| Get All Clubs
-|--------------------------------------------------------------------------
-*/
 
-DROP PROCEDURE IF EXISTS sp_club_find_all $$
+    VALUES
 
-CREATE PROCEDURE sp_club_find_all()
+    (
 
-BEGIN
+        p_category_id,
 
-SELECT *
+        p_name,
 
-FROM clubs
+        p_short_name,
 
-WHERE deleted_at IS NULL
+        p_description,
 
-ORDER BY created_at DESC;
+        p_mission,
+
+        p_vision,
+
+        p_logo,
+
+        p_banner,
+
+        p_email,
+
+        p_phone,
+
+        p_established_date,
+
+        p_member_limit,
+
+        p_created_by
+
+    );
+
+
+    SELECT LAST_INSERT_ID() AS id;
+
 
 END $$
 
 
-/*
-|--------------------------------------------------------------------------
-| Get All Clubs With Details
-|--------------------------------------------------------------------------
-*/
 
-DROP PROCEDURE IF EXISTS sp_club_find_all_with_details $$
-
-CREATE PROCEDURE sp_club_find_all_with_details()
-
-BEGIN
-
-SELECT
-
-    c.id,
-
-    c.name,
-
-    c.short_name,
-
-    c.logo,
-
-    c.banner,
-
-    c.status,
-
-    c.created_at,
-
-    cc.id AS category_id,
-
-    cc.name AS category_name,
-
-
-    COUNT(cm.id) AS member_count
-
-FROM clubs c
-
-INNER JOIN club_categories cc
-
-ON cc.id = c.category_id
-
-LEFT JOIN club_memberships cm
-
-ON cm.club_id = c.id
-
-AND cm.membership_status = 'approved'
-
-WHERE c.deleted_at IS NULL
-
-GROUP BY
-
-    c.id,
-
-    c.name,
-
-    c.short_name,
-
-    c.logo,
-
-    c.banner,
-
-    c.status,
-
-    c.created_at,
-
-    cc.id,
-
-    cc.name
-
-ORDER BY c.created_at DESC;
-
-END $$
 
 /*
 |--------------------------------------------------------------------------
@@ -297,41 +223,50 @@ CREATE PROCEDURE sp_club_update(
 
 BEGIN
 
-UPDATE clubs
 
-SET
+    UPDATE clubs
 
-category_id = p_category_id,
+    SET
 
-name = p_name,
 
-short_name = p_short_name,
+        category_id = p_category_id,
 
-description = p_description,
+        name = p_name,
 
-mission = p_mission,
+        short_name = p_short_name,
 
-vision = p_vision,
+        description = p_description,
 
-logo = p_logo,
+        mission = p_mission,
 
-banner = p_banner,
+        vision = p_vision,
 
-email = p_email,
+        logo = p_logo,
 
-phone = p_phone,
+        banner = p_banner,
 
-established_date = p_established_date,
+        email = p_email,
 
-member_limit = p_member_limit,
+        phone = p_phone,
 
-status = p_status
+        established_date = p_established_date,
 
-WHERE id = p_id;
+        member_limit = p_member_limit,
 
-SELECT ROW_COUNT() AS affected;
+        status = p_status
+
+
+    WHERE id = p_id;
+
+
+
+    SELECT ROW_COUNT() AS affected;
+
 
 END $$
+
+
+
 
 
 /*
@@ -351,58 +286,362 @@ CREATE PROCEDURE sp_club_delete(
 
 BEGIN
 
-UPDATE clubs
 
-SET deleted_at = CURRENT_TIMESTAMP
+    UPDATE clubs
 
-WHERE id = p_id;
 
-SELECT ROW_COUNT() AS affected;
+    SET deleted_at = CURRENT_TIMESTAMP
+
+
+    WHERE id = p_id;
+
+
+
+    SELECT ROW_COUNT() AS affected;
+
 
 END $$
 
+
+
+
+
 /*
 |--------------------------------------------------------------------------
-| Dashboard Statistics
+| Find Club By ID
+|--------------------------------------------------------------------------
+*/
+
+DROP PROCEDURE IF EXISTS sp_club_find_by_id $$
+
+
+CREATE PROCEDURE sp_club_find_by_id(
+
+    IN p_id BIGINT
+
+)
+
+BEGIN
+
+
+    SELECT *
+
+    FROM clubs
+
+
+    WHERE id = p_id
+
+    AND deleted_at IS NULL
+
+
+    LIMIT 1;
+
+
+END $$
+
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Find All Clubs
+|--------------------------------------------------------------------------
+*/
+
+DROP PROCEDURE IF EXISTS sp_club_find_all $$
+
+
+CREATE PROCEDURE sp_club_find_all(
+
+    IN p_search VARCHAR(150),
+
+    IN p_category_id BIGINT,
+
+    IN p_status VARCHAR(20),
+
+    IN p_limit INT,
+
+    IN p_offset INT
+
+)
+
+BEGIN
+
+
+    SELECT *
+
+
+    FROM clubs
+
+
+    WHERE deleted_at IS NULL
+
+
+    AND
+    (
+
+        p_search IS NULL
+
+        OR name LIKE CONCAT('%',p_search,'%')
+
+        OR short_name LIKE CONCAT('%',p_search,'%')
+
+    )
+
+
+    AND
+
+    (
+
+        p_category_id IS NULL
+
+        OR category_id = p_category_id
+
+    )
+
+
+    AND
+
+    (
+
+        p_status IS NULL
+
+        OR status = p_status
+
+    )
+
+
+    ORDER BY created_at DESC
+
+
+    LIMIT p_limit OFFSET p_offset;
+
+
+END $$
+
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Count Clubs
+|--------------------------------------------------------------------------
+*/
+
+DROP PROCEDURE IF EXISTS sp_club_count $$
+
+
+CREATE PROCEDURE sp_club_count(
+
+    IN p_search VARCHAR(150),
+
+    IN p_category_id BIGINT,
+
+    IN p_status VARCHAR(20)
+
+)
+
+BEGIN
+
+
+    SELECT COUNT(*) AS total
+
+
+    FROM clubs
+
+
+    WHERE deleted_at IS NULL
+
+
+    AND
+
+    (
+
+        p_search IS NULL
+
+        OR name LIKE CONCAT('%',p_search,'%')
+
+        OR short_name LIKE CONCAT('%',p_search,'%')
+
+    )
+
+
+    AND
+
+    (
+
+        p_category_id IS NULL
+
+        OR category_id = p_category_id
+
+    )
+
+
+    AND
+
+    (
+
+        p_status IS NULL
+
+        OR status = p_status
+
+    );
+
+
+END $$
+
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Find Clubs By Creator
+|--------------------------------------------------------------------------
+*/
+
+DROP PROCEDURE IF EXISTS sp_club_find_by_creator $$
+
+
+CREATE PROCEDURE sp_club_find_by_creator(
+
+    IN p_created_by BIGINT
+
+)
+
+BEGIN
+
+
+    SELECT *
+
+
+    FROM clubs
+
+
+    WHERE created_by = p_created_by
+
+    AND deleted_at IS NULL
+
+
+    ORDER BY created_at DESC;
+
+
+END $$
+
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Find Active Clubs
+|--------------------------------------------------------------------------
+*/
+
+DROP PROCEDURE IF EXISTS sp_club_find_active $$
+
+
+CREATE PROCEDURE sp_club_find_active()
+
+BEGIN
+
+
+    SELECT *
+
+
+    FROM clubs
+
+
+    WHERE status = 'active'
+
+    AND deleted_at IS NULL
+
+
+    ORDER BY name ASC;
+
+
+END $$
+
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Club Statistics
 |--------------------------------------------------------------------------
 */
 
 DROP PROCEDURE IF EXISTS sp_club_statistics $$
 
+
 CREATE PROCEDURE sp_club_statistics()
 
 BEGIN
 
-SELECT
 
-(
-    SELECT COUNT(*)
-    FROM clubs
-    WHERE deleted_at IS NULL
-)
-AS total_clubs,
+    SELECT
 
-(
-    SELECT COUNT(*)
-    FROM clubs
-    WHERE status='active'
-    AND deleted_at IS NULL
-)
-AS active_clubs,
 
-(
-    SELECT COUNT(*)
-    FROM club_categories
-)
-AS categories,
+    (
 
-(
-    SELECT COUNT(*)
-    FROM club_memberships
-    WHERE membership_status='approved'
-)
-AS total_members;
+        SELECT COUNT(*)
+
+        FROM clubs
+
+        WHERE deleted_at IS NULL
+
+    )
+
+    AS total_clubs,
+
+
+
+    (
+
+        SELECT COUNT(*)
+
+        FROM clubs
+
+        WHERE status='active'
+
+        AND deleted_at IS NULL
+
+    )
+
+    AS active_clubs,
+
+
+
+    (
+
+        SELECT COUNT(*)
+
+        FROM club_categories
+
+    )
+
+    AS categories,
+
+
+
+    (
+
+        SELECT COUNT(*)
+
+        FROM club_memberships
+
+        WHERE membership_status='approved'
+
+    )
+
+    AS total_members;
+
 
 END $$
+
+
 
 DELIMITER ;

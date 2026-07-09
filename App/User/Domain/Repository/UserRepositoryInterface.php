@@ -14,6 +14,8 @@ interface UserRepositoryInterface
 
     public function findByStudentId(string $studentId): ?User;
 
+    public function getAll(): array;
+
     public function updateLastLogin(int $id): bool;
 
     public function updatePassword(int $userId, string $password): bool;

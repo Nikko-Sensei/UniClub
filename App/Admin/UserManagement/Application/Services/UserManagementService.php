@@ -77,4 +77,13 @@ class UserManagementService
             $data
         );
     }
+
+    public function deleteUser(
+        int $id
+    ): bool {
+
+        return $this->repository->delete(
+            $id
+        );
+    }
 }

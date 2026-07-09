@@ -124,4 +124,20 @@ class MasterRepository extends BaseRepository implements MasterRepositoryInterfa
 
         return $stmt->fetchAll();
     }
+
+    public function getClubCategories(): array
+    {
+        $sql = "
+        SELECT
+            id,
+            name,
+            description
+        FROM club_categories
+        ORDER BY name ASC
+    ";
+
+        $stmt = $this->db->query($sql);
+
+        return $stmt->fetchAll();
+    }
 }

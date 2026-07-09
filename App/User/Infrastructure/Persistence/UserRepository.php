@@ -250,4 +250,23 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         return $stmt->execute($params);
     }
 
+    public function getAll(): array
+{
+    $stmt = $this->db->prepare(
+        "SELECT * FROM users ORDER BY created_at DESC"
+    );
+
+    $stmt->execute();
+
+    $rows = $stmt->fetchAll();
+
+    $users = [];
+
+    foreach ($rows as $row) {
+        $users[] = $this->mapToUser($row);
+    }
+
+    return $users;
+}
+
 }

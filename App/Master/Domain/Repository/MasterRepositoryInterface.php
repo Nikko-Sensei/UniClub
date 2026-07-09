@@ -17,4 +17,6 @@ interface MasterRepositoryInterface
     public function findRoleNameById(int $id): ?string;
 
     public function getRoles(): array;
+
+    public function getClubCategories(): array;
 }

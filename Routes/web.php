@@ -9,6 +9,7 @@ use App\Admin\Dashboard\Presentation\Controllers\DashboardController;
 use App\Admin\RBAC\Presentation\Controllers\RolePermissionController;
 use App\Admin\UserManagement\Infrastructure\Persistence\UserManagementRepository;
 use App\Admin\UserManagement\Presentation\Controllers\UserManagementController;
+use App\Club\Presentation\Controllers\AdminClubController;
 
 use App\Shared\Middleware\AuthMiddleware;
 use App\Shared\Middleware\GuestMiddleware;
@@ -153,6 +154,111 @@ $router->post(
     [
         UserManagementController::class,
         'update'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+$router->post(
+    '/admin/users/{id}/delete',
+    [
+        UserManagementController::class,
+        'delete'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+// Club Management
+
+$router->get(
+    '/admin/clubs',
+    [
+        AdminClubController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->get(
+    '/admin/clubs/create',
+    [
+        AdminClubController::class,
+        'create'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/clubs/store',
+    [
+        AdminClubController::class,
+        'store'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->get(
+    '/admin/clubs/{id}',
+    [
+        AdminClubController::class,
+        'show'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->get(
+    '/admin/clubs/{id}/edit',
+    [
+        AdminClubController::class,
+        'edit'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/clubs/{id}/update',
+    [
+        AdminClubController::class,
+        'update'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/clubs/{id}/delete',
+    [
+        AdminClubController::class,
+        'delete'
     ],
     [
         AuthMiddleware::class,

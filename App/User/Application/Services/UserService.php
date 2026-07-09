@@ -45,6 +45,11 @@ class UserService
         );
     }
 
+    public function getAll(): array
+    {
+        return $this->userRepository->getAll();
+    }
+
 
     public function getProfileData(int $userId): array
     {

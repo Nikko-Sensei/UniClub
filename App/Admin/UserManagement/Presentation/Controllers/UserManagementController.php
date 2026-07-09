@@ -161,4 +161,18 @@ class UserManagementController extends BaseController
             '/admin/users'
         );
     }
+
+    public function delete(
+    int $id
+) {
+
+    $this->userManagementService
+        ->deleteUser($id);
+
+
+    return Response::redirect(
+        '/admin/users'
+    );
+
+}
 }

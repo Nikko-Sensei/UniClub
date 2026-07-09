@@ -128,11 +128,11 @@ class UserManagementRepository extends BaseRepository implements UserManagementR
     }
 
     public function update(
-    int $id,
-    array $data
-): bool {
+        int $id,
+        array $data
+    ): bool {
 
-    $sql = "
+        $sql = "
         UPDATE users SET
 
             name=:name,
@@ -148,31 +148,50 @@ class UserManagementRepository extends BaseRepository implements UserManagementR
     ";
 
 
-    $stmt = $this->db->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
 
-    return $stmt->execute([
+        return $stmt->execute([
 
-        'name' => $data['name'],
+            'name' => $data['name'],
 
-        'email' => $data['email'],
+            'email' => $data['email'],
 
-        'student_id' => $data['student_id'],
+            'student_id' => $data['student_id'],
 
-        'phone' => $data['phone'] ?? null,
+            'phone' => $data['phone'] ?? null,
 
-        'department_id' => $data['department_id'] ?? null,
+            'department_id' => $data['department_id'] ?? null,
 
-        'academic_year_id' => $data['academic_year_id'] ?? null,
+            'academic_year_id' => $data['academic_year_id'] ?? null,
 
-        'role_id' => $data['role_id'],
+            'role_id' => $data['role_id'],
 
-        'status' => $data['status'],
+            'status' => $data['status'],
 
-        'id' => $id
+            'id' => $id
 
-    ]);
-}
+        ]);
+    }
+
+    public function delete(
+        int $id
+    ): bool {
+
+        $sql = "
+        UPDATE users
+        SET deleted_at = NOW()
+        WHERE id = :id
+    ";
+
+
+        $stmt = $this->db->prepare($sql);
+
+
+        return $stmt->execute([
+            'id' => $id
+        ]);
+    }
 
     public function search(
         string $keyword
