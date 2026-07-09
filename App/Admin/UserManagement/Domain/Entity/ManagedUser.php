@@ -24,7 +24,15 @@ class ManagedUser
 
         private ?string $departmentName,
 
-        private ?string $academicYearName
+        private ?string $academicYearName,
+
+        private ?string $phone,
+
+        private ?string $lastLoginAt,
+
+        private ?string $createdAt,
+
+        private ?string $updatedAt
 
     ) {}
 
@@ -76,5 +84,28 @@ class ManagedUser
     public function getAcademicYearName(): ?string
     {
         return $this->academicYearName;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+
+    public function getLastLoginAt(): ?string
+    {
+        return $this->lastLoginAt;
+    }
+
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->createdAt;
+    }
+
+
+    public function getUpdatedAt(): ?string
+    {
+        return $this->updatedAt;
     }
 }

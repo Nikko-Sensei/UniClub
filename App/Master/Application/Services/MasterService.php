@@ -47,4 +47,9 @@ class MasterService
     {
         return $this->masterRepository->findRoleNameById($id);
     }
+
+    public function getRoles(): array
+    {
+        return $this->masterRepository->getRoles();
+    }
 }

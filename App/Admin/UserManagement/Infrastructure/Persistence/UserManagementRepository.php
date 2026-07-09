@@ -18,44 +18,6 @@ class UserManagementRepository extends BaseRepository implements UserManagementR
     }
 
 
-    // public function findAll(): array
-    // {
-    //     $stmt = $this->db->query("
-
-    //         SELECT
-    //             users.id,
-    //             users.name,
-    //             users.email,
-    //             users.student_id,
-    //             users.status,
-
-    //             roles.name AS role_name,
-
-    //             departments.name AS department_name,
-
-    //             academic_years.name AS academic_year_name
-
-    //         FROM users
-
-    //         INNER JOIN roles
-    //             ON roles.id = users.role_id
-
-    //         LEFT JOIN departments
-    //             ON departments.id = users.department_id
-
-    //         LEFT JOIN academic_years
-    //             ON academic_years.id = users.academic_year_id
-
-    //         WHERE users.deleted_at IS NULL
-
-    //         ORDER BY users.id DESC
-
-    //     ");
-
-
-    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // }
-
     public function findAll(
         array $filters = [],
         int $limit = 10,
@@ -116,13 +78,12 @@ class UserManagementRepository extends BaseRepository implements UserManagementR
         $stmt->execute();
 
 
-$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-return array_map(
-    fn(array $row) => $this->mapToManagedUser($row),
-    $rows
-);
-
+        return array_map(
+            fn(array $row) => $this->mapToManagedUser($row),
+            $rows
+        );
     }
 
     public function count(
@@ -166,6 +127,52 @@ return array_map(
         return (int)$stmt->fetchColumn();
     }
 
+    public function update(
+    int $id,
+    array $data
+): bool {
+
+    $sql = "
+        UPDATE users SET
+
+            name=:name,
+            email=:email,
+            student_id=:student_id,
+            phone=:phone,
+            department_id=:department_id,
+            academic_year_id=:academic_year_id,
+            role_id=:role_id,
+            status=:status
+
+        WHERE id=:id
+    ";
+
+
+    $stmt = $this->db->prepare($sql);
+
+
+    return $stmt->execute([
+
+        'name' => $data['name'],
+
+        'email' => $data['email'],
+
+        'student_id' => $data['student_id'],
+
+        'phone' => $data['phone'] ?? null,
+
+        'department_id' => $data['department_id'] ?? null,
+
+        'academic_year_id' => $data['academic_year_id'] ?? null,
+
+        'role_id' => $data['role_id'],
+
+        'status' => $data['status'],
+
+        'id' => $id
+
+    ]);
+}
 
     public function search(
         string $keyword
@@ -250,12 +257,26 @@ return array_map(
 
         $stmt = $this->db->prepare("
             SELECT
+
                 users.id,
+
                 users.name,
+
                 users.email,
+
                 users.student_id,
+
                 users.profile_image,
+
+                users.phone,
+
                 users.status,
+
+                users.last_login_at,
+
+                users.created_at,
+
+                users.updated_at,
 
                 roles.name AS role_name,
 
@@ -302,6 +323,7 @@ return array_map(
     ): ManagedUser {
 
         return new ManagedUser(
+
             id: (int)$row['id'],
 
             name: $row['name'],
@@ -318,7 +340,16 @@ return array_map(
 
             departmentName: $row['department_name'] ?? null,
 
-            academicYearName: $row['academic_year_name'] ?? null
+            academicYearName: $row['academic_year_name'] ?? null,
+
+            phone: $row['phone'] ?? null,
+
+            lastLoginAt: $row['last_login_at'] ?? null,
+
+            createdAt: $row['created_at'] ?? null,
+
+            updatedAt: $row['updated_at'] ?? null
+
         );
     }
 }

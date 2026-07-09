@@ -109,4 +109,19 @@ class MasterRepository extends BaseRepository implements MasterRepositoryInterfa
 
         return $stmt->fetchColumn() ?: null;
     }
+
+    public function getRoles(): array
+    {
+        $sql = "
+        SELECT
+            id,
+            name
+        FROM roles
+        ORDER BY name ASC
+    ";
+
+        $stmt = $this->db->query($sql);
+
+        return $stmt->fetchAll();
+    }
 }

@@ -124,7 +124,6 @@ $router->get(
     ]
 );
 
-
 $router->get(
     '/admin/users/{id}',
     [
@@ -137,12 +136,11 @@ $router->get(
     ]
 );
 
-
-$router->post(
-    '/admin/users/update-role',
+$router->get(
+    '/admin/users/{id}/edit',
     [
         UserManagementController::class,
-        'updateRole'
+        'edit'
     ],
     [
         AuthMiddleware::class,
@@ -150,18 +148,18 @@ $router->post(
     ]
 );
 
-
 $router->post(
-    '/admin/users/update-status',
+    '/admin/users/{id}/update',
     [
         UserManagementController::class,
-        'updateStatus'
+        'update'
     ],
     [
         AuthMiddleware::class,
         RoleMiddleware::class
     ]
 );
+
 
 $router->get(
     '/profile',

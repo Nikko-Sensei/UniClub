@@ -15,4 +15,6 @@ interface MasterRepositoryInterface
     public function findAcademicYearNameById(int $id): ?string;
 
     public function findRoleNameById(int $id): ?string;
+
+    public function getRoles(): array;
 }

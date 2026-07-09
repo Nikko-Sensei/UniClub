@@ -42,15 +42,10 @@ class UserManagementController extends BaseController
 
         ];
 
-
-
         if (!empty($keyword)) {
 
             $users = $this->userManagementService
                 ->search($keyword);
-
-
-
 
             $pagination = null;
         } else {
@@ -67,12 +62,8 @@ class UserManagementController extends BaseController
             $pagination = $result['pagination'];
         }
 
-
-
         $departments = $this->masterService
             ->getDepartments();
-
-
 
         $academicYears = $this->masterService
             ->getAcademicYears();
@@ -108,8 +99,16 @@ class UserManagementController extends BaseController
         $user = $this->userManagementService->getUser($id);
 
 
+        if (!$user) {
+
+            return Response::redirect(
+                '/admin/users'
+            );
+        }
+
+
         $this->view(
-            'Admin/UserManagement/Views/users/show',
+            'Admin/UserManagement/Presentation/Views/users/show',
             [
                 'title' => 'User Details',
                 'user' => $user
@@ -131,13 +130,17 @@ class UserManagementController extends BaseController
         $academicYears = $this->masterService
             ->getAcademicYears();
 
+        $roles = $this->masterService
+            ->getRoles();
+
 
         $this->view(
             'Admin/UserManagement/Presentation/Views/users/edit',
             [
                 'user' => $user,
                 'departments' => $departments,
-                'academicYears' => $academicYears
+                'academicYears' => $academicYears,
+                'roles' => $roles
             ],
             'admin'
         );
@@ -145,9 +148,7 @@ class UserManagementController extends BaseController
 
     public function update(int $id)
     {
-
         $data = $_POST;
-
 
         $this->userManagementService
             ->updateUser(
