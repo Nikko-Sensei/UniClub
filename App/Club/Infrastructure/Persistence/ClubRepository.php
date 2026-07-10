@@ -279,6 +279,99 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
         return (int)$result['total'];
     }
 
+    public function findStudentClubs(
+        array $filters = [],
+        int $limit = 6,
+        int $offset = 0
+    ): array {
+
+
+        $stmt = $this->db->prepare(
+
+            "CALL sp_student_club_find_all(
+            :search,
+            :category_id,
+            :limit,
+            :offset
+        )"
+
+        );
+
+
+        $stmt->execute([
+
+            'search' =>
+            $filters['search']
+                ?? null,
+
+
+            'category_id' =>
+            $filters['category_id']
+                ?? null,
+
+
+            'limit' =>
+            $limit,
+
+
+            'offset' =>
+            $offset
+
+        ]);
+
+
+        $clubs = [];
+
+
+        while (
+            $row =
+            $stmt->fetch(PDO::FETCH_ASSOC)
+        ) {
+
+            $clubs[] =
+                $this->mapToClub($row);
+        }
+
+
+        return $clubs;
+    }
+
+    public function countStudentClubs(
+        array $filters = []
+    ): int {
+
+
+        $stmt = $this->db->prepare(
+
+            "CALL sp_student_club_count(
+            :search,
+            :category_id
+        )"
+
+        );
+
+
+        $stmt->execute([
+
+            'search' =>
+            $filters['search']
+                ?? null,
+
+
+            'category_id' =>
+            $filters['category_id']
+                ?? null
+
+        ]);
+
+
+        $result =
+            $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        return (int)$result['total'];
+    }
+
     public function existsByName(
         string $name
     ): bool {
@@ -360,13 +453,8 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
         return $clubs;
     }
 
-
-
-
-
     public function findActiveClubs(): array
     {
-
 
         $stmt = $this->db->prepare(
             "CALL sp_club_find_active()"
@@ -402,9 +490,44 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
 
         return $stmt->fetch(PDO::FETCH_ASSOC) ?? [];
     }
+    public function findLeadership(
+        int $clubId
+    ): array {
+
+        $stmt = $this->db->prepare(
+            "CALL sp_club_find_leadership(
+            :club_id
+        )"
+        );
 
 
+        $stmt->execute([
 
+            'club_id' =>
+            $clubId
+
+        ]);
+
+
+        return $stmt->fetchAll(
+            PDO::FETCH_ASSOC
+        );
+    }
+
+    public function findUpcomingEvents(int $clubId): array
+    {
+        $stmt = $this->db->prepare(
+            "CALL sp_get_upcoming_events_by_club(:club_id)"
+        );
+
+
+        $stmt->execute([
+            'club_id' => $clubId
+        ]);
+
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
     private function mapToClub(

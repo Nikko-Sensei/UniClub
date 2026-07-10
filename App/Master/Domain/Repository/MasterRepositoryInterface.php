@@ -19,4 +19,5 @@ interface MasterRepositoryInterface
     public function getRoles(): array;
 
     public function getClubCategories(): array;
+
 }

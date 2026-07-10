@@ -4,7 +4,7 @@ use App\Home\Presentation\Controllers\HomeController;
 use App\Auth\Presentation\Controllers\AuthController;
 use App\Auth\Presentation\Controllers\PasswordResetController;
 use App\User\Presentation\Controllers\ProfileController;
-use App\User\Presentation\Controllers\UserController;
+use App\Club\Presentation\Controllers\UserClubController;
 use App\Admin\Dashboard\Presentation\Controllers\DashboardController;
 use App\Admin\RBAC\Presentation\Controllers\RolePermissionController;
 use App\Admin\UserManagement\Infrastructure\Persistence\UserManagementRepository;
@@ -265,6 +265,33 @@ $router->post(
         RoleMiddleware::class
     ]
 );
+
+
+// User Club
+
+$router->get(
+    '/clubs',
+    [
+        UserClubController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
+
+$router->get(
+    '/clubs/{id}',
+    [
+        UserClubController::class,
+        'show'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
+
+
 
 
 $router->get(

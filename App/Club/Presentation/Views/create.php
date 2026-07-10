@@ -49,6 +49,17 @@
                             placeholder="e.g. Computer Science Society">
                     </div>
 
+                    <!-- Short Name -->
+                    <div>
+                        <label class="block text-sm text-slate-600 font-medium">
+                            Short Name
+                        </label>
+
+                        <input type="text" name="short_name" maxlength="50"
+                            class="w-full mt-1 px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50/50 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
+                            placeholder="e.g. CSS">
+                    </div>
+
                     <!-- Club Category -->
                     <div>
                         <label class="block text-sm text-slate-600 font-medium">Club Category</label>
@@ -56,9 +67,9 @@
                             class="w-full mt-1 px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50/50 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition">
                             <option value="">Select Category</option>
                             <?php foreach ($categories as $category): ?>
-                                <option value="<?= $category['id'] ?>">
-                                    <?= htmlspecialchars($category['name']) ?>
-                                </option>
+                            <option value="<?= $category['id'] ?>">
+                                <?= htmlspecialchars($category['name']) ?>
+                            </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -151,10 +162,10 @@
                             placeholder="Full name">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-600 font-medium">Advisor Name</label>
+                        <label class="block text-sm text-slate-600 font-medium">Secretary</label>
                         <input type="text" name="advisor"
                             class="w-full mt-1 px-4 py-2.5 rounded-lg border border-slate-300 bg-slate-50/50 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition"
-                            placeholder="Faculty member">
+                            placeholder="Full name">
                     </div>
                 </div>
             </div>

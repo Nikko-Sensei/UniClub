@@ -35,6 +35,8 @@ use App\Club\Infrastructure\Persistence\ClubRepository;
 use App\Club\Application\Services\ClubService;
 use App\Club\Application\Validators\ClubValidator;
 use App\Club\Presentation\Controllers\AdminClubController;
+use App\Shared\Application\Services\ImageUploadService;
+use App\Club\Presentation\Controllers\UserClubController;
 
 
 // Dashboard
@@ -325,7 +327,19 @@ class Bootstrap
             }
         );
 
+        // Shared Services
+
+        $container->bind(
+            ImageUploadService::class,
+            function () {
+
+                return new ImageUploadService();
+            }
+        );
+
+
         // Club Service
+
         $container->bind(
             ClubService::class,
             function ($container) {
@@ -338,7 +352,13 @@ class Bootstrap
 
                     $container->resolve(
                         ClubValidator::class
-                    )
+                    ),
+
+                    $container->resolve(
+                        ImageUploadService::class
+                    ),
+
+                    $container->resolve(AuditLogger::class),
 
                 );
             }
@@ -357,6 +377,22 @@ class Bootstrap
 
                     $container->resolve(
                         MasterService::class
+                    )
+
+                );
+            }
+        );
+
+        // UserClubController
+
+        $container->bind(
+            UserClubController::class,
+            function ($container) {
+
+                return new UserClubController(
+
+                    $container->resolve(
+                        ClubService::class
                     )
 
                 );

@@ -2,11 +2,12 @@
 
 namespace App\Club\Application\Services;
 
-
 use App\Club\Domain\Repository\ClubRepositoryInterface;
 use App\Club\Domain\Entities\Club;
 use App\Club\Application\Validators\ClubValidator;
-
+use App\Shared\Application\Services\ImageUploadService;
+use App\Shared\Logging\AuditLogger;
+use App\Shared\Logging\AuditAction;
 
 class ClubService
 {
@@ -14,21 +15,25 @@ class ClubService
 
         private ClubRepositoryInterface $repository,
 
-        private ClubValidator $validator
+        private ClubValidator $validator,
+
+        private ImageUploadService $imageUploadService,
+
+        private AuditLogger $auditLogger
 
     ) {}
 
+    /**
+     * Create Club
+     */
     public function create(
         array $data,
+        array $files,
         int $userId
     ): int {
 
-
-        $errors =
-            $this->validator
+        $errors = $this->validator
             ->validateCreate($data);
-
-
 
         if (!empty($errors)) {
 
@@ -46,6 +51,11 @@ class ClubService
                 "Club name already exists."
             );
         }
+
+        $this->handleImages(
+            $files,
+            $data
+        );
 
         $club = new Club(
 
@@ -73,7 +83,9 @@ class ClubService
 
             establishedDate: $data['established_date'] ?? null,
 
-            memberLimit: $data['member_limit'] ?? null,
+            memberLimit: isset($data['member_limit'])
+                ? (int)$data['member_limit']
+                : null,
 
             status: 'active',
 
@@ -81,21 +93,41 @@ class ClubService
 
         );
 
-        return $this->repository
+        $clubId = $this->repository
             ->create($club);
+
+
+        $this->auditLogger->log(
+
+            AuditAction::CREATE_CLUB,
+
+            $userId,
+
+            'Club',
+
+            $clubId,
+
+            [
+                'name' => $club->getName()
+            ]
+
+        );
+
+        return $clubId;
     }
 
+
+    /**
+     * Update Club
+     */
     public function update(
         int $id,
-        array $data
+        array $data,
+        array $files
     ): bool {
 
-
-        $errors =
-            $this->validator
+        $errors = $this->validator
             ->validateUpdate($data);
-
-
 
         if (!empty($errors)) {
 
@@ -103,7 +135,6 @@ class ClubService
                 json_encode($errors)
             );
         }
-
 
         if (
             $this->repository
@@ -118,8 +149,7 @@ class ClubService
             );
         }
 
-        $existing =
-            $this->repository
+        $existing = $this->repository
             ->findById($id);
 
         if (!$existing) {
@@ -129,6 +159,11 @@ class ClubService
             );
         }
 
+        $this->handleImages(
+            $files,
+            $data
+        );
+
         $club = new Club(
 
             id: $id,
@@ -137,45 +172,115 @@ class ClubService
 
             name: $data['name'],
 
-            shortName: $data['short_name'] ?? null,
+            shortName: $data['short_name']
+                ?? $existing->getShortName(),
 
-            description: $data['description'] ?? null,
+            description: $data['description']
+                ?? $existing->getDescription(),
 
-            mission: $data['mission'] ?? null,
+            mission: $data['mission']
+                ?? $existing->getMission(),
 
-            vision: $data['vision'] ?? null,
+            vision: $data['vision']
+                ?? $existing->getVision(),
 
-            logo: $data['logo'] ?? $existing->getLogo(),
+            logo: $data['logo']
+                ?? $existing->getLogo(),
 
-            banner: $data['banner'] ?? $existing->getBanner(),
+            banner: $data['banner']
+                ?? $existing->getBanner(),
 
-            email: $data['email'] ?? null,
+            email: $data['email']
+                ?? $existing->getEmail(),
 
-            phone: $data['phone'] ?? null,
+            phone: $data['phone']
+                ?? $existing->getPhone(),
 
-            establishedDate: $data['established_date'] ?? null,
+            establishedDate: $data['established_date']
+                ?? $existing->getEstablishedDate(),
 
-            memberLimit: $data['member_limit'] ?? null,
+            memberLimit: isset($data['member_limit'])
+                ? (int)$data['member_limit']
+                : $existing->getMemberLimit(),
 
-            status: $data['status'] ?? $existing->getStatus(),
+            status: $data['status']
+                ?? $existing->getStatus(),
 
             createdBy: $existing->getCreatedBy()
 
         );
 
-        return $this->repository
+
+        $result = $this->repository
             ->update($club);
+
+
+        if ($result) {
+
+            $this->auditLogger->log(
+
+                AuditAction::UPDATE_CLUB,
+
+                $_SESSION['user']['id'],
+
+                'Club',
+
+                $id,
+
+                [
+                    'name' => $club->getName()
+                ]
+
+            );
+        }
+
+
+        return $result;
     }
 
+
+    /**
+     * Delete Club
+     */
     public function delete(
         int $id
     ): bool {
 
+        $club = $this->repository
+            ->findById($id);
 
-        return $this->repository
+
+        $result = $this->repository
             ->delete($id);
+
+
+        if ($result) {
+
+            $this->auditLogger->log(
+
+                AuditAction::DELETE_CLUB,
+
+                $_SESSION['user']['id'],
+
+                'Club',
+
+                $id,
+
+                [
+                    'name' => $club?->getName()
+                ]
+
+            );
+        }
+
+
+        return $result;
     }
 
+
+    /**
+     * Get Single Club
+     */
     public function getClub(
         int $id
     ): ?Club {
@@ -184,51 +289,180 @@ class ClubService
             ->findById($id);
     }
 
+
+    /**
+     * Pagination
+     */
     public function getClubs(
-    array $filters = [],
-    int $page = 1
-): array {
+        array $filters = [],
+        int $page = 1
+    ): array {
 
-    $limit = 10;
+        $limit = 10;
 
-    $offset = ($page - 1) * $limit;
-
-
-    $clubs = $this->repository->findAll(
-        $filters,
-        $limit,
-        $offset
-    );
+        $offset =
+            ($page - 1)
+            * $limit;
 
 
-    $total = $this->repository->count(
-        $filters
-    );
+        $clubs = $this->repository
+            ->findAll(
+                $filters,
+                $limit,
+                $offset
+            );
 
 
-    return [
+        $total = $this->repository
+            ->count($filters);
 
-        'clubs' => $clubs,
 
-        'pagination' => [
+        return [
 
-            'current_page' => $page,
+            'clubs' => $clubs,
 
-            'per_page' => $limit,
+            'pagination' => [
 
-            'total' => $total,
+                'current_page' => $page,
 
-            'total_pages' => ceil($total / $limit)
+                'per_page' => $limit,
 
-        ]
+                'total' => $total,
 
-    ];
-}
+                'total_pages' =>
+                ceil($total / $limit)
 
+            ]
+
+        ];
+    }
+
+    public function getStudentClubs(
+        array $filters = [],
+        int $page = 1
+    ): array {
+
+        $limit = 6;
+
+
+        $offset =
+            ($page - 1)
+            * $limit;
+
+
+        $clubs =
+            $this->repository
+            ->findStudentClubs(
+                $filters,
+                $limit,
+                $offset
+            );
+
+
+        $total =
+            $this->repository
+            ->countStudentClubs(
+                $filters
+            );
+
+
+        return [
+
+            'clubs' =>
+            $clubs,
+
+
+            'pagination' => [
+
+                'current_page' =>
+                $page,
+
+                'per_page' =>
+                $limit,
+
+                'total' =>
+                $total,
+
+
+                'total_pages' =>
+                ceil(
+                    $total / $limit
+                )
+            ]
+        ];
+    }
+
+
+    /**
+     * Statistics
+     */
     public function getStatistics(): array
+    {
+        return $this->repository
+            ->getStatistics();
+    }
+
+
+    /**
+     * Upload Club Images
+     */
+    private function handleImages(
+        array $files,
+        array &$data
+    ): void {
+
+        if (
+            isset($files['logo']) &&
+            $files['logo']['error']
+            === UPLOAD_ERR_OK
+        ) {
+
+            $data['logo'] =
+                $this->imageUploadService
+                ->upload(
+                    $files['logo'],
+                    'clubs'
+                );
+        }
+
+
+        if (
+            isset($files['banner']) &&
+            $files['banner']['error']
+            === UPLOAD_ERR_OK
+        ) {
+
+            $data['banner'] =
+                $this->imageUploadService
+                ->upload(
+                    $files['banner'],
+                    'clubs'
+                );
+        }
+    }
+
+    public function getActiveClubs(): array
     {
 
         return $this->repository
-            ->getStatistics();
+            ->findActiveClubs();
+    }
+
+    public function getLeadership(
+        int $clubId
+    ): array {
+
+        return $this->repository
+            ->findLeadership($clubId);
+    }
+
+    public function getUpcomingEvents(
+        int $clubId
+    ): array {
+
+        return $this->repository
+            ->findUpcomingEvents(
+                $clubId
+            );
     }
 }

@@ -273,7 +273,251 @@
         </div>
 
 
+        <!-- Leadership Section -->
+
+        <div class="bg-white rounded-xl shadow-sm border p-6">
+
+
+            <div class="flex items-center justify-between mb-5">
+
+
+                <h3 class="font-semibold text-slate-800 flex items-center gap-2">
+
+                    <i data-lucide="users" class="w-5 h-5 text-blue-600">
+                    </i>
+
+                    Club Leadership
+
+                </h3>
+
+
+                <span class="text-xs text-slate-400">
+
+                    Leadership Team
+
+                </span>
+
+
+            </div>
+
+
+
+            <?php if (!empty($leadership)): ?>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+
+                <?php foreach ($leadership as $leader): ?>
+
+
+                <div
+                    class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-blue-200 transition">
+
+
+                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+
+
+                        <i data-lucide="user-round" class="w-6 h-6 text-blue-600">
+                        </i>
+
+
+                    </div>
+
+
+
+                    <div class="flex-1">
+
+
+                        <p class="text-xs text-slate-500 uppercase">
+
+                            <?= htmlspecialchars(
+                                        $leader['role']
+                                    ) ?>
+
+                        </p>
+
+
+                        <p class="font-semibold text-slate-800">
+
+                            <?= htmlspecialchars(
+                                        $leader['user_name']
+                                    ) ?>
+
+                        </p>
+
+
+                    </div>
+
+
+
+                    <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700">
+
+                        Leader
+
+                    </span>
+
+
+                </div>
+
+
+                <?php endforeach; ?>
+
+
+            </div>
+
+
+            <?php else: ?>
+
+
+            <div class="text-center py-8">
+
+
+                <i data-lucide="user-x" class="w-10 h-10 mx-auto text-slate-300">
+                </i>
+
+
+                <p class="text-sm text-slate-500 mt-3">
+
+                    No leadership assigned yet.
+
+                </p>
+
+
+            </div>
+
+
+            <?php endif; ?>
+
+
+        </div>
+
+
     </div>
+    <!-- Leadership Section -->
+
+    <div class="bg-white rounded-xl shadow-sm border p-6">
+
+
+        <div class="flex items-center justify-between mb-5">
+
+
+            <h3 class="font-semibold text-slate-800 flex items-center gap-2">
+
+                <i data-lucide="users" class="w-5 h-5 text-blue-600">
+                </i>
+
+                Club Leadership
+
+            </h3>
+
+
+            <span class="text-xs text-slate-400">
+
+                Leadership Team
+
+            </span>
+
+
+        </div>
+
+
+
+        <?php if (!empty($leadership)): ?>
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+
+            <?php foreach ($leadership as $leader): ?>
+
+
+            <div
+                class="flex items-center gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-blue-200 transition">
+
+
+                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+
+
+                    <i data-lucide="user-round" class="w-6 h-6 text-blue-600">
+                    </i>
+
+
+                </div>
+
+
+
+                <div class="flex-1">
+
+
+                    <p class="text-xs text-slate-500 uppercase">
+
+                        <?= htmlspecialchars(
+                                    $leader['role']
+                                ) ?>
+
+                    </p>
+
+
+                    <p class="font-semibold text-slate-800">
+
+                        <?= htmlspecialchars(
+                                    $leader['user_name']
+                                ) ?>
+
+                    </p>
+
+
+                </div>
+
+
+
+                <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700">
+
+                    Leader
+
+                </span>
+
+
+            </div>
+
+
+            <?php endforeach; ?>
+
+
+        </div>
+
+
+        <?php else: ?>
+
+
+        <div class="text-center py-8">
+
+
+            <i data-lucide="user-x" class="w-10 h-10 mx-auto text-slate-300">
+            </i>
+
+
+            <p class="text-sm text-slate-500 mt-3">
+
+                No leadership assigned yet.
+
+            </p>
+
+
+        </div>
+
+
+        <?php endif; ?>
+
+
+    </div>
+
+
+</div>
+
+
+</div>
 
 
 </div>

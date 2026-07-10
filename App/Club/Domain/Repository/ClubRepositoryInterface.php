@@ -34,6 +34,17 @@ interface ClubRepositoryInterface
         array $filters = []
     ): int;
 
+    public function findStudentClubs(
+        array $filters = [],
+        int $limit = 6,
+        int $offset = 0
+    ): array;
+
+
+    public function countStudentClubs(
+        array $filters = []
+    ): int;
+
     public function existsByName(
         string $name
     ): bool;
@@ -51,5 +62,11 @@ interface ClubRepositoryInterface
 
     public function getStatistics(): array;
 
+    public function findLeadership(
+        int $clubId
+    ): array;
 
+    public function findUpcomingEvents(
+        int $clubId
+    ): array;
 }

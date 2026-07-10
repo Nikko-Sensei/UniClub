@@ -140,4 +140,6 @@ class MasterRepository extends BaseRepository implements MasterRepositoryInterfa
 
         return $stmt->fetchAll();
     }
+
+    
 }
