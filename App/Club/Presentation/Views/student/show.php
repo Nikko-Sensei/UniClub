@@ -27,7 +27,7 @@
 
                     <span
                         class="inline-flex items-center rounded-full bg-blue-600/80 backdrop-blur-md px-4 py-1.5 text-xs font-semibold text-white shadow-lg">
-                        <?= htmlspecialchars($club->getCategoryId()) ?>
+                        <?= htmlspecialchars($club->getCategoryName()) ?>
                     </span>
 
                     <h1 class="mt-4 text-4xl lg:text-6xl font-extrabold text-white drop-shadow-lg">
@@ -53,11 +53,88 @@
                 </div>
 
                 <div class="flex-shrink-0">
-                    <button
-                        class="bg-blue-600 hover:bg-blue-700 px-10 py-4 rounded-2xl font-semibold text-white shadow-2xl shadow-blue-600/30 transition-all hover:scale-105 hover:shadow-blue-600/50 active:scale-95">
-                        Join Club
+                    <!-- <div class="flex flex-col sm:flex-row gap-3"> -->
+
+
+                    <?php if (isset($_SESSION['user'])): ?>
+
+
+                    <?php if ($membershipStatus === 'approved'): ?>
+
+
+                    <button disabled class="flex-1 bg-green-100
+                            text-green-700
+                            py-3 rounded-xl
+                            font-semibold text-sm">
+
+                        ✓ Joined Member
+
                     </button>
+
+
+
+                    <?php elseif ($membershipStatus === 'pending'): ?>
+
+
+                    <button disabled class="flex-1 bg-yellow-100
+                        text-yellow-700
+                        py-3 rounded-xl
+                        font-semibold text-sm">
+
+                        Waiting Approval
+
+                    </button>
+
+
+
+                    <?php else: ?>
+
+
+                    <form method="POST" action="<?= BASE_URL ?>/clubs/<?= $club->getId() ?>/join" class="flex-1">
+
+
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
+
+
+                        <button type="submit" class="w-full bg-blue-600
+                            hover:bg-blue-700
+                            text-white py-3
+                            rounded-xl
+                            font-semibold text-sm
+                            transition">
+
+                            Join Club
+
+                        </button>
+
+
+                    </form>
+
+
+                    <?php endif; ?>
+
+
+
+                    <?php else: ?>
+
+
+                    <a href="<?= BASE_URL ?>/login" class="flex-1 bg-blue-600
+                            hover:bg-blue-700
+                            text-white text-center
+                            py-3 rounded-xl
+                            font-semibold text-sm">
+
+                        Login to Join
+
+                    </a>
+
+
+                    <?php endif; ?>
+
+
                 </div>
+
 
             </div>
 
@@ -101,7 +178,7 @@
                     <div class="flex justify-between items-center pt-3 first:pt-0">
                         <span class="text-slate-500 text-sm">Category</span>
                         <span
-                            class="font-semibold text-slate-800"><?= htmlspecialchars($club->getCategoryId()) ?></span>
+                            class="font-semibold text-slate-800"><?= htmlspecialchars($club->getCategoryName()) ?></span>
                     </div>
 
                     <div class="flex justify-between items-center pt-3">
@@ -188,7 +265,7 @@
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-            <?php foreach($leadership as $leader): ?>
+            <?php foreach ($leadership as $leader): ?>
 
             <div
                 class="bg-white rounded-2xl border border-slate-100 shadow-lg p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1 group">

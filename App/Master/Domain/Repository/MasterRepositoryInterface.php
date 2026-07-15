@@ -20,4 +20,6 @@ interface MasterRepositoryInterface
 
     public function getClubCategories(): array;
 
+    public function getEventCategories(): array;
+
 }

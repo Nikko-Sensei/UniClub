@@ -63,6 +63,8 @@ class ClubService
 
             categoryId: (int)$data['category_id'],
 
+            categoryName: $row['category_name'] ?? null,
+
             name: $data['name'],
 
             shortName: $data['short_name'] ?? null,
@@ -169,6 +171,8 @@ class ClubService
             id: $id,
 
             categoryId: (int)$data['category_id'],
+
+            categoryName: $row['category_name'] ?? null,
 
             name: $data['name'],
 

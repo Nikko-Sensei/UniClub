@@ -10,16 +10,26 @@ use App\Admin\RBAC\Presentation\Controllers\RolePermissionController;
 use App\Admin\UserManagement\Infrastructure\Persistence\UserManagementRepository;
 use App\Admin\UserManagement\Presentation\Controllers\UserManagementController;
 use App\Club\Presentation\Controllers\AdminClubController;
-
+use App\Membership\Presentation\Controllers\MembershipController;
+use App\Membership\Presentation\Controllers\AdminMembershipController;
 use App\Shared\Middleware\AuthMiddleware;
 use App\Shared\Middleware\GuestMiddleware;
 use App\Shared\Middleware\RoleMiddleware;
+use App\Event\Presentation\Controllers\EventController;
+use App\Event\Presentation\Controllers\AdminEventController;
+use App\Announcement\Presentation\Controllers\AdminAnnouncementController;
+use App\Announcement\Presentation\Controllers\AnnouncementController;
+use App\EventFeedback\Presentation\Controllers\EventFeedbackController;
+use App\EventFeedback\Presentation\Controllers\AdminEventFeedbackController;
 use App\Shared\Middleware\PermissionMiddleware;
 
 //Home
 $router->get(
     '/dashboard',
-    [HomeController::class, 'index']
+    [HomeController::class, 'index'],
+    [
+        AuthMiddleware::class,
+    ]
 );
 
 // ADMIN DASHBOARD
@@ -266,6 +276,18 @@ $router->post(
     ]
 );
 
+$router->get(
+    '/admin/memberships',
+    [
+        AdminMembershipController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
 
 // User Club
 
@@ -291,6 +313,441 @@ $router->get(
     ]
 );
 
+// Membership
+
+$router->post(
+    '/clubs/{id}/join',
+    [
+        MembershipController::class,
+        'join'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
+
+$router->get(
+    '/my-clubs',
+    [
+        MembershipController::class,
+        'myClubs'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/membership/{id}/leave',
+    [
+        MembershipController::class,
+        'leave'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
+
+$router->post(
+    '/admin/memberships/{id}/approve',
+    [
+        AdminMembershipController::class,
+        'approve'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/memberships/{id}/reject',
+    [
+        AdminMembershipController::class,
+        'reject'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+// Event
+
+$router->get(
+    '/events',
+    [
+        EventController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
+
+$router->get(
+    '/events/{id}',
+    [
+        EventController::class,
+        'show'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
+
+$router->post(
+    '/events/{id}/register',
+    [
+        EventController::class,
+        'register'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/events/{id}/cancel',
+    [
+        EventController::class,
+        'cancelRegistration'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
+
+$router->get(
+    '/admin/events',
+    [
+        AdminEventController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+$router->get(
+    '/admin/events/create',
+    [
+        AdminEventController::class,
+        'create'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/events/store',
+    [
+        AdminEventController::class,
+        'store'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+$router->get(
+    '/admin/events/{id}/edit',
+    [
+        AdminEventController::class,
+        'edit'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+
+$router->post(
+    '/admin/events/{id}/update',
+    [
+        AdminEventController::class,
+        'update'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+$router->post(
+    '/admin/events/{id}/delete',
+    [
+        AdminEventController::class,
+        'delete'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+$router->get(
+    '/admin/events/{id}/registrations',
+    [
+        AdminEventController::class,
+        'registrations'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+$router->post(
+    '/admin/events/registrations/{id}/approve',
+    [
+        AdminEventController::class,
+        'approveRegistration'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/events/registrations/{id}/reject',
+    [
+        AdminEventController::class,
+        'rejectRegistration'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+// feedback
+
+$router->get(
+
+    '/events/{id}/feedback',
+
+    [
+
+        EventFeedbackController::class,
+
+        'create'
+
+    ],
+
+    [
+
+        AuthMiddleware::class
+
+    ]
+
+);
+
+
+
+$router->post(
+
+    '/events/{id}/feedback',
+
+    [
+
+        EventFeedbackController::class,
+
+        'store'
+
+    ],
+
+    [
+
+        AuthMiddleware::class
+
+    ]
+
+);
+
+$router->get(
+
+    '/admin/feedbacks',
+
+    [
+
+        AdminEventFeedbackController::class,
+
+        'index'
+
+    ],
+
+    [
+
+        AuthMiddleware::class,
+
+        RoleMiddleware::class
+
+    ]
+
+);
+
+
+
+$router->post(
+
+    '/admin/feedbacks/{id}/delete',
+
+    [
+
+        AdminEventFeedbackController::class,
+
+        'delete'
+
+    ],
+
+    [
+
+        AuthMiddleware::class,
+
+        RoleMiddleware::class
+
+    ]
+
+);
+
+/**
+ * Admin Announcement Routes
+ */
+
+
+$router->get(
+    '/admin/announcements',
+    [
+        AdminAnnouncementController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->get(
+    '/admin/announcements/create',
+    [
+        AdminAnnouncementController::class,
+        'create'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/announcements/store',
+    [
+        AdminAnnouncementController::class,
+        'store'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->get(
+    '/admin/announcements/{id}',
+    [
+        AdminAnnouncementController::class,
+        'show'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->get(
+    '/admin/announcements/{id}/edit',
+    [
+        AdminAnnouncementController::class,
+        'edit'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/announcements/{id}/update',
+    [
+        AdminAnnouncementController::class,
+        'update'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+$router->post(
+    '/admin/announcements/{id}/delete',
+    [
+        AdminAnnouncementController::class,
+        'delete'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+
+
+/**
+ * Student Announcement Routes
+ */
+
+
+$router->get(
+    '/announcements',
+    [
+        AnnouncementController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
+
+
+$router->get(
+    '/announcements/{id}',
+    [
+        AnnouncementController::class,
+        'show'
+    ],
+    [
+        AuthMiddleware::class
+    ]
+);
 
 
 

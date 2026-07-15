@@ -42,10 +42,13 @@ class Club
 
     private ?string $updatedAt;
 
+    private ?string $categoryName;
+
 
     public function __construct(
         ?int $id,
         int $categoryId,
+        ?string $categoryName,
         string $name,
         ?string $shortName = null,
         ?string $description = null,
@@ -66,6 +69,7 @@ class Club
     ) {
         $this->id = $id;
         $this->categoryId = $categoryId;
+        $this->categoryName = $categoryName;
         $this->name = $name;
         $this->shortName = $shortName;
         $this->description = $description;
@@ -101,6 +105,11 @@ class Club
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getCategoryName(): ?string
+    {
+        return $this->categoryName;
     }
 
 

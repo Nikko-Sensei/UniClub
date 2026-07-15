@@ -58,4 +58,10 @@ class MasterService
         return $this->masterRepository
             ->getClubCategories();
     }
+
+    public function getEventCategories(): array
+    {
+        return $this->masterRepository
+            ->getEventCategories();
+    }
 }

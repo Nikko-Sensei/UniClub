@@ -172,7 +172,6 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
         int $id
     ): ?Club {
 
-
         $stmt = $this->db->prepare(
             "CALL sp_club_find_by_id(:id)"
         );
@@ -187,6 +186,8 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // var_dump($row);
+        // exit;
 
         return $row
             ? $this->mapToClub($row)
@@ -543,6 +544,8 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
 
 
             categoryId: (int)$row['category_id'],
+
+            categoryName: $row['category_name'] ?? null,
 
 
             name: $row['name'],

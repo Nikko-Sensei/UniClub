@@ -141,5 +141,21 @@ class MasterRepository extends BaseRepository implements MasterRepositoryInterfa
         return $stmt->fetchAll();
     }
 
+     public function getEventCategories(): array
+    {
+        $sql = "
+        SELECT
+            id,
+            name,
+            description
+        FROM event_categories
+        ORDER BY name ASC
+    ";
+
+        $stmt = $this->db->query($sql);
+
+        return $stmt->fetchAll();
+    }
+
     
 }

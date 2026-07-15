@@ -13,49 +13,155 @@
         <!-- <button class="...">Add Student</button> -->
     </div>
 
-    <!-- Stats Cards (static example) -->
+    <!-- User Management Stats -->
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+
+        <!-- Total Users -->
+
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+
+            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+
                 <i data-lucide="users" class="w-5 h-5"></i>
+
             </div>
-            <div class="min-w-0">
-                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">Total Students</p>
-                <p class="text-xl font-bold text-slate-800">12,450</p>
-                <p class="text-[11px] text-slate-400 truncate">Active records</p>
+
+
+            <div>
+
+                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">
+                    Total Users
+                </p>
+
+
+                <p class="text-xl font-bold text-slate-800">
+                    1,250
+                </p>
+
+
+                <p class="text-[11px] text-slate-400">
+                    Registered accounts
+                </p>
+
             </div>
+
         </div>
+
+
+
+
+
+
+        <!-- Active Users -->
+
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-                <i data-lucide="users" class="w-5 h-5"></i>
+
+            <div class="w-10 h-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
+
+                <i data-lucide="user-check" class="w-5 h-5"></i>
+
             </div>
-            <div class="min-w-0">
-                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">Total Students</p>
-                <p class="text-xl font-bold text-slate-800">12,450</p>
-                <p class="text-[11px] text-slate-400 truncate">Active records</p>
+
+
+            <div>
+
+                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">
+                    Active Users
+                </p>
+
+
+                <p class="text-xl font-bold text-slate-800">
+                    1,180
+                </p>
+
+
+                <p class="text-[11px] text-slate-400">
+                    Available accounts
+                </p>
+
             </div>
+
         </div>
+
+
+
+
+
+
+
+
+        <!-- Students -->
+
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-                <i data-lucide="users" class="w-5 h-5"></i>
+
+            <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+
+                <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+
             </div>
-            <div class="min-w-0">
-                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">Total Students</p>
-                <p class="text-xl font-bold text-slate-800">12,450</p>
-                <p class="text-[11px] text-slate-400 truncate">Active records</p>
+
+
+            <div>
+
+                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">
+                    Students
+                </p>
+
+
+                <p class="text-xl font-bold text-slate-800">
+                    1,150
+                </p>
+
+
+                <p class="text-[11px] text-slate-400">
+                    Student accounts
+                </p>
+
             </div>
+
         </div>
+
+
+
+
+
+
+
+        <!-- Club Managers -->
+
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-                <i data-lucide="users" class="w-5 h-5"></i>
+
+            <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+
             </div>
-            <div class="min-w-0">
-                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">Total Students</p>
-                <p class="text-xl font-bold text-slate-800">12,450</p>
-                <p class="text-[11px] text-slate-400 truncate">Active records</p>
+
+
+            <div>
+
+                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">
+                    Club Managers
+                </p>
+
+
+                <p class="text-xl font-bold text-slate-800">
+                    35
+                </p>
+
+
+                <p class="text-[11px] text-slate-400">
+                    Club administrators
+                </p>
+
             </div>
+
         </div>
-        <!-- ... other stats ... -->
+
+
+
     </div>
 
     <!-- User Table Card -->

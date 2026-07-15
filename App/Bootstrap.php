@@ -38,6 +38,35 @@ use App\Club\Presentation\Controllers\AdminClubController;
 use App\Shared\Application\Services\ImageUploadService;
 use App\Club\Presentation\Controllers\UserClubController;
 
+// Club Membership
+use App\Membership\Domain\Repository\MembershipRepositoryInterface;
+use App\Membership\Infrastructure\Persistence\MembershipRepository;
+use App\Membership\Application\Services\MembershipService;
+use App\Membership\Presentation\Controllers\MembershipController;
+use App\Membership\Presentation\Controllers\AdminMembershipController;
+
+// Event 
+use App\Event\Domain\Repository\EventRepositoryInterface;
+use App\Event\Infrastructure\Persistence\EventRepository;
+use App\Event\Application\Services\EventService;
+use App\Event\Presentation\Controllers\EventController;
+use App\Event\Presentation\Controllers\AdminEventController;
+
+// EventFeedback
+
+use App\EventFeedback\Domain\Repository\EventFeedbackRepositoryInterface;
+use App\EventFeedback\Infrastructure\Persistence\EventFeedbackRepository;
+use App\EventFeedback\Application\Services\EventFeedbackService;
+use App\EventFeedback\Presentation\Controllers\EventFeedbackController;
+use App\EventFeedback\Presentation\Controllers\AdminEventFeedbackController;
+
+// Anouncement
+
+use App\Announcement\Domain\Repository\AnnouncementRepositoryInterface;
+use App\Announcement\Infrastructure\Persistence\AnnouncementRepository;
+use App\Announcement\Application\Services\AnnouncementService;
+use App\Announcement\Presentation\Controllers\AdminAnnouncementController;
+use App\Announcement\Presentation\Controllers\AnnouncementController;
 
 // Dashboard
 use App\Admin\Dashboard\Domain\Repository\DashboardRepositoryInterface;
@@ -393,6 +422,269 @@ class Bootstrap
 
                     $container->resolve(
                         ClubService::class
+                    ),
+
+                    $container->resolve(
+                        MembershipService::class
+                    )
+
+                );
+            }
+        );
+
+        // Club Membership
+        $container->bind(
+            MembershipRepositoryInterface::class,
+            function ($container) {
+
+                return new MembershipRepository();
+            }
+        );
+
+        // Menmbership service
+        $container->bind(
+            MembershipService::class,
+            function ($container) {
+
+                return new MembershipService(
+
+                    $container->resolve(
+                        MembershipRepositoryInterface::class
+                    )
+
+                );
+            }
+        );
+
+        // Membership Controller
+        $container->bind(
+            MembershipController::class,
+            function ($container) {
+
+                return new MembershipController(
+
+                    $container->resolve(
+                        MembershipService::class
+                    )
+
+                );
+            }
+        );
+
+        // AdminMembershipController
+
+        $container->bind(
+            AdminMembershipController::class,
+            function ($container) {
+
+                return new AdminMembershipController(
+                    $container->resolve(
+                        MembershipService::class
+                    )
+                );
+            }
+        );
+
+
+        // Event
+
+        $container->bind(
+            EventRepositoryInterface::class,
+            function ($container) {
+
+                return new EventRepository();
+            }
+        );
+
+        $container->bind(
+            EventService::class,
+            function ($container) {
+
+                return new EventService(
+
+                    $container->resolve(
+                        EventRepositoryInterface::class
+                    ),
+                    $container->resolve(
+                        ImageUploadService::class
+                    )
+
+                );
+            }
+        );
+
+        $container->bind(
+            EventController::class,
+            function ($container) {
+
+                return new EventController(
+
+                    $container->resolve(
+                        EventService::class
+                    )
+
+                );
+            }
+        );
+
+        $container->bind(
+            AdminEventController::class,
+            function ($container) {
+
+                return new AdminEventController(
+
+                    $container->resolve(
+                        EventService::class
+                    ),
+                    $container->resolve(
+                        ClubService::class
+                    ),
+                    $container->resolve(
+                        MasterService::class
+                    )
+
+                );
+            }
+        );
+
+        // EventFeedback
+
+
+        $container->bind(
+
+            EventFeedbackRepositoryInterface::class,
+
+            function () {
+
+                return new EventFeedbackRepository();
+            }
+
+        );
+
+
+        $container->bind(
+
+            EventFeedbackService::class,
+
+            function ($container) {
+
+
+                return new EventFeedbackService(
+
+
+                    $container->resolve(
+
+                        EventFeedbackRepositoryInterface::class
+
+                    ),
+
+
+                    $container->resolve(
+
+                        EventRepositoryInterface::class
+
+                    )
+
+
+                );
+            }
+
+        );
+
+        $container->bind(
+
+            EventFeedbackController::class,
+
+            function ($container) {
+
+
+                return new EventFeedbackController(
+
+
+                    $container->resolve(
+
+                        EventFeedbackService::class
+
+                    )
+
+
+                );
+            }
+
+        );
+
+        $container->bind(
+
+            AdminEventFeedbackController::class,
+
+            function ($container) {
+
+
+                return new AdminEventFeedbackController(
+
+
+                    $container->resolve(
+
+                        EventFeedbackService::class
+
+                    )
+
+
+                );
+            }
+
+        );
+        
+        // Anouncement
+
+
+        $container->bind(
+            AnnouncementRepositoryInterface::class,
+            function () {
+
+                return new AnnouncementRepository();
+            }
+        );
+
+        $container->bind(
+            AnnouncementService::class,
+            function ($container) {
+
+                return new AnnouncementService(
+
+                    $container->resolve(
+                        AnnouncementRepositoryInterface::class
+                    )
+
+                );
+            }
+        );
+
+
+        $container->bind(
+            AdminAnnouncementController::class,
+            function ($container) {
+
+                return new AdminAnnouncementController(
+
+                    $container->resolve(
+                        AnnouncementService::class
+                    )
+
+                );
+            }
+        );
+
+
+
+        $container->bind(
+            AnnouncementController::class,
+            function ($container) {
+
+                return new AnnouncementController(
+
+                    $container->resolve(
+                        AnnouncementService::class
                     )
 
                 );
