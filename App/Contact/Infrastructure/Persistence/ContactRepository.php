@@ -65,7 +65,6 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
 
             $contacts[] =
                 $this->mapToEntity($row);
-
         }
 
 
@@ -132,4 +131,62 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
         );
     }
 
+    public function findById(
+        int $id
+    ): ?ContactMessage {
+
+
+        $statement =
+            $this->db->prepare(
+                "CALL sp_contact_find_by_id(?)"
+            );
+
+
+        $statement->execute([
+            $id
+        ]);
+
+
+
+        $row =
+            $statement->fetch();
+
+
+
+        $statement->closeCursor();
+
+
+
+        if (!$row) {
+
+            return null;
+        }
+
+
+
+        return $this->mapToEntity(
+            $row
+        );
+    }
+
+    public function delete(
+        int $id
+    ): bool {
+
+    
+        $sql = "
+        UPDATE contact_messages
+        SET deleted_at = NOW()
+        WHERE id = ?
+    ";
+
+
+        $stmt =
+            $this->db->prepare($sql);
+
+
+        return $stmt->execute([
+            $id
+        ]);
+    }
 }

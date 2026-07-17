@@ -130,6 +130,8 @@ class AuthController extends BaseController
 
         Auth::login($user);
 
+
+
         $roleId = Auth::roleId();
 
         switch ($roleId) {

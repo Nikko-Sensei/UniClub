@@ -9,21 +9,34 @@ class RoleMiddleware
 {
     public function handle(): void
     {
-        // Check authentication
+
         if (!Auth::check()) {
 
             Response::redirect('/login');
-            exit;
 
+            exit;
         }
 
 
-        // Check admin role
-        if (Auth::roleId() !== 1) {
+        $allowedRoles = [
+            1, // admin
+            3  // club_manager
+        ];
 
-            Response::redirect('/dashboard');
+
+        if (
+            !in_array(
+                Auth::roleId(),
+                $allowedRoles
+            )
+        ) {
+
+            http_response_code(403);
+
+            echo "403 Forbidden";
+
             exit;
-
         }
+
     }
 }

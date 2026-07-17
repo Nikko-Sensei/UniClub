@@ -102,6 +102,13 @@ class ProfileController extends BaseController
 
         $this->userService->updateProfile($dto);
 
+        // Update session data
+        $_SESSION['user']['name'] = $dto->name;
+
+        if ($profileImage !== null) {
+            $_SESSION['user']['profile_image'] = $profileImage;
+        }
+
         Flash::set('success', 'Profile updated successfully');
 
         header("Location: " . BASE_URL . "/profile");

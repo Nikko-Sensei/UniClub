@@ -92,6 +92,7 @@ use App\Admin\RBAC\Domain\Repositories\RolePermissionRepositoryInterface;
 use App\Admin\RBAC\Infrastructure\Persistence\RolePermissionRepository;
 use App\Admin\RBAC\Application\Services\RolePermissionService;
 use App\Admin\RBAC\Presentation\Controllers\RolePermissionController;
+use App\Shared\Helpers\PermissionHelper;
 
 
 // Master
@@ -105,6 +106,8 @@ use App\Shared\Middleware\GuestMiddleware;
 use App\Shared\Middleware\RateLimitMiddleware;
 use App\Shared\Middleware\RoleMiddleware;
 use App\Shared\Middleware\PermissionMiddleware;
+use App\Shared\Middleware\AdminMiddleware;
+use App\Shared\Middleware\ClubManagerMiddleware;
 
 // Password Reset (OTP FLOW)
 use App\Auth\Application\Services\PasswordResetService;
@@ -330,6 +333,21 @@ class Bootstrap
 
                     $container->resolve(
                         PermissionRepositoryInterface::class
+                    )
+
+                );
+            }
+        );
+
+
+        $container->bind(
+            PermissionHelper::class,
+            function ($container) {
+
+                return new PermissionHelper(
+
+                    $container->resolve(
+                        PermissionService::class
                     )
 
                 );
@@ -809,6 +827,17 @@ class Bootstrap
                     )
                 );
             }
+        );
+
+        $container->bind(
+            AdminMiddleware::class,
+            fn() => new AdminMiddleware()
+        );
+
+
+        $container->bind(
+            ClubManagerMiddleware::class,
+            fn() => new ClubManagerMiddleware()
         );
 
         //Audit Logger

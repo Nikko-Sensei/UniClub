@@ -69,7 +69,7 @@
 
 
 
-            <form method="POST" action="/contact/send" class="mt-6 space-y-5">
+            <form method="POST" action="<?= BASE_URL ?>/contact/send" class="mt-6 space-y-5">
 
 
                 <!-- Name -->
@@ -85,18 +85,17 @@
                     </label>
 
 
-                    <input type="text" name="name" required class="mt-1.5
-                               w-full
-                               rounded-xl
-                               border-gray-200
-                               border
-                               bg-gray-50/50
-                               px-4 py-3
-                               text-sm
-                               focus:border-blue-500
-                               focus:ring-2
-                               focus:ring-blue-200
-                               transition">
+                    <input type="text" name="name" value="<?= $_SESSION['user']['name'] ?? '' ?>" readonly class="
+mt-1.5
+w-full
+rounded-xl
+border-gray-200
+border
+bg-gray-100
+px-4
+py-3
+text-sm
+">
 
 
                 </div>
@@ -118,20 +117,17 @@
                     </label>
 
 
-                    <input type="email" name="email" required class="mt-1.5
-                               w-full
-                               rounded-xl
-                               border-gray-200
-                               border
-                               bg-gray-50/50
-                               px-4 py-3
-                               text-sm
-                               focus:border-blue-500
-                               focus:ring-2
-                               focus:ring-blue-200
-                               transition">
-
-
+                    <input type="email" name="email" value="<?= $_SESSION['user']['email'] ?? '' ?>" readonly class="
+mt-1.5
+w-full
+rounded-xl
+border-gray-200
+border
+bg-gray-100
+px-4
+py-3
+text-sm
+">
                 </div>
 
 
@@ -513,11 +509,6 @@
 
 
     </div>
-
-
-
-
-
 
 
     <!-- FAQ -->

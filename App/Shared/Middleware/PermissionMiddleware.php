@@ -29,6 +29,7 @@ class PermissionMiddleware
     ): void {
 
 
+
         // Check login
 
         if (!Auth::check()) {
@@ -67,7 +68,6 @@ class PermissionMiddleware
                 $roleId,
                 $permission
             );
-
 
 
         if (!$hasPermission) {

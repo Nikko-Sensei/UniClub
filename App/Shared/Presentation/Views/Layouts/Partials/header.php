@@ -1,5 +1,9 @@
 <?php $currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH); ?>
+<?php
 
+use App\Shared\Core\Auth;
+
+?>
 <header class="sticky top-0 z-50 bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 text-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
 
@@ -30,10 +34,10 @@
             foreach ($navItems as $slug => $label):
                 $active = str_starts_with($currentPath ?? '', BASE_URL . '/' . $slug);
             ?>
-            <a href="<?= BASE_URL ?>/<?= $slug ?>"
-                class="px-3.5 py-2 rounded-xl text-sm font-medium transition <?= $active ? 'bg-white/20 text-white' : 'text-blue-50 hover:bg-white/10' ?>">
-                <?= $label ?>
-            </a>
+                <a href="<?= BASE_URL ?>/<?= $slug ?>"
+                    class="px-3.5 py-2 rounded-xl text-sm font-medium transition <?= $active ? 'bg-white/20 text-white' : 'text-blue-50 hover:bg-white/10' ?>">
+                    <?= $label ?>
+                </a>
             <?php endforeach; ?>
         </nav>
 
@@ -47,22 +51,49 @@
             </button>
 
             <?php if (!\App\Shared\Core\Auth::check()): ?>
-            <a href="<?= BASE_URL ?>/login"
-                class="hidden sm:inline-flex items-center gap-2 bg-white text-blue-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-50 transition">
-                <i data-lucide="log-in" class="w-4 h-4"></i> Login
-            </a>
+                <a href="<?= BASE_URL ?>/login"
+                    class="hidden sm:inline-flex items-center gap-2 bg-white text-blue-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-50 transition">
+                    <i data-lucide="log-in" class="w-4 h-4"></i> Login
+                </a>
             <?php else: ?>
-            <a href="<?= BASE_URL ?>/profile"
-                class="hidden lg:flex items-center gap-2 pl-1 pr-3 py-1 rounded-xl hover:bg-white/10 transition">
-                <span class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold">
-                    <?= strtoupper(substr($_SESSION['user']['name'] ?? 'U', 0, 1)) ?>
-                </span>
-                <span class="text-sm font-medium">Profile</span>
-            </a>
-            <a href="<?= BASE_URL ?>/logout" aria-label="Logout"
-                class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-red-500 transition">
-                <i data-lucide="log-out" class="w-4.5 h-4.5"></i>
-            </a>
+                <a href="<?= BASE_URL ?>/profile"
+                    class="hidden lg:flex items-center gap-2 pl-1 pr-3 py-1 rounded-xl hover:bg-white/10 transition">
+                    <div
+                        class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold text-white overflow-hidden">
+
+                        <?php if (!empty(Auth::profileImage())): ?>
+
+                            <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars(Auth::profileImage()) ?>"
+                                class="w-full h-full rounded-full object-cover" alt="Profile">
+
+                        <?php else: ?>
+
+                            <?php
+                            $name = Auth::user()['name'] ?? 'User';
+
+                            $words = preg_split('/\s+/', trim($name));
+
+                            if (count($words) >= 2) {
+                                $initials = strtoupper(
+                                    substr($words[0], 0, 1) .
+                                        substr($words[1], 0, 1)
+                                );
+                            } else {
+                                $initials = strtoupper(substr($words[0], 0, 1));
+                            }
+
+                            echo htmlspecialchars($initials);
+                            ?>
+
+                        <?php endif; ?>
+
+                    </div>
+                    <span class="text-sm font-medium">Profile</span>
+                </a>
+                <a href="<?= BASE_URL ?>/logout" aria-label="Logout"
+                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-red-500 transition">
+                    <i data-lucide="log-out" class="w-4.5 h-4.5"></i>
+                </a>
             <?php endif; ?>
         </div>
     </div>
@@ -95,10 +126,10 @@
         <?php foreach ($navItems as $slug => $label):
             $active = str_starts_with($currentPath ?? '', BASE_URL . '/' . $slug);
         ?>
-        <a href="<?= BASE_URL ?>/<?= $slug ?>"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl transition <?= $active ? 'bg-blue-50 text-blue-700' : 'hover:bg-slate-50' ?>">
-            <?= $label ?>
-        </a>
+            <a href="<?= BASE_URL ?>/<?= $slug ?>"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl transition <?= $active ? 'bg-blue-50 text-blue-700' : 'hover:bg-slate-50' ?>">
+                <?= $label ?>
+            </a>
         <?php endforeach; ?>
         <a href="<?= BASE_URL ?>/profile"
             class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition">Profile</a>
@@ -106,15 +137,15 @@
 
     <div class="mt-auto pt-4 border-t border-slate-100">
         <?php if (!\App\Shared\Core\Auth::check()): ?>
-        <a href="<?= BASE_URL ?>/login"
-            class="flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold">
-            <i data-lucide="log-in" class="w-4 h-4"></i> Login
-        </a>
+            <a href="<?= BASE_URL ?>/login"
+                class="flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold">
+                <i data-lucide="log-in" class="w-4 h-4"></i> Login
+            </a>
         <?php else: ?>
-        <a href="<?= BASE_URL ?>/logout"
-            class="flex items-center justify-center gap-2 bg-red-50 text-red-600 py-3 rounded-xl text-sm font-semibold">
-            <i data-lucide="log-out" class="w-4 h-4"></i> Logout
-        </a>
+            <a href="<?= BASE_URL ?>/logout"
+                class="flex items-center justify-center gap-2 bg-red-50 text-red-600 py-3 rounded-xl text-sm font-semibold">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+            </a>
         <?php endif; ?>
     </div>
 </div>

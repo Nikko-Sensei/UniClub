@@ -19,10 +19,13 @@ class Auth
 
             'email' => $user->getEmail(),
 
-            'role_id' => $user->getRoleId()
+            'role_id' => $user->getRoleId(),
+
+            'profile_image' => $user->getProfileImage()
 
         ];
     }
+
 
     public static function logout(): void
     {
@@ -53,4 +56,9 @@ class Auth
         return $_SESSION['user']['role_id'] ?? null;
     }
 
+
+    public static function profileImage(): ?string
+    {
+        return $_SESSION['user']['profile_image'] ?? null;
+    }
 }

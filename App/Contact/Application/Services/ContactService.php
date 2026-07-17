@@ -59,7 +59,6 @@ class ContactService
 
         return $this->contactRepository
             ->findAll();
-
     }
 
 
@@ -75,7 +74,24 @@ class ContactService
                 $id,
                 $status
             );
-
     }
 
+    public function getMessage(
+        int $id
+    ): ?ContactMessage {
+
+        return $this->contactRepository
+            ->findById($id);
+    }
+
+    public function delete(
+        int $id
+    ): void {
+
+   
+
+        $this->contactRepository->delete(
+            $id
+        );
+    }
 }

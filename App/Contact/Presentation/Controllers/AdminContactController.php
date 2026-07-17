@@ -9,11 +9,13 @@ use App\Contact\Application\Services\ContactService;
 use App\Shared\Helpers\Flash;
 
 
+
 class AdminContactController extends BaseController
 {
 
 
     private ContactService $contactService;
+
 
 
 
@@ -32,6 +34,7 @@ class AdminContactController extends BaseController
 
 
 
+
     /**
      * Admin Contact Message List
      */
@@ -42,6 +45,7 @@ class AdminContactController extends BaseController
         $messages =
             $this->contactService
             ->getMessages();
+
 
 
 
@@ -60,15 +64,17 @@ class AdminContactController extends BaseController
             'admin'
 
         );
-
     }
 
 
 
 
 
+
+
+
     /**
-     * Update Contact Status
+     * Admin Update Message Status
      */
     public function updateStatus(
         int $id
@@ -76,11 +82,24 @@ class AdminContactController extends BaseController
 
 
         $status =
-            $_POST['status'] ?? 'pending';
+            $_POST['status'] ?? '';
 
 
 
         try {
+
+
+            if (
+                empty($status)
+            ) {
+
+                throw new \Exception(
+                    'Invalid status'
+                );
+            }
+
+
+
 
 
             $this->contactService
@@ -94,15 +113,15 @@ class AdminContactController extends BaseController
 
 
 
+
+
             Flash::set(
 
                 'success',
 
-                'Contact status updated'
+                'Contact status updated successfully'
 
             );
-
-
         } catch (\Exception $e) {
 
 
@@ -113,15 +132,81 @@ class AdminContactController extends BaseController
                 $e->getMessage()
 
             );
-
         }
+
+
 
 
 
         return Response::redirect(
             '/admin/contacts'
         );
-
     }
 
+
+    /**
+     * Admin Contact Detail
+     */
+    public function show(
+        int $id
+    ) {
+
+
+        $message =
+            $this->contactService
+            ->getMessage($id);
+
+
+
+        if (!$message) {
+
+            Flash::set(
+                'error',
+                'Message not found'
+            );
+
+
+            return Response::redirect(
+                '/admin/contacts'
+            );
+        }
+
+
+
+        $this->view(
+
+            'Contact/Presentation/Views/admin/show',
+
+            [
+
+                'title' => 'Contact Detail',
+
+                'message' => $message
+
+            ],
+
+            'admin'
+
+        );
+    }
+
+
+    public function delete($id)
+    {
+
+        $this->contactService->delete(
+            (int)$id
+        );
+
+
+        Flash::set(
+            'success',
+            'Contact message deleted successfully.'
+        );
+
+
+        Response::redirect(
+            '/admin/contacts'
+        );
+    }
 }

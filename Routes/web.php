@@ -24,6 +24,8 @@ use App\EventFeedback\Presentation\Controllers\AdminEventFeedbackController;
 use App\Contact\Presentation\Controllers\ContactController;
 use App\Contact\Presentation\Controllers\AdminContactController;
 use App\Shared\Middleware\PermissionMiddleware;
+use App\Shared\Middleware\AdminMiddleware;
+use App\Shared\Middleware\ClubManagerMiddleware;
 
 //Home
 $router->get(
@@ -40,7 +42,11 @@ $router->get(
     [DashboardController::class, 'index'],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+
+        [
+            PermissionMiddleware::class,
+            'admin.dashboard'
+        ]
     ]
 );
 
@@ -133,7 +139,11 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+
+        [
+            PermissionMiddleware::class,
+            'users.view'
+        ]
     ]
 );
 
@@ -145,7 +155,7 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        AdminMiddleware::class
     ]
 );
 
@@ -157,7 +167,7 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        AdminMiddleware::class
     ]
 );
 
@@ -169,7 +179,7 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        AdminMiddleware::class
     ]
 );
 
@@ -181,7 +191,7 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        AdminMiddleware::class
     ]
 );
 
@@ -196,7 +206,12 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+
+        [
+            PermissionMiddleware::class,
+            'clubs.view'
+        ]
+
     ]
 );
 
@@ -209,7 +224,11 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+
+        [
+            PermissionMiddleware::class,
+            'clubs.create'
+        ]
     ]
 );
 
@@ -222,7 +241,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'clubs.update'
+        ]
     ]
 );
 
@@ -235,7 +257,7 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        AdminMiddleware::class
     ]
 );
 
@@ -248,7 +270,7 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        AdminMiddleware::class
     ]
 );
 
@@ -261,7 +283,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'clubs.update'
+        ]
     ]
 );
 
@@ -274,7 +299,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'clubs.delete'
+        ]
     ]
 );
 
@@ -344,6 +372,9 @@ $router->get(
     [
         AdminMembershipController::class,
         'editRole'
+    ],
+    [
+        AdminMiddleware::class
     ]
 );
 
@@ -352,6 +383,9 @@ $router->post(
     [
         AdminMembershipController::class,
         'remove'
+    ],
+    [
+        AdminMiddleware::class
     ]
 );
 
@@ -360,6 +394,9 @@ $router->post(
     [
         AdminMembershipController::class,
         'updateRole'
+    ],
+    [
+        AdminMiddleware::class
     ]
 );
 
@@ -368,6 +405,9 @@ $router->get(
     [
         AdminMembershipController::class,
         'members'
+    ],
+    [
+        AdminMiddleware::class
     ]
 );
 
@@ -391,7 +431,7 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        AdminMiddleware::class
     ]
 );
 
@@ -404,7 +444,7 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        AdminMiddleware::class
     ]
 );
 
@@ -417,7 +457,8 @@ $router->get(
         'index'
     ],
     [
-        AuthMiddleware::class
+        AuthMiddleware::class,
+
     ]
 );
 
@@ -463,7 +504,11 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+
+        [
+            PermissionMiddleware::class,
+            'events.view'
+        ]
     ]
 );
 
@@ -475,7 +520,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'events.create'
+        ]
     ]
 );
 
@@ -488,7 +536,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'events.update'
+        ]
     ]
 );
 
@@ -500,7 +551,7 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        AdminMiddleware::class
     ]
 );
 
@@ -514,7 +565,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'events.update'
+        ]
     ]
 );
 
@@ -526,7 +580,7 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        AdminMiddleware::class
     ]
 );
 
@@ -538,7 +592,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'events.delete'
+        ]
     ]
 );
 
@@ -683,7 +740,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'announcements.view'
+        ]
     ]
 );
 
@@ -696,7 +756,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'announcements.create'
+        ]
     ]
 );
 
@@ -709,7 +772,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'announcements.update'
+        ]
     ]
 );
 
@@ -748,7 +814,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'announcements.update'
+        ]
     ]
 );
 
@@ -761,7 +830,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'announcements.delete'
+        ]
     ]
 );
 
@@ -835,12 +907,28 @@ $router->get(
     ]
 );
 
+$router->get(
+    '/admin/contacts/{id}',
+    [
+        AdminContactController::class,
+        'show'
+    ]
+);
+
 
 $router->post(
     '/admin/contacts/{id}/status',
     [
         AdminContactController::class,
         'updateStatus'
+    ]
+);
+
+$router->post(
+    '/admin/contacts/{id}/delete',
+    [
+        AdminContactController::class,
+        'delete'
     ]
 );
 
@@ -871,7 +959,9 @@ $router->get('/profile/change-password', [
 $router->post('/profile/change-password', [
     ProfileController::class,
     'changePassword'
-]); // RBAC SETTINGS
+]);
+
+// RBAC SETTINGS
 
 
 $router->get(
@@ -882,7 +972,11 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+
+        [
+            PermissionMiddleware::class,
+            'rbac.manage'
+        ]
     ]
 );
 

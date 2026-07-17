@@ -457,6 +457,7 @@
 
 
 
+                <?php if($permission->can('events.create')): ?>
 
                 <button type="submit"
                     class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm">
@@ -470,6 +471,8 @@
 
 
                 </button>
+
+                <?php endif; ?>
 
 
             </div>

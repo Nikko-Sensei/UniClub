@@ -598,3 +598,118 @@ CREATE TABLE role_permissions (
         REFERENCES permissions(id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE general_settings
+(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    site_name VARCHAR(100) NOT NULL,
+
+    university_name VARCHAR(150),
+
+    description TEXT,
+
+    logo VARCHAR(255),
+
+    favicon VARCHAR(255),
+
+    email VARCHAR(150),
+
+    phone VARCHAR(20),
+
+    address TEXT,
+
+    academic_year VARCHAR(50),
+
+    semester VARCHAR(50),
+
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+
+CREATE TABLE security_settings
+(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+
+    max_login_attempts INT DEFAULT 5,
+
+
+    lock_duration INT DEFAULT 15,
+
+
+    session_timeout INT DEFAULT 30,
+
+
+    password_min_length INT DEFAULT 8,
+
+
+    require_uppercase BOOLEAN DEFAULT TRUE,
+
+
+    require_number BOOLEAN DEFAULT TRUE,
+
+
+    require_special_character BOOLEAN DEFAULT TRUE,
+
+
+    email_verification BOOLEAN DEFAULT FALSE,
+
+
+    two_factor_enabled BOOLEAN DEFAULT FALSE,
+
+
+    maintenance_mode BOOLEAN DEFAULT FALSE,
+
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE contact_messages (
+
+    id BIGINT(20) NOT NULL AUTO_INCREMENT,
+
+    user_id BIGINT(20) NULL,
+
+    name VARCHAR(100) NOT NULL,
+
+    email VARCHAR(150) NOT NULL,
+
+    subject VARCHAR(200) NOT NULL,
+
+    message TEXT NOT NULL,
+
+    status ENUM(
+        'pending',
+        'replied',
+        'closed'
+    ) NOT NULL DEFAULT 'pending',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+
+    PRIMARY KEY (id),
+
+
+    CONSTRAINT fk_contact_messages_user
+
+        FOREIGN KEY (user_id)
+
+        REFERENCES users(id)
+
+        ON DELETE SET NULL
+
+);
