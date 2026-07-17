@@ -168,6 +168,25 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
         return (int)$result['affected'] > 0;
     }
 
+    public function findMostPopularClub(): ?Club
+    {
+
+        $stmt = $this->db->prepare(
+            "CALL sp_club_find_most_popular()"
+        );
+
+
+        $stmt->execute();
+
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        return $row
+            ? $this->mapToClub($row)
+            : null;
+    }
+
     public function findById(
         int $id
     ): ?Club {
@@ -508,6 +527,49 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
             $clubId
 
         ]);
+
+
+        return $stmt->fetchAll(
+            PDO::FETCH_ASSOC
+        );
+    }
+
+    public function findMembers(
+        int $clubId
+    ): array {
+
+        $stmt = $this->db->prepare(
+
+            "CALL sp_club_find_members(
+            :club_id
+        )"
+
+        );
+
+
+        $stmt->execute([
+
+            'club_id' => $clubId
+
+        ]);
+
+
+        return $stmt->fetchAll(
+            PDO::FETCH_ASSOC
+        );
+    }
+
+    public function findRoles(): array
+    {
+
+        $stmt = $this->db->prepare(
+
+            "CALL sp_club_roles_find_all()"
+
+        );
+
+
+        $stmt->execute();
 
 
         return $stmt->fetchAll(

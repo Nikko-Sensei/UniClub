@@ -7,6 +7,7 @@ use App\Shared\Core\BaseController;
 use App\Shared\Core\Response;
 use App\Club\Application\Services\ClubService;
 use App\Membership\Application\Services\MembershipService;
+use App\Master\Application\Services\MasterService;
 
 
 
@@ -16,10 +17,13 @@ class UserClubController extends BaseController
     private ClubService $clubService;
     private MembershipService $membershipService;
 
+    private MasterService $masterService;
+
 
     public function __construct(
         ClubService $clubService,
-        MembershipService $membershipService
+        MembershipService $membershipService,
+        MasterService $masterService
 
     ) {
 
@@ -28,6 +32,7 @@ class UserClubController extends BaseController
 
         $this->clubService = $clubService;
         $this->membershipService = $membershipService;
+        $this->masterService = $masterService;
     }
 
 
@@ -42,10 +47,17 @@ class UserClubController extends BaseController
 
 
         $filters = [
-            'search' => $_GET['search'] ?? null,
+            'search' =>
+            trim(
+                $_GET['search'] ?? ''
+            ),
+
+
 
             'category_id' =>
-            $_GET['category_id'] ?? null
+            !empty($_GET['category_id'])
+                ? (int)$_GET['category_id']
+                : null,
         ];
 
 
@@ -55,7 +67,11 @@ class UserClubController extends BaseController
                 $page
             );
 
+        $featuredClub = $this->clubService->getFeaturedClub();
 
+        $categories =
+            $this->masterService
+            ->getClubCategories();
 
         $this->view(
             'Club/Presentation/Views/student/index',
@@ -64,6 +80,11 @@ class UserClubController extends BaseController
 
                 'clubs' =>
                 $result['clubs'],
+
+                'featuredClub' => $featuredClub,
+
+                'categories' =>
+                $categories,
 
                 'pagination' =>
                 $result['pagination']
@@ -78,13 +99,13 @@ class UserClubController extends BaseController
      */
     public function show(int $id)
     {
-        // var_dump($id);
-        // exit;
+        
         $club =
             $this->clubService
             ->getClub($id);
 
-
+// var_dump($club);
+//         exit;
 
         if (!$club) {
 

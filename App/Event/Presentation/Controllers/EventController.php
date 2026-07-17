@@ -35,22 +35,47 @@ class EventController extends BaseController
      */
     public function index()
     {
+          
 
-
-        $page =
-            $_GET['page'] ?? 1;
-
+        $page = max(
+            1,
+            (int)($_GET['page'] ?? 1)
+        );
 
 
         $limit = 9;
 
 
+        $userId =
+            $_SESSION['user']['id'];
 
-        $events =
+
+
+        $filters = [
+
+            'search' =>
+            trim($_GET['search'] ?? ''),
+
+
+            'status' =>
+            $_GET['status'] ?? ''
+
+        ];
+
+
+
+        $result =
             $this->eventService
-            ->getEvents(
+            ->getStudentEvents(
+
+                $userId,
+
                 $page,
-                $limit
+
+                $limit,
+
+                $filters
+
             );
 
 
@@ -63,9 +88,14 @@ class EventController extends BaseController
 
                 'title' => 'Events',
 
-                'events' => $events,
+                'events' =>
+                $result['events'],
 
-                'page' => $page
+                'pagination' =>
+                $result['pagination'],
+
+                'filters' =>
+                $filters
 
             ],
 

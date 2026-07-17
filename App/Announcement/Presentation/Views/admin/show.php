@@ -53,7 +53,7 @@
 
 
 
-            <form action="<?= BASE_URL ?>/admin/announcements/<?= $announcement->getId() ?>/delete" method="POST"
+            <!-- <form action="<?= BASE_URL ?>/admin/announcements/<?= $announcement->getId() ?>/delete" method="POST"
                 onsubmit="return confirm('Delete this announcement?')">
 
 
@@ -69,7 +69,7 @@
                 </button>
 
 
-            </form>
+            </form> -->
 
 
         </div>
@@ -180,7 +180,6 @@
 
                     default
                     => 'text-blue-600'
-
                 };
 
                 ?>
@@ -310,8 +309,19 @@
 
                 <dd class="mt-1 font-semibold text-slate-800">
 
+                    <?php
+                    $clubName = '-';
 
-                    <?= $announcement->getClubId() ?? '-' ?>
+                    foreach ($clubs as $club) {
+                        if ($announcement->getClubId() == $club->getId()) {
+                            $clubName = $club->getName();
+                            break;
+                        }
+                    }
+                    ?>
+
+                    <?= htmlspecialchars($clubName) ?>
+
 
 
                 </dd>
@@ -338,7 +348,7 @@
                 <dd class="mt-1 font-semibold text-slate-800">
 
 
-                    <?= $announcement->getCreatedBy() ?>
+                    <?= htmlspecialchars($announcement->getCreatedByName() ?? '-') ?>
 
 
                 </dd>
@@ -401,11 +411,11 @@
 
 
                     <?= date(
-                        'M d, Y h:i A',
-                        strtotime(
-                            $announcement->getPublishedAt()
-                        )
-                    ) ?>
+                            'M d, Y h:i A',
+                            strtotime(
+                                $announcement->getPublishedAt()
+                            )
+                        ) ?>
 
 
                     <?php else: ?>

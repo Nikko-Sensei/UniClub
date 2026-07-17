@@ -68,6 +68,14 @@ use App\Announcement\Application\Services\AnnouncementService;
 use App\Announcement\Presentation\Controllers\AdminAnnouncementController;
 use App\Announcement\Presentation\Controllers\AnnouncementController;
 
+// contact
+
+use App\Contact\Domain\Repository\ContactRepositoryInterface;
+use App\Contact\Infrastructure\Persistence\ContactRepository;
+use App\Contact\Application\Services\ContactService;
+use App\Contact\Presentation\Controllers\ContactController;
+use App\Contact\Presentation\Controllers\AdminContactController;
+
 // Dashboard
 use App\Admin\Dashboard\Domain\Repository\DashboardRepositoryInterface;
 use App\Admin\Dashboard\Infrastructure\Persistence\DashboardRepository;
@@ -271,7 +279,7 @@ class Bootstrap
                 return new PermissionService(
 
                     $container->resolve(
-                        RoleRepositoryInterface::class
+                        PermissionRepositoryInterface::class
                     )
 
                 );
@@ -426,6 +434,9 @@ class Bootstrap
 
                     $container->resolve(
                         MembershipService::class
+                    ),
+                    $container->resolve(
+                        MasterService::class
                     )
 
                 );
@@ -634,7 +645,7 @@ class Bootstrap
             }
 
         );
-        
+
         // Anouncement
 
 
@@ -669,6 +680,9 @@ class Bootstrap
 
                     $container->resolve(
                         AnnouncementService::class
+                    ),
+                    $container->resolve(
+                        ClubService::class
                     )
 
                 );
@@ -689,6 +703,74 @@ class Bootstrap
 
                 );
             }
+        );
+
+        // contact
+
+        $container->bind(
+
+            ContactRepositoryInterface::class,
+
+            function () {
+
+                return new ContactRepository();
+            }
+
+        );
+
+        $container->bind(
+
+            ContactService::class,
+
+            function ($container) {
+
+
+                return new ContactService(
+
+                    $container->resolve(
+                        ContactRepositoryInterface::class
+                    )
+
+                );
+            }
+
+        );
+
+
+        $container->bind(
+
+            ContactController::class,
+
+            function ($container) {
+
+
+                return new ContactController(
+
+                    $container->resolve(
+                        ContactService::class
+                    )
+
+                );
+            }
+
+        );
+
+
+        $container->bind(
+
+            AdminContactController::class,
+
+            function ($container) {
+
+                return new AdminContactController(
+
+                    $container->resolve(
+                        ContactService::class
+                    )
+
+                );
+            }
+
         );
 
         // Middleware

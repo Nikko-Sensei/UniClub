@@ -4,11 +4,9 @@ namespace App\Announcement\Presentation\Controllers;
 
 
 use App\Announcement\Application\Services\AnnouncementService;
-
+use App\Club\Application\Services\ClubService;
 use App\Shared\Core\BaseController;
-
 use App\Shared\Core\Response;
-
 use App\Shared\Helpers\Flash;
 
 
@@ -19,10 +17,13 @@ class AdminAnnouncementController extends BaseController
 
     private AnnouncementService $announcementService;
 
+    private ClubService $clubService;
+
 
 
     public function __construct(
-        AnnouncementService $announcementService
+        AnnouncementService $announcementService,
+        ClubService $clubService
     ) {
 
         parent::__construct();
@@ -30,6 +31,10 @@ class AdminAnnouncementController extends BaseController
 
         $this->announcementService =
             $announcementService;
+
+
+        $this->clubService =
+            $clubService;
     }
 
 
@@ -38,37 +43,37 @@ class AdminAnnouncementController extends BaseController
      * Display all announcements
      */
     public function index()
-{
+    {
 
-    $page = max(
-        1,
-        (int) ($_GET['page'] ?? 1)
-    );
-
-
-    $limit = 10;
+        $page = max(
+            1,
+            (int)($_GET['page'] ?? 1)
+        );
 
 
-
-    $filters = [
-
-        'search' =>
-            trim($_GET['search'] ?? ''),
-
-
-        'priority' =>
-            $_GET['priority'] ?? '',
-
-
-        'status' =>
-            $_GET['status'] ?? ''
-
-    ];
+        $limit = 10;
 
 
 
-    $result =
-        $this->announcementService
+        $filters = [
+
+            'search' =>
+                trim($_GET['search'] ?? ''),
+
+
+            'priority' =>
+                $_GET['priority'] ?? '',
+
+
+            'status' =>
+                $_GET['status'] ?? ''
+
+        ];
+
+
+
+        $result =
+            $this->announcementService
             ->getAnnouncements(
                 $page,
                 $limit,
@@ -77,35 +82,35 @@ class AdminAnnouncementController extends BaseController
 
 
 
+        return $this->view(
 
-    return $this->view(
+            'Announcement/Presentation/Views/admin/index',
 
-        'Announcement/Presentation/Views/admin/index',
+            [
 
-        [
-
-            'title' =>
-                'Announcement Management',
-
-
-            'announcements' =>
-                $result['announcements'],
+                'title' =>
+                    'Announcement Management',
 
 
-            'filters' =>
-                $filters,
+                'announcements' =>
+                    $result['announcements'],
 
 
-            'pagination' =>
-                $result['pagination']
+                'filters' =>
+                    $filters,
 
-        ],
 
-        'admin'
+                'pagination' =>
+                    $result['pagination']
 
-    );
+            ],
 
-}
+            'admin'
+
+        );
+    }
+
+
 
 
 
@@ -115,9 +120,10 @@ class AdminAnnouncementController extends BaseController
     public function create()
     {
 
-        // $clubs =
-        //     $this->clubService
-        //     ->getClubs();
+        $clubs =
+            $this->clubService
+            ->getActiveClubs();
+
 
 
         return $this->view(
@@ -126,7 +132,8 @@ class AdminAnnouncementController extends BaseController
 
             [
 
-                'clubs' => $clubs
+                'clubs' =>
+                    $clubs
 
             ],
 
@@ -134,6 +141,8 @@ class AdminAnnouncementController extends BaseController
 
         );
     }
+
+
 
 
 
@@ -147,25 +156,31 @@ class AdminAnnouncementController extends BaseController
         $data = [
 
             'club_id' =>
-            $_POST['club_id'],
+                $_POST['club_id'],
+
 
             'title' =>
-            $_POST['title'],
+                $_POST['title'],
+
 
             'content' =>
-            $_POST['content'],
+                $_POST['content'],
+
 
             'priority' =>
-            $_POST['priority'],
+                $_POST['priority'],
+
 
             'image' =>
-            $_POST['image'] ?? null,
+                $_POST['image'] ?? null,
+
 
             'status' =>
-            $_POST['status'],
+                $_POST['status'],
+
 
             'created_by' =>
-            $_SESSION['user']['id']
+                $_SESSION['user']['id']
 
         ];
 
@@ -177,16 +192,23 @@ class AdminAnnouncementController extends BaseController
 
 
         Flash::set(
+
             'success',
+
             'Announcement created successfully.'
+
         );
 
 
 
         Response::redirect(
-            'Announcement/Presentation/Views/admin/announcements'
+
+            'admin/announcements'
+
         );
     }
+
+
 
 
 
@@ -196,6 +218,7 @@ class AdminAnnouncementController extends BaseController
     public function edit(
         int $id
     ) {
+
 
         $announcement =
             $this->announcementService
@@ -209,7 +232,8 @@ class AdminAnnouncementController extends BaseController
 
             [
 
-                'announcement' => $announcement
+                'announcement' =>
+                    $announcement
 
             ],
 
@@ -220,6 +244,8 @@ class AdminAnnouncementController extends BaseController
 
 
 
+
+
     /**
      * Update announcement
      */
@@ -227,22 +253,27 @@ class AdminAnnouncementController extends BaseController
         int $id
     ) {
 
+
         $data = [
 
             'title' =>
-            $_POST['title'],
+                $_POST['title'],
+
 
             'content' =>
-            $_POST['content'],
+                $_POST['content'],
+
 
             'priority' =>
-            $_POST['priority'],
+                $_POST['priority'],
+
 
             'image' =>
-            $_POST['image'] ?? null,
+                $_POST['image'] ?? null,
+
 
             'status' =>
-            $_POST['status']
+                $_POST['status']
 
         ];
 
@@ -257,16 +288,23 @@ class AdminAnnouncementController extends BaseController
 
 
         Flash::set(
+
             'success',
+
             'Announcement updated successfully.'
+
         );
 
 
 
         Response::redirect(
-            'Announcement/Presentation/Views/admin/announcements'
+
+            'admin/announcements'
+
         );
     }
+
+
 
 
 
@@ -277,10 +315,12 @@ class AdminAnnouncementController extends BaseController
         int $id
     ) {
 
+
         $announcement =
             $this->announcementService
             ->getAnnouncement($id);
 
+        $clubs = $this->clubService->getActiveClubs();
 
 
         return $this->view(
@@ -289,7 +329,9 @@ class AdminAnnouncementController extends BaseController
 
             [
 
-                'announcement' => $announcement
+                'announcement' => $announcement,
+
+                'clubs' => $clubs
 
             ],
 
@@ -300,6 +342,8 @@ class AdminAnnouncementController extends BaseController
 
 
 
+
+
     /**
      * Delete announcement
      */
@@ -307,20 +351,27 @@ class AdminAnnouncementController extends BaseController
         int $id
     ) {
 
+
         $this->announcementService
             ->delete($id);
 
 
 
         Flash::set(
+
             'success',
+
             'Announcement deleted successfully.'
+
         );
 
 
 
         Response::redirect(
-            'Announcement/Presentation/Views/admin/announcements'
+
+            '/admin/announcements'
+
         );
     }
+
 }

@@ -19,6 +19,8 @@ class Announcement
 
     private string $status;
 
+    private ?string $createdByName;
+
     private int $createdBy;
 
     private ?string $createdAt;
@@ -36,12 +38,12 @@ class Announcement
         string $priority,
         ?string $image,
         string $status,
+        ?string $createdByName,
         int $createdBy,
         ?string $createdAt = null,
         ?string $publishedAt = null,
         ?string $updatedAt = null
-    )
-    {
+    ) {
         $this->id = $id;
 
         $this->clubId = $clubId;
@@ -55,6 +57,8 @@ class Announcement
         $this->image = $image;
 
         $this->status = $status;
+
+        $this->createdByName = $createdByName;
 
         $this->createdBy = $createdBy;
 
@@ -99,6 +103,11 @@ class Announcement
     public function getImage(): ?string
     {
         return $this->image;
+    }
+
+    public function getCreatedByName(): ?string
+    {
+        return $this->createdByName;
     }
 
 

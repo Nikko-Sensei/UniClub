@@ -111,16 +111,26 @@ class MembershipController extends BaseController
     public function myClubs()
     {
 
-
         $userId =
             $_SESSION['user']['id'];
 
 
+        $page =
+            isset($_GET['page'])
+            ? (int)$_GET['page']
+            : 1;
 
-        $clubs =
+
+        $limit = 6;
+
+
+
+        $result =
             $this->membershipService
             ->getMyClubs(
-                $userId
+                $userId,
+                $page,
+                $limit
             );
 
 
@@ -133,7 +143,17 @@ class MembershipController extends BaseController
 
                 'title' => 'My Clubs',
 
-                'clubs' => $clubs
+                'clubs' => $result['data'],
+
+                'pagination' => [
+
+                    'current_page' =>
+                    $result['current_page'],
+
+                    'total_pages' =>
+                    $result['total_pages']
+
+                ]
 
             ],
 

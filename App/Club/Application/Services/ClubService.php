@@ -396,6 +396,11 @@ class ClubService
         ];
     }
 
+    public function getFeaturedClub(): ?Club
+{
+    return $this->repository->findMostPopularClub();
+}
+
 
     /**
      * Statistics
@@ -459,6 +464,26 @@ class ClubService
         return $this->repository
             ->findLeadership($clubId);
     }
+
+    public function getMembers(
+    int $clubId
+): array
+{
+
+    return $this->repository
+        ->findMembers(
+            $clubId
+        );
+
+}
+
+public function getClubRoles(): array
+{
+
+    return $this->repository
+        ->findRoles();
+
+}
 
     public function getUpcomingEvents(
         int $clubId

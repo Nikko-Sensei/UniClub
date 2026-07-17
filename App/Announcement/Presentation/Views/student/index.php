@@ -1,85 +1,480 @@
-<?php $type = $_GET['type'] ?? 'all'; ?>
+<?php
 
-<div class="space-y-8">
+$priorityFilter = $_GET['priority'] ?? '';
+
+?>
+
+<div class="max-w-7xl mx-auto px-4 md:px-6 py-8 w-full">
+
 
     <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-        <div>
-            <p class="text-sm font-semibold text-blue-600 mb-1.5">University Updates</p>
-            <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Announcements</h1>
-            <p class="text-slate-500 mt-2">Stay updated with the latest university and club information.</p>
-        </div>
 
-        <div class="flex items-center gap-2 text-sm text-slate-500">
-            <i data-lucide="bell" class="w-4 h-4 text-blue-500"></i>
-            <?= count($announcements) ?> updates
-        </div>
+    <div class="mb-8">
+
+        <p class="text-sm font-semibold text-blue-600 mb-1.5">
+            University Updates
+        </p>
+
+
+        <h1 class="text-3xl md:text-4xl font-bold text-slate-800">
+            Announcements
+        </h1>
+
+
+        <p class="text-slate-500 mt-2">
+            Stay informed about university and club activities.
+        </p>
+
     </div>
+
+
+
+
+
+    <!-- Main Layout -->
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-        <!-- Quick Filter -->
+
+
+        <!-- LEFT FILTER -->
+
         <div class="lg:col-span-1">
-            <div class="bg-white rounded-2xl border border-slate-200 p-5 lg:sticky lg:top-20">
-                <h3 class="font-bold text-slate-800 mb-4">Quick Filter</h3>
-                <div class="space-y-1.5">
+
+
+            <div class="
+                bg-white
+                rounded-2xl
+                border
+                border-slate-200
+                shadow-sm
+                p-5
+                sticky
+                top-20
+            ">
+
+
+                <h3 class="
+                    font-bold
+                    text-slate-800
+                    mb-4
+                ">
+                    Filter Announcements
+                </h3>
+
+
+
+                <!-- Search -->
+
+                <form method="GET">
+
+
+                    <div class="relative mb-5">
+
+
+                        <i data-lucide="search" class="
+                            absolute
+                            left-3
+                            top-3
+                            w-4
+                            h-4
+                            text-slate-400
+                            ">
+                        </i>
+
+
+                        <input type="text" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
+                            placeholder="Search..." class="
+                            w-full
+                            pl-10
+                            pr-3
+                            py-2.5
+                            rounded-xl
+                            border
+                            border-slate-200
+                            bg-slate-50
+                            text-sm
+                            focus:ring-2
+                            focus:ring-blue-500/30
+                            focus:border-blue-500
+                            outline-none
+                            ">
+
+
+                    </div>
+
+
+                </form>
+
+
+
+
+
+                <!-- Priority Filter -->
+
+
+                <p class="
+                    text-xs
+                    uppercase
+                    font-semibold
+                    text-slate-400
+                    mb-3
+                ">
+                    Priority
+                </p>
+
+
+
+                <div class="space-y-2">
+
+
                     <?php
-                    $filters = ['all' => 'All Updates', 'club' => 'Club Updates', 'event' => 'Event Updates', 'academic' => 'Academic'];
-                    foreach ($filters as $key => $label):
+
+                    $filters = [
+
+                        '' =>
+                        [
+                            'label'=>'All Announcements',
+                            'icon'=>'bell'
+                        ],
+
+                        'high'=>
+                        [
+                            'label'=>'Important',
+                            'icon'=>'flame'
+                        ],
+
+                        'medium'=>
+                        [
+                            'label'=>'Updates',
+                            'icon'=>'megaphone'
+                        ],
+
+                        'low'=>
+                        [
+                            'label'=>'Notices',
+                            'icon'=>'info'
+                        ]
+
+                    ];
+
+
+                    foreach($filters as $key=>$filter):
+
                     ?>
-                    <a href="?type=<?= $key ?>"
-                        class="block w-full text-left px-4 py-2.5 rounded-xl text-sm transition <?= $type === $key ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50' ?>">
-                        <?= $label ?>
+
+
+                    <a href="?priority=<?= $key ?>" class="
+                        flex
+                        items-center
+                        gap-3
+                        px-4
+                        py-3
+                        rounded-xl
+                        text-sm
+                        transition
+
+                        <?= $priorityFilter == $key
+
+                        ? 'bg-blue-50 text-blue-600 font-semibold'
+
+                        : 'text-slate-600 hover:bg-slate-50'
+
+                        ?>
+
+                        ">
+
+
+                        <i data-lucide="<?= $filter['icon'] ?>" class="w-4 h-4">
+                        </i>
+
+
+                        <?= $filter['label'] ?>
+
+
                     </a>
+
+
                     <?php endforeach; ?>
+
+
                 </div>
+
+
+
             </div>
+
+
         </div>
 
-        <!-- Announcement Feed -->
+
+
+
+
+
+
+        <!-- RIGHT DATA -->
+
+
         <div class="lg:col-span-3">
-            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
 
-                <?php if (empty($announcements)): ?>
-                <div class="py-16 text-center">
-                    <i data-lucide="bell-off" class="w-10 h-10 mx-auto text-blue-400"></i>
-                    <h3 class="mt-4 font-bold text-slate-800">No announcements</h3>
-                    <p class="text-sm text-slate-500 mt-1.5">New updates will appear here.</p>
+
+
+            <div class="flex items-center justify-between mb-4">
+
+
+                <h2 class="
+                    text-lg
+                    font-bold
+                    text-slate-800
+                ">
+                    Latest Announcements
+                </h2>
+
+
+                <span class="
+                    text-sm
+                    text-slate-500
+                ">
+
+                    <?= count($announcements) ?> results
+
+                </span>
+
+
+            </div>
+
+
+
+
+
+            <div class="space-y-4">
+
+
+
+                <?php if(empty($announcements)): ?>
+
+
+                <div class="
+                    bg-white
+                    rounded-2xl
+                    border
+                    border-slate-200
+                    py-16
+                    text-center
+                ">
+
+
+                    <i data-lucide="bell-off" class="
+                        w-10
+                        h-10
+                        mx-auto
+                        text-slate-300
+                        ">
+                    </i>
+
+
+                    <h3 class="
+                        mt-4
+                        font-bold
+                        text-slate-800
+                    ">
+                        No announcements found
+                    </h3>
+
+
                 </div>
 
-                <?php else: foreach ($announcements as $announcement):
-                    $priority = $announcement->getPriority();
-                    $priorityClass = match($priority) {
-                        'high'   => 'bg-red-50 text-red-600',
-                        'medium' => 'bg-amber-50 text-amber-600',
-                        default  => 'bg-blue-50 text-blue-600',
-                    };
+
+
+
+                <?php else: ?>
+
+
+                <?php foreach($announcements as $announcement): ?>
+
+
+                <?php
+
+                $priority =
+                    $announcement->getPriority();
+
+
+                $priorityStyle = match($priority){
+
+                    'high'=>
+                    [
+                        'class'=>'bg-red-50 text-red-600',
+                        'icon'=>'flame',
+                        'text'=>'Important'
+                    ],
+
+
+                    'medium'=>
+                    [
+                        'class'=>'bg-amber-50 text-amber-600',
+                        'icon'=>'megaphone',
+                        'text'=>'Update'
+                    ],
+
+
+                    default=>
+                    [
+                        'class'=>'bg-blue-50 text-blue-600',
+                        'icon'=>'info',
+                        'text'=>'Notice'
+                    ]
+
+                };
+
+
                 ?>
-                <a href="<?= BASE_URL ?>/announcements/<?= $announcement->getId() ?>"
-                    class="flex gap-4 p-5 border-b last:border-b-0 border-slate-100 hover:bg-slate-50 transition">
 
-                    <div class="w-14 h-14 rounded-xl bg-blue-50 flex flex-col items-center justify-center shrink-0">
-                        <span
-                            class="text-lg font-bold text-blue-600 leading-none"><?= date('d', strtotime($announcement->getCreatedAt())) ?></span>
-                        <span
-                            class="text-[10px] text-slate-500 mt-0.5"><?= date('M', strtotime($announcement->getCreatedAt())) ?></span>
+
+
+                <!-- Announcement Card -->
+
+
+                <a href="<?= BASE_URL ?>/announcements/<?= $announcement->getId() ?>" class="
+                    block
+                    bg-white
+                    rounded-2xl
+                    border
+                    border-slate-200
+                    p-5
+                    hover:shadow-md
+                    hover:border-blue-200
+                    transition
+                    ">
+
+
+                    <div class="flex justify-between gap-4">
+
+
+                        <div class="flex-1">
+
+
+                            <span class="
+                                inline-flex
+                                items-center
+                                gap-1.5
+                                px-3
+                                py-1
+                                rounded-full
+                                text-xs
+                                font-semibold
+                                <?= $priorityStyle['class'] ?>
+                            ">
+
+
+                                <i data-lucide="<?= $priorityStyle['icon'] ?>" class="w-3.5 h-3.5">
+                                </i>
+
+
+                                <?= $priorityStyle['text'] ?>
+
+
+                            </span>
+
+
+
+
+                            <h3 class="
+                                mt-3
+                                text-lg
+                                font-bold
+                                text-slate-800
+                            ">
+
+                                <?= htmlspecialchars(
+                                    $announcement->getTitle()
+                                ) ?>
+
+                            </h3>
+
+
+
+
+                            <p class="
+                                mt-2
+                                text-sm
+                                text-slate-500
+                                line-clamp-2
+                            ">
+
+                                <?= htmlspecialchars(
+                                    $announcement->getContent()
+                                ) ?>
+
+                            </p>
+
+
+
+                        </div>
+
+
+
+                        <i data-lucide="chevron-right" class="
+                            w-5
+                            h-5
+                            text-slate-300
+                            mt-8
+                            ">
+                        </i>
+
+
                     </div>
 
-                    <div class="flex-1 min-w-0">
-                        <span
-                            class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold mb-1.5 <?= $priorityClass ?>">
-                            <?= ucfirst($priority) ?>
+
+
+
+                    <div class="
+                        mt-4
+                        pt-4
+                        border-t
+                        border-slate-100
+                        flex
+                        justify-between
+                        text-xs
+                        text-slate-400
+                    ">
+
+
+                        <span>
+                            University
                         </span>
-                        <h3 class="font-bold text-slate-800 hover:text-blue-600 line-clamp-1">
-                            <?= htmlspecialchars($announcement->getTitle()) ?></h3>
-                        <p class="mt-1 text-sm text-slate-500 line-clamp-2">
-                            <?= htmlspecialchars($announcement->getContent()) ?></p>
+
+
+                        <span>
+                            <?= date(
+                                'M d, Y',
+                                strtotime(
+                                    $announcement->getPublishedAt()
+                                )
+                            ) ?>
+                        </span>
+
+
                     </div>
 
-                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 self-center flex-shrink-0"></i>
+
                 </a>
-                <?php endforeach; endif; ?>
+
+
+
+                <?php endforeach; ?>
+
+
+                <?php endif; ?>
+
+
             </div>
+
+
         </div>
+
+
     </div>
+
+
 </div>

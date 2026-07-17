@@ -113,10 +113,42 @@ class Router
             as $middleware
         ) {
 
+
+            // Middleware with parameters
+
+            if (is_array($middleware)) {
+
+
+                [
+                    $middlewareClass,
+                    $parameter
+                ] = $middleware;
+
+
+
+                $middlewareObject =
+                    $this->container->resolve(
+                        $middlewareClass
+                    );
+
+
+                $middlewareObject->handle(
+                    $parameter
+                );
+
+
+                continue;
+            }
+
+
+
+            // Normal middleware
+
             $middlewareObject =
                 $this->container->resolve(
                     $middleware
                 );
+
 
             $middlewareObject->handle();
         }

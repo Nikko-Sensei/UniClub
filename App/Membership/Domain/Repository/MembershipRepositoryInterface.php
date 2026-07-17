@@ -30,8 +30,14 @@ interface MembershipRepositoryInterface
 
 
     public function getMyClubs(
-        int $userId
+        int $userId,
+        int $page,
+        int $limit
     ): array;
+
+    public function getMyClubsCount(
+    int $userId
+): int;
 
 
     public function leave(
@@ -47,11 +53,42 @@ interface MembershipRepositoryInterface
     ): bool;
 
 
-   public function rejectMembership(
+    public function rejectMembership(
         int $membershipId,
         int $adminId
     ): bool;
 
     public function getStatistics(): array;
 
+    public function updateRole(
+        int $membershipId,
+        int $roleId
+    ): bool;
+
+    public function getMembersByClub(
+        int $clubId,
+        array $filters = [],
+        int $limit = 10,
+        int $offset = 0
+    ): array;
+
+    public function getById(
+        int $id
+    ): ?array;
+
+    public function getRoles(): array;
+
+    public function remove(
+        int $membershipId
+    ): bool;
+
+    public function existsLeadershipRole(
+        int $clubId,
+        int $roleId
+    ): bool;
+
+    public function countMembersByClub(
+        int $clubId,
+        array $filters = []
+    ): int;
 }

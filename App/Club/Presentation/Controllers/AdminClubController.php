@@ -10,6 +10,7 @@ use App\Master\Application\Services\MasterService;
 
 
 
+
 class AdminClubController extends BaseController
 {
 
@@ -17,11 +18,15 @@ class AdminClubController extends BaseController
 
     private MasterService $masterService;
 
+    
+
 
 
     public function __construct(
         ClubService $clubService,
-        MasterService $masterService
+        MasterService $masterService,
+       
+
     ) {
 
         parent::__construct();
@@ -30,6 +35,7 @@ class AdminClubController extends BaseController
         $this->clubService = $clubService;
 
         $this->masterService = $masterService;
+
     }
 
 
@@ -45,15 +51,15 @@ class AdminClubController extends BaseController
         $filters = [
 
             'search' =>
-                $_GET['search'] ?? null,
+            $_GET['search'] ?? null,
 
 
             'category_id' =>
-                $_GET['category_id'] ?? null,
+            $_GET['category_id'] ?? null,
 
 
             'status' =>
-                $_GET['status'] ?? null
+            $_GET['status'] ?? null
 
         ];
 
@@ -81,30 +87,29 @@ class AdminClubController extends BaseController
             [
 
                 'clubs' =>
-                    $data['clubs'],
+                $data['clubs'],
 
 
                 'pagination' =>
-                    $data['pagination'],
+                $data['pagination'],
 
 
                 'filters' =>
-                    $filters,
+                $filters,
 
 
                 'categories' =>
-                    $categories,
+                $categories,
 
 
                 'statistics' =>
-                    $this->clubService
+                $this->clubService
                     ->getStatistics()
 
             ],
 
             'admin'
         );
-
     }
 
 
@@ -126,8 +131,16 @@ class AdminClubController extends BaseController
             return Response::redirect(
                 '/admin/clubs'
             );
-
         }
+
+        $leadership = $this->clubService
+            ->getLeadership($id);
+
+        $members = $this->clubService
+            ->getMembers($id);
+
+        $roles = $this->clubService
+            ->getClubRoles();
 
 
 
@@ -137,17 +150,21 @@ class AdminClubController extends BaseController
             [
 
                 'title' =>
-                    'Club Details',
+                'Club Details',
 
 
-                'club' =>
-                    $club
+                'club' => $club,
+
+                'leadership' => $leadership,
+
+                'members' => $members,
+
+                'roles' => $roles
 
             ],
 
             'admin'
         );
-
     }
 
 
@@ -170,17 +187,16 @@ class AdminClubController extends BaseController
             [
 
                 'title' =>
-                    'Create Club',
+                'Create Club',
 
 
                 'categories' =>
-                    $categories
+                $categories
 
             ],
 
             'admin'
         );
-
     }
 
 
@@ -207,7 +223,6 @@ class AdminClubController extends BaseController
         return Response::redirect(
             '/admin/clubs'
         );
-
     }
 
 
@@ -238,17 +253,16 @@ class AdminClubController extends BaseController
             [
 
                 'club' =>
-                    $club,
+                $club,
 
 
                 'categories' =>
-                    $categories
+                $categories
 
             ],
 
             'admin'
         );
-
     }
 
 
@@ -276,7 +290,6 @@ class AdminClubController extends BaseController
         return Response::redirect(
             '/admin/clubs'
         );
-
     }
 
 
@@ -296,8 +309,6 @@ class AdminClubController extends BaseController
         return Response::redirect(
             '/admin/clubs'
         );
-
     }
-
 
 }

@@ -67,7 +67,7 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
 
         $stmt = $this->db
             ->prepare(
-                "CALL sp_announcement_update(?,?,?,?,?,?,?)"
+                "CALL sp_announcement_update(?,?,?,?,?,?)"
             );
 
 
@@ -83,9 +83,7 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
 
             $data['image'] ?? null,
 
-            $data['status'],
-
-            $data['club_id']
+            $data['status']
 
         ]);
     }
@@ -143,88 +141,85 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
 
 
     public function findAll(
-    int $page,
-    int $limit,
-    array $filters = []
-) {
+        int $page,
+        int $limit,
+        array $filters = []
+    ) {
 
 
-    $offset =
-        ($page - 1) * $limit;
-
-
-
-    $search =
-        $filters['search'] ?? '';
+        $offset =
+            ($page - 1) * $limit;
 
 
 
-    $priority =
-        $filters['priority'] ?? '';
+        $search =
+            $filters['search'] ?? '';
 
 
 
-    $status =
-        $filters['status'] ?? '';
+        $priority =
+            $filters['priority'] ?? '';
+
+
+
+        $status =
+            $filters['status'] ?? '';
 
 
 
 
-    $stmt = $this->db->prepare(
+        $stmt = $this->db->prepare(
 
-        "CALL sp_announcement_find_all(?,?,?,?,?)"
+            "CALL sp_announcement_find_all(?,?,?,?,?)"
 
-    );
-
-
-
-    $stmt->execute([
-
-        $search,
-
-        $priority,
-
-        $status,
-
-        $limit,
-
-        $offset
-
-    ]);
+        );
 
 
 
-    $announcements = [];
+        $stmt->execute([
+
+            $search,
+
+            $priority,
+
+            $status,
+
+            $limit,
+
+            $offset
+
+        ]);
 
 
 
-    while(
-        $row =
-        $stmt->fetch(\PDO::FETCH_ASSOC)
-    ){
+        $announcements = [];
 
-        $announcements[] =
-            $this->mapToAnnouncement($row);
 
+
+        while (
+            $row =
+            $stmt->fetch(\PDO::FETCH_ASSOC)
+        ) {
+
+            $announcements[] =
+                $this->mapToAnnouncement($row);
+        }
+
+
+
+        while (
+            $stmt->nextRowset()
+        ) {
+        }
+
+
+
+        $stmt->closeCursor();
+
+
+
+        return $announcements;
     }
-
-
-
-    while(
-        $stmt->nextRowset()
-    ){
-
-    }
-
-
-
-    $stmt->closeCursor();
-
-
-
-    return $announcements;
-
-}
 
     public function count(
         array $filters = []
@@ -343,6 +338,8 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
             $row['image'],
 
             $row['status'],
+
+            $row['created_by_name'] ?? null,
 
             $row['created_by'],
 

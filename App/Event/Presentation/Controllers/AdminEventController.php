@@ -49,6 +49,7 @@ class AdminEventController extends BaseController
      */
     public function index()
     {
+
         $page = max(
             1,
             (int) ($_GET['page'] ?? 1)
@@ -83,7 +84,7 @@ class AdminEventController extends BaseController
                 $filters
             );
 
-
+$statistics = $this->eventService->getStatistics();
 
 
 
@@ -109,6 +110,8 @@ class AdminEventController extends BaseController
 
                 'categories' =>
                 $categories,
+
+                'statistics' => $statistics,
 
 
                 'filters' =>
@@ -165,6 +168,8 @@ class AdminEventController extends BaseController
 
     public function store()
     {
+
+
         try {
 
             $files = $_FILES;
@@ -216,7 +221,9 @@ class AdminEventController extends BaseController
 
             ];
 
-            
+
+
+
 
 
             $this->eventService
@@ -381,6 +388,11 @@ class AdminEventController extends BaseController
     ) {
 
 
+        $clubs = $this->clubService->getActiveClubs();
+
+
+        $categories = $this->masterService->getEventCategories();
+
         $event =
             $this->eventService
             ->getEvent(
@@ -397,7 +409,12 @@ class AdminEventController extends BaseController
 
                 'title' => 'Event Details',
 
-                'event' => $event
+                'event' => $event,
+                
+                'clubs' => $clubs,
+
+
+                'categories' => $categories
 
             ],
 
@@ -424,6 +441,14 @@ class AdminEventController extends BaseController
                 $id
             );
 
+        $clubs = $this->clubService->getActiveClubs();
+
+
+        $categories = $this->masterService->getEventCategories();
+
+
+        // var_dump($categories);
+        // exit;
 
 
         $this->view(
@@ -434,7 +459,11 @@ class AdminEventController extends BaseController
 
                 'title' => 'Edit Event',
 
-                'event' => $event
+                'event' => $event,
+
+                'clubs' => $clubs,
+
+                'categories' => $categories
 
             ],
 
@@ -505,7 +534,9 @@ class AdminEventController extends BaseController
 
             'registration_deadline'
             =>
-            $_POST['registration_deadline']
+            $_POST['registration_deadline'],
+
+            'status' => $_POST['status'] ?? 'draft',
 
         ];
 

@@ -37,58 +37,55 @@ class EventService
 
 
     public function create(
-    array $data,
-    array $files
-) {
+        array $data,
+        array $files
+    ) {
 
 
-    $this->handleImages(
-        $files,
-        $data
-    );
-
-
-
-
-    return $this->eventRepository
-        ->create($data);
-
-}
+        $this->handleImages(
+            $files,
+            $data
+        );
 
 
 
-   public function update(
-    int $id,
-    array $data,
-    array $files
-)
-{
 
-    $event =
-        $this->eventRepository
-        ->findById($id);
-
-
-    if (!$event) {
-
-        throw new EventNotFoundException();
-
+        return $this->eventRepository
+            ->create($data);
     }
 
 
-    $this->handleImages(
-        $files,
-        $data
-    );
 
-    
+    public function update(
+        int $id,
+        array $data,
+        array $files
+    ) {
 
-    return $this->eventRepository
-        ->update(
-            $id,
+        $event =
+            $this->eventRepository
+            ->findById($id);
+
+
+        if (!$event) {
+
+            throw new EventNotFoundException();
+        }
+
+
+        $this->handleImages(
+            $files,
             $data
         );
-}
+
+
+
+        return $this->eventRepository
+            ->update(
+                $id,
+                $data
+            );
+    }
 
 
 
@@ -109,9 +106,6 @@ class EventService
         return $this->eventRepository
             ->delete($id);
     }
-
-
-
     public function getEvent(
         int $id
     ) {
@@ -349,14 +343,59 @@ class EventService
 
 
     public function getStudentEvents(
-        int $userId
-    ) {
+    int $userId,
+    int $page,
+    int $limit,
+    array $filters = []
+)
+{
 
-        return $this->eventRepository
-            ->findStudentEvents(
-                $userId
-            );
-    }
+    $events =
+        $this->eventRepository
+        ->findStudentEvents(
+            $userId,
+            $page,
+            $limit,
+            $filters
+        );
+
+
+    $total =
+    $this->eventRepository
+    ->countStudentEvents(
+
+        $userId,
+
+        $filters
+
+    );
+
+
+    return [
+
+        'events' =>
+            $events,
+
+
+        'pagination' => [
+
+            'total' =>
+                $total,
+
+
+            'current_page' =>
+                $page,
+
+
+            'total_pages' =>
+                ceil(
+                    $total / $limit
+                )
+
+        ]
+
+    ];
+}
 
     private function handleImages(
         array $files,

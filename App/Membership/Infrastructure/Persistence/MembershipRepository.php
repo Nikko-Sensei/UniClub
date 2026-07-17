@@ -144,18 +144,66 @@ class MembershipRepository extends BaseRepository implements MembershipRepositor
 
 
     public function getMyClubs(
-        int $userId
+        int $userId,
+        int $page,
+        int $limit
     ): array {
+
+
+        $offset = ($page - 1) * $limit;
 
 
         $stmt = $this->db->prepare(
 
             "CALL sp_membership_my_clubs(
-                :user_id
-            )"
+            :user_id,
+            :offset,
+            :limit
+        )"
 
         );
 
+
+        $stmt->execute([
+
+            'user_id' => $userId,
+
+            'offset' => $offset,
+
+            'limit' => $limit
+
+        ]);
+
+
+
+        $clubs =
+            $stmt->fetchAll(
+                PDO::FETCH_ASSOC
+            );
+
+
+        $stmt->closeCursor();
+
+
+
+        return $clubs;
+    }
+
+    /**
+     * Get Total Approved Clubs Count
+     */
+    public function getMyClubsCount(
+        int $userId
+    ): int {
+
+
+        $stmt = $this->db->prepare(
+
+            "CALL sp_membership_my_clubs_count(
+            :user_id
+        )"
+
+        );
 
 
         $stmt->execute([
@@ -166,8 +214,19 @@ class MembershipRepository extends BaseRepository implements MembershipRepositor
 
 
 
-        return $stmt->fetchAll(
-            PDO::FETCH_ASSOC
+        $result =
+            $stmt->fetch(
+                PDO::FETCH_ASSOC
+            );
+
+
+
+        $stmt->closeCursor();
+
+
+
+        return (int)(
+            $result['total'] ?? 0
         );
     }
 
@@ -318,5 +377,212 @@ class MembershipRepository extends BaseRepository implements MembershipRepositor
         $stmt->closeCursor();
 
         return $statistics;
+    }
+
+    public function updateRole(
+        int $membershipId,
+        int $roleId
+    ): bool {
+
+        $stmt = $this->db->prepare(
+            "CALL sp_membership_update_role(
+            :id,
+            :role_id
+        )"
+        );
+
+
+        $stmt->execute([
+
+            'id' => $membershipId,
+
+            'role_id' => $roleId
+
+        ]);
+
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        return (int)$result['affected'] > 0;
+    }
+
+    public function getMembersByClub(
+        int $clubId,
+        array $filters = [],
+        int $limit = 10,
+        int $offset = 0
+    ): array {
+
+        $stmt = $this->db->prepare(
+
+            "CALL sp_membership_find_by_club(
+            :club_id,
+            :search,
+            :role_id,
+            :status,
+            :limit,
+            :offset
+        )"
+
+        );
+
+
+        $stmt->execute([
+
+            'club_id' => $clubId,
+
+            'search' =>
+            $filters['search'] ?? null,
+
+            'role_id' =>
+            $filters['role_id'] ?? null,
+
+            'status' =>
+            $filters['status'] ?? null,
+
+            'limit' => $limit,
+
+            'offset' => $offset
+
+        ]);
+
+
+        return $stmt->fetchAll(
+            PDO::FETCH_ASSOC
+        );
+    }
+
+    public function countMembersByClub(
+        int $clubId,
+        array $filters = []
+    ): int {
+
+        $stmt = $this->db->prepare(
+
+            "CALL sp_membership_count_by_club(
+            :club_id,
+            :search,
+            :role_id,
+            :status
+        )"
+
+        );
+
+
+        $stmt->execute([
+
+            'club_id' => $clubId,
+
+            'search' =>
+            $filters['search'] ?? null,
+
+            'role_id' =>
+            $filters['role_id'] ?? null,
+
+            'status' =>
+            $filters['status'] ?? null
+
+        ]);
+
+
+
+        $result =
+            $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+
+        return (int)$result['total'];
+    }
+
+    public function getById(
+        int $id
+    ): ?array {
+
+        $stmt = $this->db->prepare(
+            "CALL sp_membership_find_by_id(
+            :id
+        )"
+        );
+
+
+        $stmt->execute([
+
+            'id' => $id
+
+        ]);
+
+
+        return $stmt->fetch(
+            PDO::FETCH_ASSOC
+        ) ?: null;
+    }
+
+    public function getRoles(): array
+    {
+
+        $stmt = $this->db->prepare(
+            "CALL sp_club_roles_find_all()"
+        );
+
+
+        $stmt->execute();
+
+
+        return $stmt->fetchAll(
+            PDO::FETCH_ASSOC
+        );
+    }
+
+    public function remove(
+        int $membershipId
+    ): bool {
+
+        $stmt = $this->db->prepare(
+            "CALL sp_membership_remove(:id)"
+        );
+
+
+        $stmt->execute([
+
+            'id' => $membershipId
+
+        ]);
+
+
+        $result =
+            $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        return (int)$result['affected'] > 0;
+    }
+
+    public function existsLeadershipRole(
+        int $clubId,
+        int $roleId
+    ): bool {
+
+        $stmt = $this->db->prepare(
+            "CALL sp_membership_exists_leadership_role(
+            :club_id,
+            :role_id
+        )"
+        );
+
+
+        $stmt->execute([
+
+            'club_id' => $clubId,
+
+            'role_id' => $roleId
+
+        ]);
+
+
+        $result =
+            $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        return (int)$result['total'] > 0;
     }
 }

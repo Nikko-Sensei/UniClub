@@ -100,6 +100,7 @@
                         <button type="submit" class="w-full bg-blue-600
                             hover:bg-blue-700
                             text-white py-3
+                            px-6
                             rounded-xl
                             font-semibold text-sm
                             transition">
@@ -286,7 +287,7 @@
                 </h3>
 
                 <p class="text-sm text-blue-600 mt-1 inline-block bg-blue-50 px-3 py-0.5 rounded-full">
-                    <?= htmlspecialchars($leader['position']) ?>
+                    <?= htmlspecialchars($leader['role']) ?>
                 </p>
 
             </div>
@@ -310,7 +311,7 @@
                 </h2>
                 <p class="text-sm text-slate-500 mt-1">Join our latest activities and events</p>
             </div>
-            <a href="/events"
+            <a href="<?= BASE_URL ?>/events"
                 class="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 group">
                 View All
                 <span class="transition-transform group-hover:translate-x-1">→</span>
@@ -379,11 +380,11 @@
                             <span>📍</span> <?= htmlspecialchars($event['venue']) ?>
                         </span>
 
-                        <a href="/events/<?= $event['id'] ?>"
+                        <!-- <a href="/events/<?= $event['id'] ?>"
                             class="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 group-hover:gap-2 transition-all">
                             View
                             <span>→</span>
-                        </a>
+                        </a> -->
 
                     </div>
 

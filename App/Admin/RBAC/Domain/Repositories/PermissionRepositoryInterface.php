@@ -10,15 +10,25 @@ interface PermissionRepositoryInterface
 
     public function findAll(): array;
 
+
     public function findByModule(
         string $module
     ): array;
+
 
     public function findByRoleId(
         int $roleId
     ): array;
 
+
     public function findBySlug(
         string $slug
     ): ?Permission;
+
+
+    public function hasPermission(
+        int $roleId,
+        string $slug
+    ): bool;
+
 }

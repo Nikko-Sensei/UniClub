@@ -69,17 +69,30 @@
 
                 <div>
 
-
                     <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                        Club ID
-
+                        Club
                     </label>
 
+                    <select name="club_id" required class="w-full px-4 py-3 rounded-xl border border-slate-200">
 
-                    <input type="number" name="club_id" value="<?= $event->getClubId() ?>" required
-                        class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                        <option value="">
+                            Select Club
+                        </option>
 
+
+                        <?php foreach ($clubs as $club): ?>
+
+                        <option value="<?= $club->getId() ?>"
+                            <?= $event->getClubId() == $club->getId() ? 'selected' : '' ?>>
+
+                            <?= htmlspecialchars($club->getName()) ?>
+
+                        </option>
+
+
+                        <?php endforeach; ?>
+
+                    </select>
 
                 </div>
 
@@ -88,17 +101,30 @@
 
                 <div>
 
-
                     <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                        Category ID
-
+                        Category
                     </label>
 
+                    <select name="category_id" required class="w-full px-4 py-3 rounded-xl border border-slate-200">
 
-                    <input type="number" name="category_id" value="<?= $event->getCategoryId() ?>" required
-                        class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                        <option value="">
+                            Select Category
+                        </option>
 
+
+                        <?php foreach ($categories as $category): ?>
+
+                        <option value="<?= $category['id'] ?>"
+                            <?= $event->getCategoryId() == $category['id'] ? 'selected' : '' ?>>
+
+                            <?= htmlspecialchars($category['name']) ?>
+
+                        </option>
+
+                        <?php endforeach; ?>
+
+
+                    </select>
 
                 </div>
 
@@ -192,9 +218,10 @@
 
 
                     <input type="datetime-local" name="registration_deadline" value="<?= date(
-                            'Y-m-d\TH:i',
-                            strtotime($event->getRegistrationDeadline())
-                        ) ?>" required class="w-full px-4 py-3 rounded-xl border border-slate-200">
+                                                                                            'Y-m-d\TH:i',
+                                                                                            strtotime($event->getRegistrationDeadline())
+                                                                                        ) ?>" required
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200">
 
 
                 </div>
@@ -236,6 +263,52 @@
 
 
                 </div>
+
+                <div>
+
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+
+                        Status
+
+                    </label>
+
+
+                    <select name="status" required
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 outline-none">
+
+
+                        <option value="draft" <?= $event->getStatus() === 'draft' ? 'selected' : '' ?>>
+
+                            Draft
+
+                        </option>
+
+
+                        <option value="published" <?= $event->getStatus() === 'published' ? 'selected' : '' ?>>
+
+                            Published
+
+                        </option>
+
+
+                        <option value="cancelled" <?= $event->getStatus() === 'cancelled' ? 'selected' : '' ?>>
+
+                            Cancelled
+
+                        </option>
+
+
+                        <option value="completed" <?= $event->getStatus() === 'completed' ? 'selected' : '' ?>>
+
+                            Completed
+
+                        </option>
+
+
+                    </select>
+
+                </div>
+
 
 
             </div>

@@ -21,6 +21,8 @@ use App\Announcement\Presentation\Controllers\AdminAnnouncementController;
 use App\Announcement\Presentation\Controllers\AnnouncementController;
 use App\EventFeedback\Presentation\Controllers\EventFeedbackController;
 use App\EventFeedback\Presentation\Controllers\AdminEventFeedbackController;
+use App\Contact\Presentation\Controllers\ContactController;
+use App\Contact\Presentation\Controllers\AdminContactController;
 use App\Shared\Middleware\PermissionMiddleware;
 
 //Home
@@ -337,6 +339,38 @@ $router->get(
     ]
 );
 
+$router->get(
+    '/admin/memberships/{id}/edit-role',
+    [
+        AdminMembershipController::class,
+        'editRole'
+    ]
+);
+
+$router->post(
+    '/admin/memberships/{id}/remove',
+    [
+        AdminMembershipController::class,
+        'remove'
+    ]
+);
+
+$router->post(
+    '/admin/memberships/update-role',
+    [
+        AdminMembershipController::class,
+        'updateRole'
+    ]
+);
+
+$router->get(
+    '/admin/clubs/{id}/members',
+    [
+        AdminMembershipController::class,
+        'members'
+    ]
+);
+
 
 $router->post(
     '/membership/{id}/leave',
@@ -477,6 +511,18 @@ $router->post(
     [
         AdminEventController::class,
         'update'
+    ],
+    [
+        AuthMiddleware::class,
+        RoleMiddleware::class
+    ]
+);
+
+$router->get(
+    '/admin/events/{id}/show',
+    [
+        AdminEventController::class,
+        'show'
     ],
     [
         AuthMiddleware::class,
@@ -749,6 +795,54 @@ $router->get(
     ]
 );
 
+// contact
+
+
+$router->get(
+
+    '/contact',
+
+    [
+
+        ContactController::class,
+
+        'index'
+
+    ]
+
+);
+
+
+$router->post(
+
+    '/contact/send',
+
+    [
+
+        ContactController::class,
+
+        'send'
+
+    ]
+
+);
+
+$router->get(
+    '/admin/contacts',
+    [
+        AdminContactController::class,
+        'index'
+    ]
+);
+
+
+$router->post(
+    '/admin/contacts/{id}/status',
+    [
+        AdminContactController::class,
+        'updateStatus'
+    ]
+);
 
 
 $router->get(

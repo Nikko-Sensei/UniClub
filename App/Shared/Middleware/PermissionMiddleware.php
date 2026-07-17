@@ -9,13 +9,17 @@ use App\Shared\Core\Response;
 
 class PermissionMiddleware
 {
+
     private PermissionService $permissionService;
 
 
     public function __construct(
         PermissionService $permissionService
     ) {
-        $this->permissionService = $permissionService;
+
+        $this->permissionService =
+            $permissionService;
+
     }
 
 
@@ -24,27 +28,33 @@ class PermissionMiddleware
         string $permission
     ): void {
 
+
         // Check login
+
         if (!Auth::check()) {
 
             Response::redirect('/login');
 
             exit;
+
         }
 
 
 
-        // Get current user id
+        // Get current user's role
 
-        $userId = Auth::id();
+        $roleId = Auth::roleId();
 
 
 
-        if (!$userId) {
+        if (!$roleId) {
 
-            Response::redirect('/login');
+            http_response_code(403);
+
+            echo "Role not assigned";
 
             exit;
+
         }
 
 
@@ -52,8 +62,9 @@ class PermissionMiddleware
         // Check permission
 
         $hasPermission =
-            $this->permissionService->can(
-                $userId,
+            $this->permissionService
+            ->can(
+                $roleId,
                 $permission
             );
 
@@ -66,6 +77,9 @@ class PermissionMiddleware
             echo "403 Forbidden";
 
             exit;
+
         }
+
     }
+
 }

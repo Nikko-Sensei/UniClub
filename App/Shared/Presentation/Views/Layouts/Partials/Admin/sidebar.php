@@ -76,6 +76,16 @@ use App\Shared\Core\Auth;
                 <i data-lucide="message-square" class="w-5 h-5"></i>
                 <span>Feedbacks</span>
             </a>
+
+            <!-- Contact Messages -->
+            <a href="<?= BASE_URL ?>/admin/contacts" class="flex items-center gap-3 px-4 py-2 rounded-xl
+        text-slate-600 hover:bg-slate-100 hover:text-blue-600 transition">
+
+                <i data-lucide="mail" class="w-5 h-5"></i>
+
+                <span>Contact</span>
+
+            </a>
         </div>
 
         <!-- Settings -->

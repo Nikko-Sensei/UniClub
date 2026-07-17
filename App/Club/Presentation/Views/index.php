@@ -1,26 +1,72 @@
 <div class="space-y-6">
 
     <!-- Header -->
-    <div class="flex justify-between items-center">
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+
         <div>
+
             <h1 class="text-2xl font-bold text-slate-800">
                 Club Management
             </h1>
+
+
             <p class="text-slate-500">
                 Overview and administration of all active campus organizations.
             </p>
+
+
         </div>
 
-        <a href="<?= BASE_URL ?>/admin/memberships"
-            class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-            <!-- <i data-lucide="plus" class="w-4 h-4"></i> -->
-            Club Membership
-        </a>
-        <a href="<?= BASE_URL ?>/admin/clubs/create"
-            class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            Create Club
-        </a>
+
+
+
+        <div class="flex flex-wrap gap-3">
+
+
+            <!-- Membership -->
+
+            <a href="<?= BASE_URL ?>/admin/memberships" class="inline-flex items-center gap-2 px-4 py-2.5 
+            bg-slate-100 
+            text-slate-700 
+            rounded-lg 
+            hover:bg-slate-200 
+            transition">
+
+
+                <i data-lucide="users" class="w-4 h-4"></i>
+
+                Club Membership
+
+
+            </a>
+
+
+
+
+
+            <!-- Create -->
+
+            <a href="<?= BASE_URL ?>/admin/clubs/create" class="inline-flex items-center gap-2 px-4 py-2.5 
+            bg-blue-600 
+            text-white 
+            rounded-lg 
+            hover:bg-blue-700 
+            transition">
+
+
+                <i data-lucide="plus" class="w-4 h-4"></i>
+
+                Create Club
+
+
+            </a>
+
+
+        </div>
+
+
     </div>
 
     <!-- Statistics Cards -->
@@ -228,22 +274,56 @@
                         </td>
                         <!-- Actions -->
                         <td class="px-5 py-3.5 text-right">
-                            <div class="flex items-center justify-end gap-1">
-                                <a href="<?= BASE_URL ?>/admin/clubs/<?= $club->getId() ?>/edit"
-                                    class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition">
-                                    <i data-lucide="square-pen" class="w-4 h-4"></i>
-                                </a>
+                            <div class="flex justify-end gap-1">
+
+
+                                <!-- View -->
+
                                 <a href="<?= BASE_URL ?>/admin/clubs/<?= $club->getId() ?>"
-                                    class="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition">
+                                    class="p-1.5 text-slate-500 hover:bg-slate-100 rounded-lg">
+
+
                                     <i data-lucide="eye" class="w-4 h-4"></i>
+
+
                                 </a>
+
+
+
+
+                                <!-- Edit -->
+
+                                <a href="<?= BASE_URL ?>/admin/clubs/<?= $club->getId() ?>/edit"
+                                    class="p-1.5 text-amber-600 hover:bg-amber-50 rounded-lg">
+
+
+                                    <i data-lucide="square-pen" class="w-4 h-4"></i>
+
+
+                                </a>
+
+
+
+
+
+                                <!-- Delete -->
+
                                 <form method="POST" action="<?= BASE_URL ?>/admin/clubs/<?= $club->getId() ?>/delete"
-                                    onsubmit="return confirm('Are you sure you want to delete this club?');">
-                                    <button type="submit"
-                                        class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
+                                    onsubmit="return confirm('Delete this club?')">
+
+
+                                    <button type="submit" class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg">
+
+
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
+
+
                                     </button>
+
+
                                 </form>
+
+
                             </div>
                         </td>
                     </tr>

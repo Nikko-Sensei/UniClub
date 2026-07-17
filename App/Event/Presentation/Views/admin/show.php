@@ -320,11 +320,18 @@
 
                 <dd class="mt-1 font-semibold text-slate-800">
 
-                    <?= htmlspecialchars(
-                        method_exists($event, 'getClubName')
-                            ? $event->getClubName()
-                            : '-'
-                    ) ?>
+                    <?php
+                    $clubName = '-';
+
+                    foreach ($clubs as $club) {
+                        if ($event->getClubId() == $club->getId()) {
+                            $clubName = $club->getName();
+                            break;
+                        }
+                    }
+                    ?>
+
+                    <?= htmlspecialchars($clubName) ?>
 
                 </dd>
 
@@ -343,11 +350,18 @@
 
                 <dd class="mt-1 font-semibold text-slate-800">
 
-                    <?= htmlspecialchars(
-                        method_exists($event, 'getCategoryName')
-                            ? $event->getCategoryName()
-                            : '-'
-                    ) ?>
+                    <?php
+                    $categoryName = '-';
+
+                    foreach ($categories as $category) {
+                        if ($event->getCategoryId() == $category['id']) {
+                            $categoryName = $category['name'];
+                            break;
+                        }
+                    }
+                    ?>
+
+                    <?= htmlspecialchars($categoryName) ?>
 
                 </dd>
 

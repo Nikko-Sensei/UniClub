@@ -206,4 +206,42 @@ class PermissionRepository extends BaseRepository implements PermissionRepositor
 
         );
     }
+
+    public function hasPermission(
+        int $roleId,
+        string $slug
+    ): bool {
+
+
+        $sql = "
+        SELECT 1
+
+        FROM role_permissions
+
+        INNER JOIN permissions
+
+        ON permissions.id = role_permissions.permission_id
+
+        WHERE role_permissions.role_id = :role_id
+
+        AND permissions.slug = :slug
+
+        LIMIT 1
+    ";
+
+
+        $stmt = $this->db->prepare($sql);
+
+
+        $stmt->execute([
+
+            'role_id' => $roleId,
+
+            'slug' => $slug
+
+        ]);
+
+
+        return (bool)$stmt->fetchColumn();
+    }
 }

@@ -76,13 +76,12 @@ foreach ($categories as $category) {
 
 
                 <p class="text-[11px] text-slate-400">
-                    All university events
+                    All events
                 </p>
 
             </div>
 
         </div>
-
 
 
 
@@ -121,8 +120,7 @@ foreach ($categories as $category) {
 
 
 
-
-        <!-- Upcoming -->
+        <!-- Upcoming Events -->
 
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
 
@@ -156,14 +154,13 @@ foreach ($categories as $category) {
 
 
 
-
-        <!-- Registrations -->
+        <!-- Completed Events -->
 
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex items-center gap-3">
 
-            <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+            <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
 
-                <i data-lucide="users" class="w-5 h-5"></i>
+                <i data-lucide="circle-check" class="w-5 h-5"></i>
 
             </div>
 
@@ -171,17 +168,17 @@ foreach ($categories as $category) {
             <div>
 
                 <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">
-                    Registrations
+                    Completed
                 </p>
 
 
                 <p class="text-xl font-bold text-slate-800">
-                    <?= $statistics['total_registrations'] ?? 0 ?>
+                    <?= $statistics['completed_events'] ?? 0 ?>
                 </p>
 
 
                 <p class="text-[11px] text-slate-400">
-                    Student participation
+                    Finished events
                 </p>
 
             </div>
@@ -679,7 +676,7 @@ foreach ($categories as $category) {
 
 
 
-                                <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>"
+                                <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/show"
                                     class="p-1.5 text-slate-500 hover:bg-slate-100 rounded-lg">
 
 

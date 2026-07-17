@@ -39,8 +39,11 @@ interface EventRepositoryInterface
     public function statistics();
 
 
-    public function findStudentEvents(
-        int $userId
+     public function findStudentEvents(
+        int $userId,
+        int $page,
+        int $limit,
+        array $filters = []
     );
 
 
@@ -83,5 +86,10 @@ interface EventRepositoryInterface
     public function rejectRegistration(
         int $registrationId,
         int $adminId
+    );
+
+    public function countStudentEvents(
+        int $userId,
+        array $filters = []
     );
 }

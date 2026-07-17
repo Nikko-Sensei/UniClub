@@ -10,7 +10,7 @@
                 <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
 
-            <a href="<?= BASE_URL ?>" class="flex items-center gap-2.5 font-bold text-lg tracking-tight">
+            <a href="<?= BASE_URL ?>/dashboard" class="flex items-center gap-2.5 font-bold text-lg tracking-tight">
                 <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-white/15">
                     <i data-lucide="landmark" class="w-5 h-5"></i>
                 </span>

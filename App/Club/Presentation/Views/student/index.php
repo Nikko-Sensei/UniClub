@@ -2,25 +2,88 @@
 
     <!-- HERO -->
     <div class="relative rounded-2xl overflow-hidden shadow-lg mb-8 aspect-[16/9] sm:aspect-[21/9] md:aspect-[3/1]">
-        <div class="absolute inset-0 bg-cover bg-center"
-            style="background-image:url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80');">
+
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('<?= $featuredClub && $featuredClub->getLogo()
+                                                                                            ? BASE_URL . '/uploads/clubs/' . $featuredClub->getLogo()
+                                                                                            : 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80'
+                                                                                        ?>');">
         </div>
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-900/85 via-slate-900/50 to-transparent"></div>
+
+
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-transparent"></div>
+
 
         <div class="relative h-full flex flex-col justify-center p-6 md:p-12 text-white max-w-2xl">
+
+
+            <!-- Badge -->
             <span
                 class="inline-flex items-center gap-1.5 bg-blue-600 text-xs font-semibold px-3 py-1 rounded-full w-fit mb-4">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Featured Community
+
+                <i data-lucide="trophy" class="w-3.5 h-3.5"></i>
+
+                Most Popular Club
             </span>
-            <h1 class="text-3xl md:text-5xl font-extrabold mb-3 leading-tight">Discover University Clubs</h1>
-            <p class="text-sm md:text-base text-slate-200 mb-6 max-w-lg">
-                Explore communities, connect with students, and join activities that match your interests.
+
+
+            <!-- Club Name -->
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-3 leading-tight">
+
+                <?= htmlspecialchars($featuredClub->getName()) ?>
+
+            </h1>
+
+
+            <!-- Description -->
+            <p class="text-sm md:text-base text-slate-200 mb-5 max-w-lg">
+
+                <?= htmlspecialchars($featuredClub->getDescription()) ?>
+
             </p>
-            <a href="#clubs"
+
+
+            <!-- Statistics -->
+            <div class="flex flex-wrap gap-5 mb-6 text-sm">
+
+
+                <div class="flex items-center gap-2">
+
+                    <i data-lucide="users" class="w-5 h-5 text-blue-400"></i>
+
+                    <span>
+                        <?= $featuredClub->getMemberCount() ?> Students Joined
+                    </span>
+
+                </div>
+
+
+                <div class="flex items-center gap-2">
+
+                    <i data-lucide="layers" class="w-5 h-5 text-blue-400"></i>
+
+                    <span>
+                        <?= htmlspecialchars($featuredClub->getCategoryName()) ?>
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <a href="<?= BASE_URL ?>/clubs/<?= $featuredClub->getId() ?>"
                 class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-sm font-semibold w-fit transition">
-                Browse Clubs <i data-lucide="arrow-right" class="w-4 h-4"></i>
+
+
+                Explore Club
+
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+
             </a>
+
+
         </div>
+
     </div>
 
     <!-- SEARCH + FILTER -->
@@ -28,7 +91,7 @@
         <div class="flex flex-col lg:flex-row gap-3">
 
             <div class="relative flex-1">
-                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400"></i>
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
                 <input type="text" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
                     placeholder="Search clubs..."
                     class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 text-sm placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition">
@@ -77,17 +140,28 @@
         <?php endif; ?>
 
         <?php foreach ($clubs as $club): ?>
+
+
         <div
             class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all">
 
             <div class="relative h-44 bg-slate-100">
                 <?php if ($club->getBanner()): ?>
+
                 <img src="<?= BASE_URL ?>/uploads/clubs/<?= $club->getBanner() ?>" class="w-full h-full object-cover"
                     alt="<?= htmlspecialchars($club->getName()) ?>">
+
+                // <?php elseif ($club->getLogo()): ?>
+
+                <img src="<?= BASE_URL ?>/uploads/clubs/<?= $club->getLogo() ?>" class="w-full h-full object-cover"
+                    alt="<?= htmlspecialchars($club->getName()) ?>">
+
                 <?php else: ?>
+
                 <div class="h-full flex items-center justify-center text-slate-300">
                     <i data-lucide="users" class="w-12 h-12"></i>
                 </div>
+
                 <?php endif; ?>
 
                 <div

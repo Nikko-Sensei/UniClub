@@ -2,22 +2,25 @@
 
 namespace App\Admin\RBAC\Application\Services;
 
-use App\Admin\RBAC\Domain\Repositories\RoleRepositoryInterface;
+
+use App\Admin\RBAC\Domain\Repositories\PermissionRepositoryInterface;
 
 
 class PermissionService
 {
 
-    private RoleRepositoryInterface $roleRepository;
+    private PermissionRepositoryInterface $permissionRepository;
 
 
     public function __construct(
-        RoleRepositoryInterface $roleRepository
+        PermissionRepositoryInterface $permissionRepository
     ) {
 
-        $this->roleRepository = $roleRepository;
+        $this->permissionRepository =
+            $permissionRepository;
 
     }
+
 
     public function can(
         int $roleId,
@@ -25,16 +28,12 @@ class PermissionService
     ): bool {
 
 
-        $role = $this->roleRepository->findById($roleId);
+        return $this->permissionRepository
+            ->hasPermission(
+                $roleId,
+                $permission
+            );
 
-        if (!$role) {
-
-            return false;
-
-        }
-
-        return $role->hasPermission(
-            $permission
-        );
     }
+
 }

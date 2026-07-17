@@ -30,7 +30,7 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
 
         $stmt = $this->db
             ->prepare(
-                "CALL sp_event_create(?,?,?,?,?,?,?,?,?,?,?,?)"
+                "CALL sp_event_create(?,?,?,?,?,?,?,?,?,?,?,?,?)"
             );
 
 
@@ -58,6 +58,8 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
 
             $data['banner'] ?? null,
 
+            $data['status'],
+
             $data['created_by']
 
         ]);
@@ -75,11 +77,11 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
 
         $stmt = $this->db
             ->prepare(
-                "CALL sp_event_update(?,?,?,?,?,?,?,?,?,?,?,?)"
+                "CALL sp_event_update(?,?,?,?,?,?,?,?,?,?,?,?,?)"
             );
 
 
-        return $stmt->execute([
+        $stmt->execute([
 
             $id,
 
@@ -102,10 +104,22 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
             $data['capacity'],
 
             $data['registration_deadline'],
-            
+
             $data['banner'] ?? null,
 
+            $data['status']
+
         ]);
+
+
+        $result =
+            $stmt->fetch(\PDO::FETCH_ASSOC);
+
+
+        $stmt->closeCursor();
+
+
+        return $result;
     }
 
 
@@ -147,6 +161,10 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
 
 
         $event = $stmt->fetch();
+
+        //      var_dump($event);
+
+        // exit;
 
 
         if (!$event) {
@@ -282,23 +300,115 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
 
 
     public function findStudentEvents(
-        int $userId
+        int $userId,
+        int $page,
+        int $limit,
+        array $filters = []
     ) {
 
-        $stmt = $this->db
-            ->prepare(
-                "CALL sp_student_event_find_all(?)"
-            );
+        $offset =
+            ($page - 1) * $limit;
+
+
+        $search =
+            $filters['search'] ?? '';
+
+
+        $status =
+            $filters['status'] ?? '';
+
+
+
+        $stmt = $this->db->prepare(
+            "CALL sp_student_event_find_all(?,?,?,?,?)"
+        );
 
 
         $stmt->execute([
 
-            $userId
+            $userId,
+
+            $search,
+
+            $status,
+
+            $limit,
+
+            $offset
 
         ]);
 
 
-        return $stmt->fetchAll();
+
+        $events = [];
+
+
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+
+
+            $events[] =
+                $this->mapToEvent($row);
+        }
+
+
+
+        while ($stmt->nextRowset()) {
+        }
+
+
+        $stmt->closeCursor();
+
+
+        return $events;
+    }
+
+
+    public function countStudentEvents(
+        int $userId,
+        array $filters = []
+    ): int {
+
+
+        $search =
+            $filters['search'] ?? '';
+
+
+        $status =
+            $filters['status'] ?? '';
+
+
+
+        $stmt =
+            $this->db->prepare(
+                "CALL sp_student_event_count(?,?,?)"
+            );
+
+
+
+        $stmt->execute([
+
+            $userId,
+
+            $search,
+
+            $status
+
+        ]);
+
+
+
+        $result =
+            $stmt->fetch();
+
+
+
+        $stmt->closeCursor();
+
+
+
+        return (int)(
+            $result['total'] ?? 0
+        );
     }
 
 

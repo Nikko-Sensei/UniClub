@@ -392,7 +392,7 @@
                 <div class="flex flex-wrap gap-6">
 
 
-                    <label class="flex items-center gap-2 text-sm text-slate-700">
+                    <!-- <label class="flex items-center gap-2 text-sm text-slate-700">
 
 
                         <input type="checkbox" name="certificate_enabled" value="1" class="w-4 h-4 text-blue-600">
@@ -401,7 +401,7 @@
                         Enable Certificate
 
 
-                    </label>
+                    </label> -->
 
 
 
