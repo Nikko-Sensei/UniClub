@@ -713,3 +713,31 @@ CREATE TABLE contact_messages (
         ON DELETE SET NULL
 
 );
+
+
+CREATE TABLE general_settings
+(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    site_name VARCHAR(100) NOT NULL,
+
+    university_name VARCHAR(150) NOT NULL,
+
+    address TEXT,
+
+    email VARCHAR(150),
+
+    phone VARCHAR(50),
+
+    logo VARCHAR(255),
+
+    favicon VARCHAR(255),
+
+    timezone VARCHAR(50)
+        DEFAULT 'Asia/Yangon',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP
+);

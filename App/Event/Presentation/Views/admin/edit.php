@@ -39,7 +39,8 @@
 
 
 
-    <form method="POST" action="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/update" class="space-y-6">
+    <form method="POST" enctype="multipart/form-data"
+        action="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/update" class="space-y-6">
 
 
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
@@ -261,6 +262,56 @@
                     <input type="time" name="end_time" value="<?= htmlspecialchars($event->getEndTime()) ?>" required
                         class="w-full px-4 py-3 rounded-xl border border-slate-200">
 
+
+                </div>
+
+
+                <!-- Banner -->
+                <div class="md:col-span-2">
+
+                    <label class="block text-sm font-semibold text-slate-700 mb-3">
+                        Event Banner
+                    </label>
+
+                    <?php if ($event->getBanner()): ?>
+
+                    <div class="mb-4">
+
+                        <img src="<?= BASE_URL ?>/uploads/events/<?= htmlspecialchars($event->getBanner()) ?>"
+                            id="bannerPreview"
+                            class="w-full h-64 rounded-2xl border border-slate-200 object-cover shadow-sm">
+
+                    </div>
+
+                    <?php else: ?>
+
+                    <div class="mb-4">
+
+                        <img id="bannerPreview"
+                            class="hidden w-full h-64 rounded-2xl border border-slate-200 object-cover shadow-sm">
+
+                    </div>
+
+                    <?php endif; ?>
+
+
+                    <label
+                        class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-slate-300 rounded-2xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition">
+
+                        <i class="fa-solid fa-image text-4xl text-blue-500 mb-3"></i>
+
+                        <span class="text-sm font-semibold text-slate-700">
+                            Click to upload new banner
+                        </span>
+
+                        <span class="text-xs text-slate-400 mt-1">
+                            JPG, PNG, WEBP (Max 5MB)
+                        </span>
+
+                        <input type="file" name="banner" accept="image/*" class="hidden"
+                            onchange="previewBanner(event)">
+
+                    </label>
 
                 </div>
 

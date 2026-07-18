@@ -115,6 +115,12 @@ use App\Auth\Presentation\Controllers\PasswordResetController;
 use App\Auth\Domain\Repository\PasswordResetRepositoryInterface;
 use App\Auth\Infrastructure\Persistence\PasswordResetRepository;
 
+// General
+use App\Admin\Settings\General\Presentation\Controllers\GeneralSettingController;
+use App\Admin\Settings\General\Application\Services\GeneralSettingService;
+use App\Admin\Settings\General\Domain\Repository\GeneralSettingRepositoryInterface;
+use App\Admin\Settings\General\Infrastructure\Persistence\GeneralSettingRepository;
+
 // Mail
 use App\Shared\Mail\Mailer;
 use App\Shared\Mail\EmailService;
@@ -784,6 +790,66 @@ class Bootstrap
 
                     $container->resolve(
                         ContactService::class
+                    )
+
+                );
+            }
+
+        );
+
+        // =====================================================
+        // General Settings
+        // =====================================================
+
+
+        // General Setting Repository
+
+        $container->bind(
+
+            GeneralSettingRepositoryInterface::class,
+
+            function () {
+
+                return new GeneralSettingRepository();
+            }
+
+        );
+
+
+
+        // General Setting Service
+
+        $container->bind(
+
+            GeneralSettingService::class,
+
+            function ($container) {
+
+                return new GeneralSettingService(
+
+                    $container->resolve(
+                        GeneralSettingRepositoryInterface::class
+                    )
+
+                );
+            }
+
+        );
+
+
+
+        // General Setting Controller
+
+        $container->bind(
+
+            GeneralSettingController::class,
+
+            function ($container) {
+
+                return new GeneralSettingController(
+
+                    $container->resolve(
+                        GeneralSettingService::class
                     )
 
                 );

@@ -27,6 +27,9 @@ use App\Shared\Middleware\PermissionMiddleware;
 use App\Shared\Middleware\AdminMiddleware;
 use App\Shared\Middleware\ClubManagerMiddleware;
 
+use App\Admin\Settings\General\Presentation\Controllers\GeneralSettingController;
+
+
 //Home
 $router->get(
     '/dashboard',
@@ -1012,4 +1015,36 @@ $router->get(
     '/admin/users',
     [UserManagementController::class, 'search'],
     // [AuthMiddleware::class]
+);
+
+$router->get(
+    '/admin/settings/general',
+    [
+        GeneralSettingController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class,
+        [
+            PermissionMiddleware::class,
+            'settings.general.view'
+        ]
+    ]
+);
+
+
+
+$router->post(
+    '/admin/settings/general/update',
+    [
+        GeneralSettingController::class,
+        'update'
+    ],
+    [
+        AuthMiddleware::class,
+        [
+            PermissionMiddleware::class,
+            'settings.general.update'
+        ]
+    ]
 );

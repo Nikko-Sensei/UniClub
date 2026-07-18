@@ -72,6 +72,8 @@ class EventService
             throw new EventNotFoundException();
         }
 
+        $data['banner'] =
+            $event->getBanner();
 
         $this->handleImages(
             $files,
@@ -343,59 +345,58 @@ class EventService
 
 
     public function getStudentEvents(
-    int $userId,
-    int $page,
-    int $limit,
-    array $filters = []
-)
-{
+        int $userId,
+        int $page,
+        int $limit,
+        array $filters = []
+    ) {
 
-    $events =
-        $this->eventRepository
-        ->findStudentEvents(
-            $userId,
-            $page,
-            $limit,
-            $filters
-        );
-
-
-    $total =
-    $this->eventRepository
-    ->countStudentEvents(
-
-        $userId,
-
-        $filters
-
-    );
+        $events =
+            $this->eventRepository
+            ->findStudentEvents(
+                $userId,
+                $page,
+                $limit,
+                $filters
+            );
 
 
-    return [
+        $total =
+            $this->eventRepository
+            ->countStudentEvents(
 
-        'events' =>
+                $userId,
+
+                $filters
+
+            );
+
+
+        return [
+
+            'events' =>
             $events,
 
 
-        'pagination' => [
+            'pagination' => [
 
-            'total' =>
+                'total' =>
                 $total,
 
 
-            'current_page' =>
+                'current_page' =>
                 $page,
 
 
-            'total_pages' =>
+                'total_pages' =>
                 ceil(
                     $total / $limit
                 )
 
-        ]
+            ]
 
-    ];
-}
+        ];
+    }
 
     private function handleImages(
         array $files,
