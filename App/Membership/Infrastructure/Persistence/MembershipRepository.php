@@ -59,6 +59,52 @@ class MembershipRepository extends BaseRepository implements MembershipRepositor
     }
 
 
+    public function rejoin(
+        int $clubId,
+        int $userId,
+        int $clubRoleId
+    ): bool {
+
+        $stmt =
+            $this->db->prepare(
+                "CALL sp_membership_rejoin(?,?,?)"
+            );
+
+
+        return $stmt->execute([
+            $clubId,
+            $userId,
+            $clubRoleId
+        ]);
+    }
+
+
+    public function findByUserAndClub(
+        int $clubId,
+        int $userId
+    ): ?array {
+
+
+        $stmt =
+            $this->db->prepare(
+                "CALL sp_membership_find_by_user_club(?,?)"
+            );
+
+
+        $stmt->execute([
+            $clubId,
+            $userId
+        ]);
+
+
+        $result =
+            $stmt->fetch();
+
+
+        return $result ?: null;
+    }
+
+
 
 
     public function create(

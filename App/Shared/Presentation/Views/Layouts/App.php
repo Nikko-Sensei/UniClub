@@ -11,7 +11,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://unpkg.com/lucide@latest" defer></script>
-    <script src="<?= BASE_URL ?>/assets/js/notification.js"></script>
+
 </head>
 
 <body class="bg-slate-50 text-slate-800 font-sans antialiased flex flex-col min-h-screen">
@@ -53,6 +53,12 @@
         if (window.lucide) lucide.createIcons();
     });
     </script>
+    <script>
+    const BASE_URL = "<?= BASE_URL ?>";
+    console.log("BASE_URL =", BASE_URL);
+    </script>
+
+    <script src="<?= BASE_URL ?>/assets/js/notification.js"></script>
 </body>
 
 </html>

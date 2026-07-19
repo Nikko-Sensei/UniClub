@@ -44,62 +44,66 @@ use App\Shared\Core\Auth;
         <!-- Right: actions -->
         <div class="flex items-center gap-2">
 
-            <button id="notificationButton" aria-label="Notifications"
-                class="relative w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition">
+            <div class="relative">
+
+                <button id="notificationButton" aria-label="Notifications"
+                    class="relative w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition">
+
+                    <i data-lucide="bell" class="w-4.5 h-4.5"></i>
 
 
-                <i data-lucide="bell" class="w-4.5 h-4.5"></i>
+                    <span id="notificationBadge" class="hidden absolute -top-1 -right-1 
+            min-w-5 h-5 px-1
+            flex items-center justify-center
+            text-xs font-bold
+            text-white
+            bg-red-500
+            rounded-full
+            ring-2 ring-blue-600">
+                    </span>
 
 
-                <span id="notificationBadge" class="hidden absolute -top-1 -right-1 
-        min-w-5 h-5 px-1
-        flex items-center justify-center
-        text-xs font-bold
-        text-white
-        bg-red-500
-        rounded-full
-        ring-2 ring-blue-600">
-                </span>
-
-
-            </button>
-
-            <div id="notificationDropdown" class="hidden absolute right-0 mt-3 w-80
-     bg-white rounded-xl shadow-xl
-     overflow-hidden z-50">
-
-
-                <div class="px-4 py-3 border-b">
-
-                    <h3 class="font-semibold text-gray-800">
-                        Notifications
-                    </h3>
-
-                </div>
+                </button>
 
 
 
-                <div id="notificationList" class="max-h-96 overflow-y-auto">
+                <div id="notificationDropdown" class="hidden absolute right-0 mt-3 w-80
+        bg-white rounded-xl shadow-xl
+        overflow-hidden z-50">
 
 
-                    <div class="p-4 text-center text-gray-500">
+                    <div class="px-4 py-3 border-b">
 
-                        Loading...
+                        <h3 class="font-semibold text-gray-800">
+                            Notifications
+                        </h3>
 
                     </div>
 
 
+
+                    <div id="notificationList" class="max-h-96 overflow-y-auto">
+
+
+                        <div class="p-4 text-center text-gray-500">
+
+                            Loading...
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <a href="<?= BASE_URL ?>/notifications" class="block text-center py-3 text-blue-600 border-t">
+
+                        View All
+
+                    </a>
+
+
                 </div>
-
-
-
-                <a href="<?= BASE_URL ?>/notifications" class="block text-center py-3
-       text-blue-600 border-t">
-
-                    View All
-
-                </a>
-
 
             </div>
 

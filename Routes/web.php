@@ -133,6 +133,45 @@ $router->get(
     [PasswordResetController::class, 'showSuccess']
 );
 
+// notification
+
+
+$router->get(
+    '/notifications',
+    [
+        NotificationController::class,
+        'index'
+    ]
+);
+
+
+$router->get(
+    '/notifications/read/{id}',
+    [
+        NotificationController::class,
+        'read'
+    ]
+);
+
+
+$router->get(
+    '/notifications/read-all',
+    [
+        NotificationController::class,
+        'readAll'
+    ]
+);
+
+$router->get(
+    '/notifications/unread-count',
+    [
+        NotificationController::class,
+        'unreadCount'
+    ]
+);
+
+
+
 $router->get(
     '/notifications/latest',
     [

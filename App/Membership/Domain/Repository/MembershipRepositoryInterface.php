@@ -13,6 +13,17 @@ interface MembershipRepositoryInterface
     ): bool;
 
 
+    public function findByUserAndClub(
+        int $clubId,
+        int $userId
+    ): ?array;
+
+    public function rejoin(
+        int $clubId,
+        int $userId,
+        int $clubRoleId
+    ): bool;
+
 
     public function create(
         int $clubId,
@@ -36,8 +47,8 @@ interface MembershipRepositoryInterface
     ): array;
 
     public function getMyClubsCount(
-    int $userId
-): int;
+        int $userId
+    ): int;
 
 
     public function leave(

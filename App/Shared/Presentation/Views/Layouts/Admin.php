@@ -54,6 +54,13 @@
     lucide.createIcons();
     </script>
 
+    <script>
+    const BASE_URL = "<?= BASE_URL ?>";
+    console.log("BASE_URL =", BASE_URL);
+    </script>
+
+    <script src="<?= BASE_URL ?>/assets/js/notification.js"></script>
+
 </body>
 
 </html>

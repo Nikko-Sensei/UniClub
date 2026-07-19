@@ -17,6 +17,8 @@ class NotificationController extends BaseController
     ) {
 
         parent::__construct();
+
+        $this->notificationService = $notificationService;
     }
 
 
@@ -37,11 +39,11 @@ class NotificationController extends BaseController
 
 
         $this->view(
-            'notifications/index',
+            'Notification/Presentation/Views/notifications/index',
             [
                 'notifications' => $notifications
             ],
-            'layouts/app'
+            'Auth'
         );
     }
 
@@ -62,7 +64,7 @@ class NotificationController extends BaseController
 
 
         Response::redirect(
-            BASE_URL . '/notifications'
+            '/notifications'
         );
     }
 
@@ -92,7 +94,7 @@ class NotificationController extends BaseController
 
 
         Response::redirect(
-            BASE_URL . '/notifications'
+            '/notifications'
         );
     }
 
@@ -106,14 +108,15 @@ class NotificationController extends BaseController
     public function unreadCount(): void
     {
 
-        $userId = $_SESSION['user']['id'];
-
+        $userId =
+            $_SESSION['user']['id'];
 
 
         $count =
             $this->notificationService
-            ->getUnreadCount($userId);
-
+            ->getUnreadCount(
+                $userId
+            );
 
 
         header(
@@ -121,22 +124,17 @@ class NotificationController extends BaseController
         );
 
 
-
         echo json_encode([
             'count' => $count
         ]);
+
+
+        exit;
     }
 
-    /**
-     * Get latest notifications
-     * Used by navbar dropdown AJAX
-     */
     public function latest(): void
     {
-
         $userId = $_SESSION['user']['id'];
-
-
 
         $notifications =
             $this->notificationService
@@ -145,45 +143,31 @@ class NotificationController extends BaseController
             );
 
 
-
         $data = [];
-
 
 
         foreach ($notifications as $notification) {
 
             $data[] = [
 
-                'id' =>
-                $notification->getId(),
+                'id' => $notification->getId(),
 
+                'title' => $notification->getTitle(),
 
-                'title' =>
-                $notification->getTitle(),
+                'message' => $notification->getMessage(),
 
+                'createdAt' => $notification->getCreatedAt(),
 
-                'message' =>
-                $notification->getMessage(),
-
-
-                'isRead' =>
-                $notification->isRead(),
-
-
-                'createdAt' =>
-                $notification->getCreatedAt()
+                'isRead' => $notification->isRead()
 
             ];
         }
 
 
-
-        header(
-            'Content-Type: application/json'
-        );
-
-
+        header('Content-Type: application/json');
 
         echo json_encode($data);
+
+        exit;
     }
 }

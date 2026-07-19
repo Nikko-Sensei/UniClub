@@ -37,19 +37,74 @@
         <div class="flex items-center gap-2 sm:gap-4">
 
             <!-- Notification -->
-            <button
-                class="relative w-9 h-9 rounded-xl flex items-center justify-center hover:bg-slate-100 transition-all hover:scale-105 group">
-                <i data-lucide="bell" class="w-5 h-5 text-slate-500 group-hover:text-blue-600 transition-colors"></i>
-                <!-- Badge with pulse -->
-                <span
-                    class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 border-2 border-white rounded-full animate-pulse"></span>
-            </button>
+            <div class="relative">
+
+                <!-- Notification button -->
+
+                <button id="notificationButton" aria-label="Notifications"
+                    class="relative w-9 h-9 rounded-xl flex items-center justify-center hover:bg-slate-100 transition-all hover:scale-105 group">
+
+
+                    <i data-lucide="bell" class="w-5 h-5 text-slate-500 group-hover:text-blue-600 transition-colors">
+                    </i>
+
+
+                    <span id="notificationBadge" class="hidden absolute -top-1 -right-1
+                            min-w-5 h-5 px-1
+                            flex items-center justify-center
+                            text-xs font-bold
+                            text-white
+                            bg-red-500
+                            rounded-full
+                            border-2 border-white">
+                    </span>
+
+                </button>
+
+                <!-- Dropdown -->
+                <div id="notificationDropdown" class="hidden absolute right-0 mt-3 w-80
+                        bg-white rounded-xl shadow-xl
+                        overflow-hidden z-50">
+
+
+                    <div class="px-4 py-3 border-b">
+
+                        <h3 class="font-semibold text-gray-800">
+                            Notifications
+                        </h3>
+
+                    </div>
+
+
+
+                    <div id="notificationList" class="max-h-96 overflow-y-auto">
+
+                        <div class="p-4 text-center text-gray-500">
+                            Loading...
+                        </div>
+
+                    </div>
+
+
+
+                    <a href="<?= BASE_URL ?>/notifications" class="block text-center py-3
+        text-blue-600 border-t">
+
+                        View All
+
+                    </a>
+
+
+                </div>
+            </div>
 
             <!-- Divider -->
             <div class="hidden sm:block h-7 w-px bg-slate-200/50"></div>
 
             <!-- User Profile -->
-            <?php use App\Shared\Core\Auth; ?>
+            <?php
+
+            use App\Shared\Core\Auth; ?>
             <?php $user = Auth::user(); ?>
             <?php $name = $user['name'] ?? 'Admin'; ?>
             <?php $profileImage = $user['profile_image'] ?? null; ?>
@@ -81,7 +136,7 @@
                             $initials = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
                         }
                         echo htmlspecialchars($initials);
-                    ?>
+                        ?>
                     <?php endif; ?>
                 </div>
             </button>

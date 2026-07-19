@@ -523,6 +523,13 @@ class Bootstrap
 
                     $container->resolve(
                         MembershipRepositoryInterface::class
+                    ),
+                    $container->resolve(
+                        NotificationService::class
+                    ),
+
+                    $container->resolve(
+                        UserService::class
                     )
 
                 );

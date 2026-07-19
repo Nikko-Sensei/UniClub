@@ -87,4 +87,10 @@ class UserService
         // 3. Update DB
         $this->userRepository->updatePassword($userId, $hashedPassword);
     }
+
+    public function getAdmins(): array
+    {
+        return $this->userRepository
+            ->findAdmins();
+    }
 }

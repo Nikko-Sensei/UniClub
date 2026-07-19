@@ -251,22 +251,58 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     }
 
     public function getAll(): array
-{
-    $stmt = $this->db->prepare(
-        "SELECT * FROM users ORDER BY created_at DESC"
-    );
+    {
+        $stmt = $this->db->prepare(
+            "SELECT * FROM users ORDER BY created_at DESC"
+        );
 
-    $stmt->execute();
+        $stmt->execute();
 
-    $rows = $stmt->fetchAll();
+        $rows = $stmt->fetchAll();
 
-    $users = [];
+        $users = [];
 
-    foreach ($rows as $row) {
-        $users[] = $this->mapToUser($row);
+        foreach ($rows as $row) {
+            $users[] = $this->mapToUser($row);
+        }
+
+        return $users;
     }
 
-    return $users;
-}
+    public function findAdmins(): array
+    {
+        $sql = "
+        SELECT u.*
+        FROM users u
+        INNER JOIN roles r
+            ON u.role_id = r.id
+        WHERE r.name = 'admin'
+        AND u.status = 'active'
+        AND u.deleted_at IS NULL
+        ORDER BY u.created_at DESC
+    ";
 
+
+        $stmt = $this->db->prepare($sql);
+
+
+        $stmt->execute();
+
+
+        $rows = $stmt->fetchAll();
+
+
+
+        $admins = [];
+
+
+        foreach ($rows as $row) {
+
+            $admins[] =
+                $this->mapToUser($row);
+        }
+
+
+        return $admins;
+    }
 }

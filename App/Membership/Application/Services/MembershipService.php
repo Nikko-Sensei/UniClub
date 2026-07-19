@@ -4,63 +4,191 @@ namespace App\Membership\Application\Services;
 
 
 use App\Membership\Domain\Repository\MembershipRepositoryInterface;
+use App\Notification\Application\Services\NotificationService;
+use App\User\Application\Services\UserService;
 
 
 class MembershipService
 {
 
     private MembershipRepositoryInterface $membershipRepository;
+    private NotificationService $notificationService;
+
+    private UserService $userService;
+
 
 
     public function __construct(
-        MembershipRepositoryInterface $membershipRepository
+        MembershipRepositoryInterface $membershipRepository,
+        NotificationService $notificationService,
+        UserService $userService
     ) {
 
         $this->membershipRepository = $membershipRepository;
+
+
+        $this->notificationService = $notificationService;
+
+
+        $this->userService = $userService;
     }
 
 
 
+    // public function joinClub(
+    //     int $clubId,
+    //     int $userId
+    // ): bool {
+
+
+    //     if (
+    //         $this->membershipRepository
+    //         ->exists(
+    //             $clubId,
+    //             $userId
+    //         )
+    //     ) {
+
+    //         throw new \Exception(
+    //             "You already requested this club"
+    //         );
+    //     }
+
+
+    //     /*
+    //         Default club role:
+    //         4 = Member
+
+    //         Change this if your
+    //         club_roles table uses another ID
+    //     */
+
+    //     $memberRoleId = 4;
+
+
+
+    //     return $this->membershipRepository
+    //         ->create(
+    //             $clubId,
+    //             $userId,
+    //             $memberRoleId
+    //         );
+    // }
     public function joinClub(
         int $clubId,
         int $userId
     ): bool {
 
 
-        if (
-            $this->membershipRepository
-            ->exists(
-                $clubId,
-                $userId
-            )
-        ) {
-
-            throw new \Exception(
-                "You already requested this club"
-            );
-        }
-
-
-        /*
-            Default club role:
-            4 = Member
-
-            Change this if your
-            club_roles table uses another ID
-        */
-
         $memberRoleId = 4;
 
 
+        $membership =
+            $this->membershipRepository
+            ->findByUserAndClub(
+                $clubId,
+                $userId
+            );
 
-        return $this->membershipRepository
+
+        /*
+        Existing membership found
+    */
+        if ($membership) {
+
+
+            if (
+                $membership['status'] === 'pending'
+            ) {
+
+                throw new \Exception(
+                    "Your request is waiting for approval."
+                );
+            }
+
+
+
+            if (
+                $membership['status'] === 'approved'
+            ) {
+
+                throw new \Exception(
+                    "You are already a member of this club."
+                );
+            }
+
+
+
+            if (
+                $membership['status'] === 'left'
+            ) {
+
+
+                $rejoined =
+                    $this->membershipRepository
+                    ->rejoin(
+                        $clubId,
+                        $userId,
+                        $memberRoleId
+                    );
+
+
+                if (!$rejoined) {
+
+                    throw new \Exception(
+                        "Could not send join request again."
+                    );
+                }
+
+
+                /*
+                Notify Admins after rejoin
+            */
+                $this->notifyAdmins(
+                    $clubId,
+                    $userId
+                );
+
+
+                return true;
+            }
+        }
+
+
+
+        /*
+        New membership
+    */
+
+        $created =
+            $this->membershipRepository
             ->create(
                 $clubId,
                 $userId,
                 $memberRoleId
             );
-    }
 
+
+
+        if (!$created) {
+
+            return false;
+        }
+
+
+
+        /*
+        Notify Admins after new request
+    */
+
+        $this->notifyAdmins(
+            $clubId,
+            $userId
+        );
+
+
+        return true;
+    }
 
 
 
@@ -78,51 +206,51 @@ class MembershipService
 
 
 
-  /**
- * Get Student Clubs With Pagination
- */
-public function getMyClubs(
-    int $userId,
-    int $page,
-    int $limit
-): array {
+    /**
+     * Get Student Clubs With Pagination
+     */
+    public function getMyClubs(
+        int $userId,
+        int $page,
+        int $limit
+    ): array {
 
 
-    $clubs =
-        $this->membershipRepository
-        ->getMyClubs(
-            $userId,
-            $page,
-            $limit
-        );
-
-
-
-    $total =
-        $this->membershipRepository
-        ->getMyClubsCount(
-            $userId
-        );
+        $clubs =
+            $this->membershipRepository
+            ->getMyClubs(
+                $userId,
+                $page,
+                $limit
+            );
 
 
 
-    $totalPages =
-        (int)ceil(
-            $total / $limit
-        );
+        $total =
+            $this->membershipRepository
+            ->getMyClubsCount(
+                $userId
+            );
 
 
 
-    return [
+        $totalPages =
+            (int)ceil(
+                $total / $limit
+            );
 
-        'data' => $clubs,
 
-        'current_page' => $page,
 
-        'total_pages' => $totalPages
+        return [
 
-    ];
-}
+            'data' => $clubs,
+
+            'current_page' => $page,
+
+            'total_pages' => $totalPages
+
+        ];
+    }
 
 
     public function leaveClub(
@@ -145,10 +273,48 @@ public function getMyClubs(
             ->getPendingMemberships();
     }
 
+    // public function approveMembership(
+    //     int $membershipId,
+    //     int $adminId
+    // ): void {
+
+    //     $approved =
+    //         $this->membershipRepository
+    //         ->approveMembership(
+    //             $membershipId,
+    //             $adminId
+    //         );
+
+
+    //     if (!$approved) {
+
+    //         throw new \Exception(
+    //             'Membership request could not be approved'
+    //         );
+    //     }
+    // }
+
     public function approveMembership(
         int $membershipId,
         int $adminId
     ): void {
+
+
+        $membership =
+            $this->membershipRepository
+            ->getById(
+                $membershipId
+            );
+
+
+        if (!$membership) {
+
+            throw new \Exception(
+                'Membership not found'
+            );
+        }
+
+
 
         $approved =
             $this->membershipRepository
@@ -158,12 +324,25 @@ public function getMyClubs(
             );
 
 
+
         if (!$approved) {
 
             throw new \Exception(
                 'Membership request could not be approved'
             );
         }
+
+
+
+        $this->notificationService
+            ->create(
+                $membership['user_id'],
+                'Membership Approved',
+                "Your request to join {$membership['club_name']} has been approved.",
+                'membership_approved',
+                'club',
+                $membership['club_id']
+            );
     }
 
 
@@ -237,64 +416,62 @@ public function getMyClubs(
                 $roleId
             );
     }
-   public function getMembersByClub(
-    int $clubId,
-    array $filters = [],
-    int $page = 1
-): array
-{
+    public function getMembersByClub(
+        int $clubId,
+        array $filters = [],
+        int $page = 1
+    ): array {
 
-    $limit = 10;
-
-
-    $offset =
-        ($page - 1) * $limit;
+        $limit = 10;
 
 
-
-    $members =
-        $this->membershipRepository
-        ->getMembersByClub(
-            $clubId,
-            $filters,
-            $limit,
-            $offset
-        );
+        $offset =
+            ($page - 1) * $limit;
 
 
-    $total =
-        $this->membershipRepository
-        ->countMembersByClub(
-            $clubId,
-            $filters
-        );
+
+        $members =
+            $this->membershipRepository
+            ->getMembersByClub(
+                $clubId,
+                $filters,
+                $limit,
+                $offset
+            );
 
 
-    return [
-
-        'members' => $members,
-
-
-        'pagination' => [
-
-            'current_page' =>
-            $page,
+        $total =
+            $this->membershipRepository
+            ->countMembersByClub(
+                $clubId,
+                $filters
+            );
 
 
-            'total_pages' =>
-            ceil(
-                $total / $limit
-            ),
+        return [
+
+            'members' => $members,
 
 
-            'total' =>
-            $total
+            'pagination' => [
 
-        ]
+                'current_page' =>
+                $page,
 
-    ];
 
-}
+                'total_pages' =>
+                ceil(
+                    $total / $limit
+                ),
+
+
+                'total' =>
+                $total
+
+            ]
+
+        ];
+    }
 
     public function getMembershipById(
         int $id
@@ -355,5 +532,46 @@ public function getMyClubs(
             ->remove(
                 $membershipId
             );
+    }
+
+    private function notifyAdmins(
+        int $clubId,
+        int $userId
+    ): void {
+
+
+        $membership =
+            $this->membershipRepository
+            ->findByUserAndClub(
+                $clubId,
+                $userId
+            );
+
+
+        if (!$membership) {
+
+            return;
+        }
+
+
+
+        $admins =
+            $this->userService
+            ->getAdmins();
+
+
+
+        foreach ($admins as $admin) {
+
+            $this->notificationService
+                ->create(
+                    $admin->getId(),
+                    'New Membership Request',
+                    "{$membership['name']} requested to join {$membership['club_name']}.",
+                    'membership_request',
+                    'club',
+                    $clubId
+                );
+        }
     }
 }

@@ -27,4 +27,6 @@ interface UserRepositoryInterface
         ?string $phone,
         ?string $profileImage
     ): bool;
+
+    public function findAdmins(): array;
 }
