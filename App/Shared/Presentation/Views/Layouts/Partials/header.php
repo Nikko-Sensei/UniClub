@@ -34,41 +34,94 @@ use App\Shared\Core\Auth;
             foreach ($navItems as $slug => $label):
                 $active = str_starts_with($currentPath ?? '', BASE_URL . '/' . $slug);
             ?>
-                <a href="<?= BASE_URL ?>/<?= $slug ?>"
-                    class="px-3.5 py-2 rounded-xl text-sm font-medium transition <?= $active ? 'bg-white/20 text-white' : 'text-blue-50 hover:bg-white/10' ?>">
-                    <?= $label ?>
-                </a>
+            <a href="<?= BASE_URL ?>/<?= $slug ?>"
+                class="px-3.5 py-2 rounded-xl text-sm font-medium transition <?= $active ? 'bg-white/20 text-white' : 'text-blue-50 hover:bg-white/10' ?>">
+                <?= $label ?>
+            </a>
             <?php endforeach; ?>
         </nav>
 
         <!-- Right: actions -->
         <div class="flex items-center gap-2">
 
-            <button aria-label="Notifications"
+            <button id="notificationButton" aria-label="Notifications"
                 class="relative w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition">
+
+
                 <i data-lucide="bell" class="w-4.5 h-4.5"></i>
-                <span class="absolute top-2 right-2 w-2 h-2 bg-amber-400 rounded-full ring-2 ring-blue-600"></span>
+
+
+                <span id="notificationBadge" class="hidden absolute -top-1 -right-1 
+        min-w-5 h-5 px-1
+        flex items-center justify-center
+        text-xs font-bold
+        text-white
+        bg-red-500
+        rounded-full
+        ring-2 ring-blue-600">
+                </span>
+
+
             </button>
 
-            <?php if (!\App\Shared\Core\Auth::check()): ?>
-                <a href="<?= BASE_URL ?>/login"
-                    class="hidden sm:inline-flex items-center gap-2 bg-white text-blue-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-50 transition">
-                    <i data-lucide="log-in" class="w-4 h-4"></i> Login
+            <div id="notificationDropdown" class="hidden absolute right-0 mt-3 w-80
+     bg-white rounded-xl shadow-xl
+     overflow-hidden z-50">
+
+
+                <div class="px-4 py-3 border-b">
+
+                    <h3 class="font-semibold text-gray-800">
+                        Notifications
+                    </h3>
+
+                </div>
+
+
+
+                <div id="notificationList" class="max-h-96 overflow-y-auto">
+
+
+                    <div class="p-4 text-center text-gray-500">
+
+                        Loading...
+
+                    </div>
+
+
+                </div>
+
+
+
+                <a href="<?= BASE_URL ?>/notifications" class="block text-center py-3
+       text-blue-600 border-t">
+
+                    View All
+
                 </a>
+
+
+            </div>
+
+            <?php if (!\App\Shared\Core\Auth::check()): ?>
+            <a href="<?= BASE_URL ?>/login"
+                class="hidden sm:inline-flex items-center gap-2 bg-white text-blue-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-50 transition">
+                <i data-lucide="log-in" class="w-4 h-4"></i> Login
+            </a>
             <?php else: ?>
-                <a href="<?= BASE_URL ?>/profile"
-                    class="hidden lg:flex items-center gap-2 pl-1 pr-3 py-1 rounded-xl hover:bg-white/10 transition">
-                    <div
-                        class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold text-white overflow-hidden">
+            <a href="<?= BASE_URL ?>/profile"
+                class="hidden lg:flex items-center gap-2 pl-1 pr-3 py-1 rounded-xl hover:bg-white/10 transition">
+                <div
+                    class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold text-white overflow-hidden">
 
-                        <?php if (!empty(Auth::profileImage())): ?>
+                    <?php if (!empty(Auth::profileImage())): ?>
 
-                            <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars(Auth::profileImage()) ?>"
-                                class="w-full h-full rounded-full object-cover" alt="Profile">
+                    <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars(Auth::profileImage()) ?>"
+                        class="w-full h-full rounded-full object-cover" alt="Profile">
 
-                        <?php else: ?>
+                    <?php else: ?>
 
-                            <?php
+                    <?php
                             $name = Auth::user()['name'] ?? 'User';
 
                             $words = preg_split('/\s+/', trim($name));
@@ -85,15 +138,15 @@ use App\Shared\Core\Auth;
                             echo htmlspecialchars($initials);
                             ?>
 
-                        <?php endif; ?>
+                    <?php endif; ?>
 
-                    </div>
-                    <span class="text-sm font-medium">Profile</span>
-                </a>
-                <a href="<?= BASE_URL ?>/logout" aria-label="Logout"
-                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-red-500 transition">
-                    <i data-lucide="log-out" class="w-4.5 h-4.5"></i>
-                </a>
+                </div>
+                <span class="text-sm font-medium">Profile</span>
+            </a>
+            <a href="<?= BASE_URL ?>/logout" aria-label="Logout"
+                class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-red-500 transition">
+                <i data-lucide="log-out" class="w-4.5 h-4.5"></i>
+            </a>
             <?php endif; ?>
         </div>
     </div>
@@ -126,10 +179,10 @@ use App\Shared\Core\Auth;
         <?php foreach ($navItems as $slug => $label):
             $active = str_starts_with($currentPath ?? '', BASE_URL . '/' . $slug);
         ?>
-            <a href="<?= BASE_URL ?>/<?= $slug ?>"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl transition <?= $active ? 'bg-blue-50 text-blue-700' : 'hover:bg-slate-50' ?>">
-                <?= $label ?>
-            </a>
+        <a href="<?= BASE_URL ?>/<?= $slug ?>"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl transition <?= $active ? 'bg-blue-50 text-blue-700' : 'hover:bg-slate-50' ?>">
+            <?= $label ?>
+        </a>
         <?php endforeach; ?>
         <a href="<?= BASE_URL ?>/profile"
             class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition">Profile</a>
@@ -137,15 +190,15 @@ use App\Shared\Core\Auth;
 
     <div class="mt-auto pt-4 border-t border-slate-100">
         <?php if (!\App\Shared\Core\Auth::check()): ?>
-            <a href="<?= BASE_URL ?>/login"
-                class="flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold">
-                <i data-lucide="log-in" class="w-4 h-4"></i> Login
-            </a>
+        <a href="<?= BASE_URL ?>/login"
+            class="flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold">
+            <i data-lucide="log-in" class="w-4 h-4"></i> Login
+        </a>
         <?php else: ?>
-            <a href="<?= BASE_URL ?>/logout"
-                class="flex items-center justify-center gap-2 bg-red-50 text-red-600 py-3 rounded-xl text-sm font-semibold">
-                <i data-lucide="log-out" class="w-4 h-4"></i> Logout
-            </a>
+        <a href="<?= BASE_URL ?>/logout"
+            class="flex items-center justify-center gap-2 bg-red-50 text-red-600 py-3 rounded-xl text-sm font-semibold">
+            <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+        </a>
         <?php endif; ?>
     </div>
 </div>

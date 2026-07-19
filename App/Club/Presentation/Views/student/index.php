@@ -255,29 +255,49 @@
             <div class="flex flex-col lg:flex-row gap-4">
                 <!-- Search input -->
                 <div class="relative flex-1">
-                    <i data-lucide="search"
-                        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 transition-all duration-300 peer-focus:text-blue-500 peer-focus:scale-110"></i>
+
+                    <!-- Search Icon -->
+                    <span class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                        <i data-lucide="search"
+                            class="w-5 h-5 text-slate-400 transition-all duration-300 peer-focus:text-blue-500 peer-focus:scale-110"></i>
+                    </span>
+
+                    <!-- Search Input -->
                     <input type="text" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
                         placeholder="Search clubs..."
-                        class="peer w-full pl-12 pr-4 py-3.5 rounded-xl border border-slate-200/80 bg-white/50 text-sm placeholder:text-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white outline-none transition-all duration-300 shadow-sm focus:shadow-lg">
+                        class="peer w-full py-3.5 pl-12 pr-4 rounded-xl border border-slate-200/80 bg-white/50 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white outline-none transition-all duration-300 shadow-sm focus:shadow-lg">
+
                 </div>
 
                 <!-- Category dropdown -->
                 <div class="relative min-w-[180px]">
-                    <i data-lucide="layers"
-                        class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
+
+                    <!-- Left Icon -->
+                    <span class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                        <i data-lucide="layers" class="w-4 h-4 text-slate-400"></i>
+                    </span>
+
+                    <!-- Select -->
                     <select name="category_id" onchange="this.form.submit()"
-                        class="appearance-none w-full pl-11 pr-10 py-3.5 rounded-xl border border-slate-200/80 bg-white/50 text-sm cursor-pointer focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white outline-none transition-all duration-300 hover:border-blue-300 shadow-sm hover:shadow-md">
+                        class="appearance-none w-full pl-11 pr-10 py-3.5 rounded-xl border border-slate-200/80 bg-white/50 text-sm text-slate-700 cursor-pointer focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white outline-none transition-all duration-300 hover:border-blue-300 shadow-sm hover:shadow-md">
+
                         <option value="">All Categories</option>
+
                         <?php foreach ($categories as $category) : ?>
                         <option value="<?= $category['id'] ?>"
                             <?= ($_GET['category_id'] ?? '') == $category['id'] ? 'selected' : '' ?>>
                             <?= htmlspecialchars($category['name']) ?>
                         </option>
                         <?php endforeach; ?>
+
                     </select>
-                    <i data-lucide="chevron-down"
-                        class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none transition-transform duration-300 group-hover:rotate-180"></i>
+
+                    <!-- Dropdown Arrow -->
+                    <span class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                        <i data-lucide="chevron-down"
+                            class="w-4 h-4 text-slate-400 transition-transform duration-300"></i>
+                    </span>
+
                 </div>
 
                 <!-- My Clubs button -->

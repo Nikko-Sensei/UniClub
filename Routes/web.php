@@ -26,6 +26,7 @@ use App\Contact\Presentation\Controllers\AdminContactController;
 use App\Shared\Middleware\PermissionMiddleware;
 use App\Shared\Middleware\AdminMiddleware;
 use App\Shared\Middleware\ClubManagerMiddleware;
+use App\Notification\Presentation\Controllers\NotificationController;
 
 use App\Admin\Settings\General\Presentation\Controllers\GeneralSettingController;
 
@@ -130,6 +131,14 @@ $router->post(
 $router->get(
     '/password-reset-success',
     [PasswordResetController::class, 'showSuccess']
+);
+
+$router->get(
+    '/notifications/latest',
+    [
+        NotificationController::class,
+        'latest'
+    ]
 );
 
 // ADMIN USER MANAGEMENT

@@ -1,339 +1,169 @@
 <div class="space-y-8">
 
-
-    <!-- Header -->
-
-    <div class="flex items-center justify-between gap-4">
-
-
-        <div>
-
-
-            <h1 class="text-3xl font-bold text-slate-800">
-
-                Create Announcement
-
-            </h1>
-
-
-            <p class="text-slate-500 mt-2">
-
-                Create a new announcement for students.
-
-            </p>
-
-
-        </div>
-
-
-
-
+    <!-- ========================================================== -->
+    <!-- BACK BUTTON – Glass with slide-in                         -->
+    <!-- ========================================================== -->
+    <div class="animate-slideInLeft">
         <a href="<?= BASE_URL ?>/admin/announcements"
-            class="inline-flex items-center gap-2 px-4 py-2.5 border border-slate-200 bg-white rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50">
-
-
-            <i class="fa-solid fa-arrow-left"></i>
-
-
-            Back
-
-
+            class="back-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card-light text-slate-700 font-medium text-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:border-blue-200 group">
+            <i data-lucide="arrow-left"
+                class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"></i>
+            <span>Back to Announcements</span>
         </a>
-
-
     </div>
 
+    <!-- ========================================================== -->
+    <!-- HEADER                                                     -->
+    <!-- ========================================================== -->
+    <div class="flex items-center justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-800">Create Announcement</h1>
+            <p class="text-slate-500 mt-1">Create a new announcement for students.</p>
+        </div>
+    </div>
 
+    <!-- ========================================================== -->
+    <!-- FORM CARD – Glass with organized sections                 -->
+    <!-- ========================================================== -->
+    <div
+        class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50">
 
+        <form action="<?= BASE_URL ?>/admin/announcements/store" method="POST" class="space-y-8">
 
-
-
-
-    <form action="<?= BASE_URL ?>/admin/announcements/store" method="POST" class="space-y-6">
-
-
-
-
-
-        <!-- Form Card -->
-
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
-
-
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-
-
-
-
-                <!-- Club -->
-
-                <div>
-
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                        Club
-
-                    </label>
-
-
-
-                    <select name="club_id" required
-                        class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 outline-none">
-
-
-                        <option value="">
-
-                            Select Club
-
-                        </option>
-
-
-
-                        <?php foreach($clubs as $club): ?>
-
-
-                        <option value="<?= $club->getId() ?>">
-
-                            <?= htmlspecialchars($club->getName()) ?>
-
-                        </option>
-
-
-                        <?php endforeach; ?>
-
-
-                    </select>
-
-
+            <!-- ===== Basic Information ===== -->
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                    </div>
+                    <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider">Basic Information</h2>
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Club -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                            Club <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <select name="club_id" required
+                                class="w-full pl-4 pr-10 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm appearance-none">
+                                <option value="">Select Club</option>
+                                <?php foreach($clubs as $club): ?>
+                                <option value="<?= $club->getId() ?>">
+                                    <?= htmlspecialchars($club->getName()) ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <span
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                            </span>
+                        </div>
+                    </div>
 
+                    <!-- Priority -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                            Priority <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <select name="priority"
+                                class="w-full pl-4 pr-10 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm appearance-none">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                            <span
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                            </span>
+                        </div>
+                    </div>
 
+                    <!-- Title -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                            Announcement Title <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
 
+                            <input type="text" name="title" placeholder="Enter announcement title" required
+                                class="w-full pl-4 pr-4 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm peer focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm">
+                        </div>
+                    </div>
 
-
-
-
-                <!-- Priority -->
-
-                <div>
-
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                        Priority
-
-                    </label>
-
-
-
-                    <select name="priority" class="w-full px-4 py-3 rounded-xl border border-slate-200">
-
-
-                        <option value="low">
-
-                            Low
-
-                        </option>
-
-
-                        <option value="medium" selected>
-
-                            Medium
-
-                        </option>
-
-
-                        <option value="high">
-
-                            High
-
-                        </option>
-
-
-                    </select>
-
-
+                    <!-- Content -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                            Content <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <textarea name="content" rows="6" placeholder="Write announcement content..." required
+                                class="w-full pl-4 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm peer focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm resize-y"></textarea>
+                        </div>
+                    </div>
                 </div>
-
-
-
-
-
-
-
-
-                <!-- Title -->
-
-                <div class="md:col-span-2">
-
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                        Announcement Title
-
-                    </label>
-
-
-
-                    <input type="text" name="title" placeholder="Enter announcement title" required
-                        class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 outline-none">
-
-
-                </div>
-
-
-
-
-
-
-
-
-                <!-- Content -->
-
-                <div class="md:col-span-2">
-
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                        Content
-
-                    </label>
-
-
-
-                    <textarea name="content" rows="6" placeholder="Write announcement content..." required
-                        class="w-full px-4 py-3 rounded-xl border border-slate-200 resize-none focus:border-blue-500 outline-none"></textarea>
-
-
-                </div>
-
-
-
-
-
-
-
-
-                <!-- Status -->
-
-                <div>
-
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                        Status
-
-                    </label>
-
-
-
-                    <select name="status" class="w-full px-4 py-3 rounded-xl border border-slate-200">
-
-
-                        <option value="draft">
-
-                            Draft
-
-                        </option>
-
-
-                        <option value="published">
-
-                            Published
-
-                        </option>
-
-
-                    </select>
-
-
-                </div>
-
-
-
-
-
-
-
-
-                <!-- Image -->
-
-                <div>
-
-
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">
-
-                        Image URL
-
-                    </label>
-
-
-
-                    <input type="text" name="image" placeholder="https://example.com/image.jpg"
-                        class="w-full px-4 py-3 rounded-xl border border-slate-200">
-
-
-                </div>
-
-
-
-
-
             </div>
 
+            <hr class="border-slate-200/60">
 
-        </div>
+            <!-- ===== Settings ===== -->
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-sm">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                    </div>
+                    <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider">Settings</h2>
+                </div>
 
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                        Status <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <select name="status"
+                            class="w-full pl-4 pr-10 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm appearance-none">
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                        </select>
+                        <span
+                            class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        </span>
+                    </div>
+                    <p class="mt-1 text-xs text-slate-400">Changing status affects visibility</p>
+                </div>
+            </div>
 
+            <!-- ========================================================== -->
+            <!-- FORM ACTIONS – Glass bar                                 -->
+            <!-- ========================================================== -->
+            <div class="flex flex-wrap items-center justify-end gap-3 pt-4 border-t border-slate-200/60">
+                <a href="<?= BASE_URL ?>/admin/announcements"
+                    class="px-6 py-2.5 text-sm font-medium text-slate-700 bg-white/70 backdrop-blur-sm border border-slate-200/60 rounded-xl hover:bg-slate-100/80 hover:border-blue-200 transition flex items-center gap-1.5">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                    Cancel
+                </a>
 
+                <button type="submit"
+                    class="px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-md shadow-blue-200/50 hover:shadow-xl hover:scale-[1.02] flex items-center gap-2 btn-shine">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    Create Announcement
+                </button>
+            </div>
 
-
-
-
-
-        <!-- Actions -->
-
-        <div class="flex justify-end gap-3">
-
-
-
-            <a href="<?= BASE_URL ?>/admin/announcements"
-                class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50">
-
-
-                Cancel
-
-
-            </a>
-
-
-
-
-
-            <button type="submit" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold">
-
-
-                <i class="fa-solid fa-bullhorn mr-2"></i>
-
-
-                Create Announcement
-
-
-            </button>
-
-
-
-        </div>
-
-
-
-
-
-    </form>
-
+        </form>
+    </div>
 
 </div>
+
+<!-- ── Scripts for Lucide Icons ── -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+});
+</script>

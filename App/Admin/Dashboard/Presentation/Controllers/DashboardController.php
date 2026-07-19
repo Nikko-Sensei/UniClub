@@ -24,6 +24,11 @@ class DashboardController extends BaseController
     {
 
         $dashboard = $this->service->getDashboardData();
+
+// var_dump($dashboard);
+// exit;
+
+        
         $this->view(
             'Admin/Dashboard/Presentation/Views/dashboard',
             [

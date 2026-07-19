@@ -6,6 +6,10 @@ use App\Shared\Container\Container;
 
 // Home
 use App\Home\Presentation\Controllers\HomeController;
+use App\Home\Domain\Repository\HomeRepositoryInterface;
+use App\Home\Infrastructure\Persistence\HomeRepository;
+use App\Home\Application\Services\HomeService;
+
 
 // Auditlog + DB
 use App\Shared\Logging\AuditLogger;
@@ -125,6 +129,13 @@ use App\Admin\Settings\General\Infrastructure\Persistence\GeneralSettingReposito
 use App\Shared\Mail\Mailer;
 use App\Shared\Mail\EmailService;
 
+// Notification
+
+use App\Notification\Domain\Repository\NotificationRepositoryInterface;
+use App\Notification\Infrastructure\Persistence\NotificationRepository;
+use App\Notification\Application\Services\NotificationService;
+use App\Notification\Presentation\Controllers\NotificationController;
+
 class Bootstrap
 {
     public static function create(): Container
@@ -133,9 +144,36 @@ class Bootstrap
 
         // Home Controller
 
-        $container->bind(HomeController::class, function () {
-            return new HomeController();
-        });
+        $container->bind(
+            HomeRepositoryInterface::class,
+            function () {
+
+                return new HomeRepository();
+            }
+        );
+
+        $container->bind(
+            HomeService::class,
+            function ($container) {
+
+                return new HomeService(
+                    $container->resolve(
+                        HomeRepositoryInterface::class
+                    )
+                );
+            }
+        );
+        $container->bind(
+            HomeController::class,
+            function ($container) {
+
+                return new HomeController(
+                    $container->resolve(
+                        HomeService::class
+                    )
+                );
+            }
+        );
 
         //Auth Controller
         $container->bind(AuthController::class, function ($container) {
@@ -940,6 +978,42 @@ class Bootstrap
                 $container->resolve(Mailer::class)
             );
         });
+
+        $container->bind(
+            NotificationRepositoryInterface::class,
+            function () {
+
+                return new NotificationRepository();
+            }
+        );
+
+
+
+        $container->bind(
+            NotificationService::class,
+            function ($container) {
+
+                return new NotificationService(
+                    $container->resolve(
+                        NotificationRepositoryInterface::class
+                    )
+                );
+            }
+        );
+
+
+
+        $container->bind(
+            NotificationController::class,
+            function ($container) {
+
+                return new NotificationController(
+                    $container->resolve(
+                        NotificationService::class
+                    )
+                );
+            }
+        );
 
         return $container;
     }

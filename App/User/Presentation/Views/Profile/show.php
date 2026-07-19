@@ -5,264 +5,390 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Profile</title>
+
+    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        .profile-card {
-            transition: box-shadow 0.2s ease;
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #F1F5F9;
+        color: #0F172A;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #CBD5E1;
+        border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #94A3B8;
+    }
+
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(12px);
         }
 
-        .profile-card:hover {
-            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideInLeft {
+        0% {
+            opacity: 0;
+            transform: translateX(-20px);
         }
 
-        .sidebar-stat {
-            transition: background 0.15s ease;
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes scaleIn {
+        0% {
+            opacity: 0;
+            transform: scale(0.96);
         }
 
-        .sidebar-stat:hover {
-            background: #f1f5f9;
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .animate-fadeInUp {
+        animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-slideInLeft {
+        animation: slideInLeft 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-scaleIn {
+        animation: scaleIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .back-btn {
+        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .back-btn:hover {
+        transform: translateX(-3px);
+        color: #2563eb;
+    }
+
+    .btn-shine {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-shine::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .btn-shine:hover::before {
+        left: 100%;
+    }
+
+    .flash-success {
+        animation: fadeInUp 0.4s ease-out;
+    }
+
+    .flash-success.fade-out {
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+
+    *:focus-visible {
+        outline: 2px solid #2563EB;
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+
+    .badge-pulse {
+        animation: pulse-badge 2s infinite;
+    }
+
+    @keyframes pulse-badge {
+
+        0%,
+        100% {
+            opacity: 1;
         }
 
-        .badge-pulse {
-            animation: pulse-badge 2s infinite;
+        50% {
+            opacity: 0.6;
         }
+    }
 
-        @keyframes pulse-badge {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.7;
-            }
-        }
+    .avatar-ring {
+        background: conic-gradient(from 0deg, #2563eb, #6366f1, #8b5cf6, #2563eb);
+        padding: 2px;
+        border-radius: 9999px;
+    }
     </style>
 </head>
 
 <body>
-    <?php
 
-    use App\Shared\Helpers\Flash;
+    <div
+        class="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100/50 to-slate-50 flex items-center justify-center p-4 sm:p-6">
 
-    $success = Flash::get('success');
-    ?>
+        <div class="w-full max-w-6xl space-y-5">
 
-    <?php if ($success): ?>
-        <div class="max-w-6xl mx-auto mt-4 px-4">
-            <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-xl shadow-sm">
-                <?= htmlspecialchars($success) ?>
+            <!-- ===== SUCCESS FLASH MESSAGE ===== -->
+            <?php
+
+            use App\Shared\Helpers\Flash;
+
+            $success = Flash::get('success'); ?>
+            <?php if ($success): ?>
+            <div
+                class="flash-success bg-emerald-50 border border-emerald-200 rounded-xl px-5 py-3.5 flex items-center gap-3 text-emerald-700 shadow-sm animate-fadeInUp">
+                <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500"></i>
+                <span class="font-medium text-sm"><?= htmlspecialchars($success) ?></span>
+                <button onclick="this.parentElement.remove()"
+                    class="ml-auto text-emerald-400 hover:text-emerald-600 transition">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
             </div>
-        </div>
-    <?php endif; ?>
-    <div class="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6">
+            <?php endif; ?>
 
-        <div class="w-full max-w-6xl bg-white rounded-2xl shadow-lg overflow-hidden profile-card">
 
-            <!-- ===== TOP HEADER ===== -->
-            <div class="bg-gradient-to-br from-blue-600 to-blue-800 px-6 py-8 sm:px-10 sm:py-10 text-white">
+            <div class="animate-slideInLeft">
+                <a href="<?= BASE_URL ?>/dashboard"
+                    class="back-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card-light text-slate-700 font-medium text-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:border-blue-200 group">
+                    <i data-lucide="arrow-left"
+                        class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+            </div>
 
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+            <!-- ===== MAIN PROFILE CARD ===== -->
+            <div class="bg-white rounded-2xl shadow-lg border border-slate-200/50 overflow-hidden animate-scaleIn">
 
-                    <!-- left: avatar + name + meta -->
-                    <div class="flex items-center gap-5">
+                <!-- ===== HEADER – Clean with avatar and quick actions ===== -->
+                <div class="px-6 py-7 sm:px-8 sm:py-8 border-b border-slate-200/50">
 
-                        <!-- avatar -->
-                        <div
-                            class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-600 flex items-center justify-center text-4xl sm:text-5xl font-bold text-white shadow-lg border-2 border-blue-400 flex-shrink-0">
-                            <?php if (!empty($user->getProfileImage())): ?>
-                                <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars($user->getProfileImage()) ?>"
-                                    class="w-full h-full rounded-full object-cover" alt="Profile">
-                            <?php else: ?>
-                                <?php
-                                $name = trim($user->getName());
-                                $words = preg_split('/\s+/', $name);
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
 
-                                if (count($words) >= 2) {
-                                    $initials = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
-                                } else {
-                                    $initials = strtoupper(substr($words[0], 0, 1));
-                                }
+                        <!-- left: avatar + name + meta -->
+                        <div class="flex items-center gap-5">
 
-                                echo htmlspecialchars($initials);
-                                ?>
-                            <?php endif; ?>
-                        </div>
+                            <!-- Avatar with ring -->
+                            <div class="relative">
+                                <div
+                                    class="w-28 h-28 rounded-full p-1 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 shadow-xl shadow-blue-200/40">
+                                    <div
+                                        class="w-full h-full rounded-full overflow-hidden bg-white/10 backdrop-blur-sm">
+                                        <?php if (!empty($user->getProfileImage())): ?>
+                                        <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars($user->getProfileImage()) ?>"
+                                            class="w-full h-full object-cover" alt="Profile">
+                                        <?php else: ?>
+                                        <div
+                                            class="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-blue-700 text-3xl font-bold">
+                                            <?php
+                                                $name = trim($user->getName());
+                                                $words = preg_split('/\s+/', $name);
+                                                if (count($words) >= 2) {
+                                                    $initials = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
+                                                } else {
+                                                    $initials = strtoupper(substr($words[0], 0, 1));
+                                                }
+                                                echo htmlspecialchars($initials);
+                                                ?>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <!-- Status dot -->
+                                <span
+                                    class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full shadow-md animate-pulse"></span>
+                            </div>
 
-                        <!-- name + id + year -->
-                        <div>
-                            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">
-                                <?= htmlspecialchars($user->getName()) ?>
-                            </h1>
-                            <div
-                                class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-blue-100 text-sm sm:text-base">
-                                <span><i class="far fa-id-card mr-1.5"></i> ID:
-                                    <?= htmlspecialchars($user->getStudentId()) ?></span>
-                                <span><i class="far fa-calendar-alt mr-1.5"></i>
-                                    <?= htmlspecialchars($academicYearName ?? 'Third Year') ?></span>
+                            <div>
+                                <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                                    <?= htmlspecialchars($user->getName()) ?>
+                                </h1>
+                                <div class="flex flex-wrap items-center gap-3 mt-0.5 text-sm text-slate-500">
+                                    <span class="flex items-center gap-1.5">
+                                        <i data-lucide="id-card" class="w-3.5 h-3.5"></i>
+                                        <?= htmlspecialchars($user->getStudentId()) ?>
+                                    </span>
+                                    <span class="w-1 h-1 rounded-full bg-slate-300"></span>
+                                    <span class="flex items-center gap-1.5">
+                                        <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+                                        <?= htmlspecialchars($user->getEmail()) ?>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- right: active badge + department/email (desktop) -->
-                    <div class="flex items-center gap-3 sm:flex-col sm:items-end">
-                        <span
-                            class="inline-flex items-center gap-1.5 bg-blue-400/20 text-blue-100 text-sm font-medium px-4 py-1.5 rounded-full border border-blue-300/30 backdrop-blur-sm badge-pulse">
-                            <span class="w-2 h-2 rounded-full bg-blue-300 inline-block"></span>
-                            <?= ucfirst($user->getStatus()) === 'Active' ? 'Active Member' : ucfirst($user->getStatus()) ?>
-                        </span>
-                        <div class="hidden sm:block text-blue-200 text-xs text-right">
-                            <div><?= htmlspecialchars($departmentName ?? 'Computer Science') ?></div>
-                            <div class="mt-0.5"><?= htmlspecialchars($user->getEmail()) ?></div>
+                        <!-- right: status + actions -->
+                        <div class="flex items-center gap-3">
+                            <span
+                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/50 badge-pulse">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                <?= ucfirst($user->getStatus()) === 'Active' ? 'Active' : ucfirst($user->getStatus()) ?>
+                            </span>
+                            <a href="<?= BASE_URL ?>/profile/edit"
+                                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md btn-shine">
+                                <i data-lucide="square-pen" class="w-4 h-4"></i>
+                                Edit
+                            </a>
+                            <a href="<?= BASE_URL ?>/profile/change-password"
+                                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 text-sm font-medium transition-all duration-200">
+                                <i data-lucide="key" class="w-4 h-4"></i>
+                            </a>
                         </div>
                     </div>
+
                 </div>
 
-                <!-- department + email (mobile) -->
-                <div class="mt-3 text-blue-200 text-sm flex flex-wrap gap-x-4 gap-y-1 sm:hidden">
-                    <span><i class="fas fa-laptop mr-1.5"></i>
-                        <?= htmlspecialchars($departmentName ?? 'Computer Science') ?></span>
-                    <span><i class="far fa-envelope mr-1.5"></i> <?= htmlspecialchars($user->getEmail()) ?></span>
+                <!-- ===== BODY: Two columns – sidebar stats removed ===== -->
+                <div class="flex flex-col lg:flex-row">
+
+                    <!-- ===== LEFT SIDEBAR – Quick info only ===== -->
+                    <aside
+                        class="w-full lg:w-56 lg:flex-shrink-0 bg-slate-50/30 p-5 border-b lg:border-b-0 lg:border-r border-slate-200/50">
+
+                        <!-- Member since, department, academic year -->
+                        <div class="text-xs text-slate-400 space-y-1.5">
+                            <p class="flex items-center gap-1.5">
+                                <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                                Joined
+                                <?= $user->getCreatedAt() ? date('F Y', strtotime($user->getCreatedAt())) : '2026' ?>
+                            </p>
+                            <p class="flex items-center gap-1.5">
+                                <i data-lucide="building-2" class="w-3.5 h-3.5"></i>
+                                <?= htmlspecialchars($departmentName ?? 'Computer Science') ?>
+                            </p>
+                            <p class="flex items-center gap-1.5">
+                                <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i>
+                                <?= htmlspecialchars($academicYearName ?? 'Third Year') ?>
+                            </p>
+                        </div>
+
+                        <!-- Optionally add a divider and status again -->
+                        <div class="mt-4 pt-4 border-t border-slate-200/50">
+                            <p class="flex items-center gap-1.5 text-xs text-slate-500">
+                                <i data-lucide="circle" class="w-3.5 h-3.5 text-emerald-500"></i>
+                                <span class="font-medium"><?= ucfirst($user->getStatus()) ?></span>
+                            </p>
+                        </div>
+
+                    </aside>
+
+                    <!-- ===== RIGHT MAIN – Personal Information ===== -->
+                    <main class="flex-1 p-5 sm:p-7">
+
+                        <h2
+                            class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <i data-lucide="user-circle" class="w-4 h-4 text-slate-400"></i>
+                            Personal Information
+                        </h2>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+                            <div>
+                                <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Full
+                                    Name</label>
+                                <p class="text-slate-800 font-medium mt-0.5"><?= htmlspecialchars($user->getName()) ?>
+                                </p>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Student
+                                    ID</label>
+                                <p class="text-slate-800 font-medium mt-0.5">
+                                    <?= htmlspecialchars($user->getStudentId()) ?></p>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Email</label>
+                                <p class="text-slate-800 font-medium mt-0.5"><?= htmlspecialchars($user->getEmail()) ?>
+                                </p>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Phone</label>
+                                <p class="text-slate-800 font-medium mt-0.5">
+                                    <?= htmlspecialchars($user->getPhone() ?: '—') ?></p>
+                            </div>
+
+                            <div>
+                                <label
+                                    class="text-xs font-medium text-slate-400 uppercase tracking-wider">Department</label>
+                                <p class="text-slate-800 font-medium mt-0.5">
+                                    <?= htmlspecialchars($departmentName ?? '—') ?></p>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Academic
+                                    Year</label>
+                                <p class="text-slate-800 font-medium mt-0.5">
+                                    <?= htmlspecialchars($academicYearName ?? '—') ?></p>
+                            </div>
+
+                        </div>
+
+                    </main>
                 </div>
             </div>
 
-            <!-- ===== BODY: two columns ===== -->
-            <div class="flex flex-col lg:flex-row">
-
-                <!-- ===== SIDEBAR ===== -->
-                <aside
-                    class="w-full lg:w-64 lg:flex-shrink-0 bg-slate-50/80 border-b lg:border-b-0 lg:border-r border-slate-200/70 p-6 space-y-5">
-
-                    <!-- stat: Club Joined -->
-                    <div
-                        class="sidebar-stat rounded-xl bg-white p-4 shadow-sm border border-slate-200/60 flex items-center gap-4 cursor-default">
-                        <div
-                            class="w-11 h-11 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xl">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-slate-800 leading-none">3</div>
-                            <div class="text-sm text-slate-500 font-medium">Club Joined</div>
-                        </div>
-                    </div>
-
-                    <!-- stat: Registered Events -->
-                    <div
-                        class="sidebar-stat rounded-xl bg-white p-4 shadow-sm border border-slate-200/60 flex items-center gap-4 cursor-default">
-                        <div
-                            class="w-11 h-11 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-xl">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-slate-800 leading-none">12</div>
-                            <div class="text-sm text-slate-500 font-medium">Registered Events</div>
-                        </div>
-                    </div>
-
-                    <hr class="border-slate-200/60 my-4" />
-
-                    <div class="text-xs text-slate-400 space-y-1">
-                        <p><i class="far fa-clock mr-1.5"></i> Member since
-                            <?= $user->getCreatedAt() ? date('Y', strtotime($user->getCreatedAt())) : '2026' ?></p>
-                        <p><i class="far fa-circle mr-1.5"></i> Status: <?= ucfirst($user->getStatus()) ?></p>
-                    </div>
-                </aside>
-
-                <!-- ===== MAIN CONTENT ===== -->
-                <main class="flex-1 p-6 sm:p-8">
-
-                    <h2 class="text-lg font-semibold text-slate-800 flex items-center gap-2 mb-5">
-                        <i class="fas fa-user-circle text-blue-500 text-xl"></i>
-                        Personal Information
-                    </h2>
-
-                    <div
-                        class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 bg-slate-50/60 rounded-xl p-5 sm:p-6 border border-slate-200/50">
-
-                        <div>
-                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Full Name</label>
-                            <p class="text-slate-800 font-medium mt-0.5"><?= htmlspecialchars($user->getName()) ?></p>
-                        </div>
-
-                        <div>
-                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Student
-                                ID</label>
-                            <p class="text-slate-800 font-medium mt-0.5"><?= htmlspecialchars($user->getStudentId()) ?>
-                            </p>
-                        </div>
-
-                        <div>
-                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Email
-                                Address</label>
-                            <p class="text-slate-800 font-medium mt-0.5"><?= htmlspecialchars($user->getEmail()) ?></p>
-                        </div>
-
-                        <div>
-                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Phone
-                                Number</label>
-                            <p class="text-slate-800 font-medium mt-0.5">
-                                <?= htmlspecialchars($user->getPhone() ?: '-') ?></p>
-                        </div>
-
-                        <div>
-                            <label
-                                class="text-xs font-medium text-slate-400 uppercase tracking-wider">Department</label>
-                            <p class="text-slate-800 font-medium mt-0.5"><?= htmlspecialchars($departmentName ?? '-') ?>
-                            </p>
-                        </div>
-
-                        <div>
-                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Academic
-                                Year</label>
-                            <p class="text-slate-800 font-medium mt-0.5">
-                                <?= htmlspecialchars($academicYearName ?? '-') ?></p>
-                        </div>
-
-                        <div class="sm:col-span-2">
-                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Date
-                                Joined</label>
-                            <p class="text-slate-800 font-medium mt-0.5">
-                                <?= $user->getCreatedAt() ? date('d F Y', strtotime($user->getCreatedAt())) : '01 January 2026' ?>
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- action buttons -->
-                    <div class="mt-6 flex flex-wrap gap-3">
-                        <a href="<?= BASE_URL ?>/profile/edit"
-                            class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-6 py-2.5 rounded-lg transition shadow-sm shadow-blue-200">
-                            <i class="fas fa-edit"></i> Edit Profile
-                        </a>
-                        <a href="<?= BASE_URL ?>/profile/change-password"
-                            class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 text-sm font-medium px-6 py-2.5 rounded-lg border border-slate-300 transition shadow-sm">
-                            <i class="fas fa-key"></i> Change Password
-                        </a>
-                    </div>
-
-                </main>
-            </div>
         </div>
     </div>
 
-</body>
+    <!-- ── Lucide Icons ── -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const el = document.querySelector('.flash-success');
-
-        if (el) {
+        // ── Flash message auto-dismiss ──
+        const flash = document.querySelector('.flash-success');
+        if (flash) {
             setTimeout(() => {
-                el.style.opacity = "0";
-                el.style.transition = "0.5s";
-
-                setTimeout(() => {
-                    el.remove();
-                }, 500);
+                flash.classList.add('fade-out');
+                setTimeout(() => flash.remove(), 500);
             }, 5000);
         }
     });
-</script>
+    </script>
+
+</body>
 
 </html>

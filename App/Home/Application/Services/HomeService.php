@@ -6,14 +6,81 @@ use App\Home\Domain\Repository\HomeRepositoryInterface;
 
 class HomeService
 {
+
+    private HomeRepositoryInterface $homeRepository;
+
+
     public function __construct(
-        private HomeRepositoryInterface $repository
+        HomeRepositoryInterface $homeRepository
     ) {
+
+        $this->homeRepository =
+            $homeRepository;
     }
 
-    public function getHomeData(): array
+
+
+    /**
+     * Homepage Statistics
+     */
+    public function getStatistics(): array
     {
-        return $this->repository
+
+        return
+            $this->homeRepository
             ->getStatistics();
+
     }
+
+
+
+    /**
+     * Featured Clubs
+     */
+    public function getFeaturedClubs(
+        int $limit = 6
+    ): array {
+
+        return
+            $this->homeRepository
+            ->getFeaturedClubs(
+                $limit
+            );
+
+    }
+
+
+
+    /**
+     * Upcoming Events
+     */
+    public function getUpcomingEvents(
+        int $limit = 6
+    ): array {
+
+        return
+            $this->homeRepository
+            ->getUpcomingEvents(
+                $limit
+            );
+
+    }
+
+
+
+    /**
+     * Latest Announcements
+     */
+    public function getLatestAnnouncements(
+        int $limit = 5
+    ): array {
+
+        return
+            $this->homeRepository
+            ->getLatestAnnouncements(
+                $limit
+            );
+
+    }
+
 }
