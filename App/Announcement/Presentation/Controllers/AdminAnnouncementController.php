@@ -203,7 +203,7 @@ class AdminAnnouncementController extends BaseController
 
         Response::redirect(
 
-            'admin/announcements'
+            '/admin/announcements'
 
         );
     }
@@ -299,7 +299,7 @@ class AdminAnnouncementController extends BaseController
 
         Response::redirect(
 
-            'admin/announcements'
+            '/admin/announcements'
 
         );
     }

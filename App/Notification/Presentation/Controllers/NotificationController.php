@@ -53,9 +53,31 @@ class NotificationController extends BaseController
     /**
      * Mark notification as read
      */
+    // public function read(
+    //     int $id
+    // ): void {
+
+
+    //     $this->notificationService
+    //         ->markAsRead($id);
+
+
+
+    //     Response::redirect(
+    //         '/notifications'
+    //     );
+    // }
+
+
     public function read(
         int $id
     ): void {
+
+
+        $notification =
+            $this->notificationService
+            ->getNotification($id);
+
 
 
         $this->notificationService
@@ -64,7 +86,10 @@ class NotificationController extends BaseController
 
 
         Response::redirect(
-            '/notifications'
+            $this->notificationService
+                ->getRedirectUrl(
+                    $notification
+                )
         );
     }
 

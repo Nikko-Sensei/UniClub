@@ -592,6 +592,29 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function findClubMembers(
+        int $clubId
+    ): array {
+
+
+        $stmt = $this->db->prepare(
+            "
+        SELECT user_id
+        FROM club_memberships
+        WHERE club_id = ?
+        AND status = 'approved'
+        "
+        );
+
+
+        $stmt->execute([
+            $clubId
+        ]);
+
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
 
     private function mapToClub(
         array $row

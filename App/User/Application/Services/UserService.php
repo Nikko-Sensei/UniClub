@@ -93,4 +93,10 @@ class UserService
         return $this->userRepository
             ->findAdmins();
     }
+
+    public function getStudents(): array
+    {
+        return $this->userRepository
+            ->findStudents();
+    }
 }

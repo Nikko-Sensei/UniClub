@@ -53,7 +53,7 @@ interface AnnouncementRepositoryInterface
         array $filters = []
     );
 
-     public function count(
+    public function count(
         array $filters = []
     ): int;
 
@@ -72,5 +72,7 @@ interface AnnouncementRepositoryInterface
      */
     public function findPublished();
 
-
+    public function findClubMembers(
+        int $clubId
+    ): array;
 }

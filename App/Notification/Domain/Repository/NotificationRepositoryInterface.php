@@ -41,4 +41,8 @@ interface NotificationRepositoryInterface
         int $userId,
         int $limit = 5
     ): array;
+
+    public function findById(
+        int $id
+    ): ?Notification;
 }

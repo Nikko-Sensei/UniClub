@@ -305,4 +305,42 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
         return $admins;
     }
+
+
+    public function findStudents(): array
+    {
+        $sql = "
+        SELECT u.*
+        FROM users u
+        INNER JOIN roles r
+            ON u.role_id = r.id
+        WHERE r.name = 'student'
+        AND u.status = 'active'
+        AND u.deleted_at IS NULL
+        ORDER BY u.created_at DESC
+    ";
+
+
+        $stmt = $this->db->prepare($sql);
+
+
+        $stmt->execute();
+
+
+        $rows = $stmt->fetchAll();
+
+
+
+        $students = [];
+
+
+        foreach ($rows as $row) {
+
+            $students[] =
+                $this->mapToUser($row);
+        }
+
+
+        return $students;
+    }
 }

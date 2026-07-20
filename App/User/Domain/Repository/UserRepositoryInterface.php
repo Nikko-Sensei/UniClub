@@ -29,4 +29,6 @@ interface UserRepositoryInterface
     ): bool;
 
     public function findAdmins(): array;
+
+    public function findStudents(): array;
 }

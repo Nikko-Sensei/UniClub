@@ -11,6 +11,8 @@ use App\Event\Domain\Exceptions\EventRegistrationException;
 
 use App\Shared\Application\Services\ImageUploadService;
 
+use App\Notification\Application\Services\NotificationService;
+
 
 
 class EventService
@@ -20,18 +22,24 @@ class EventService
 
     private ImageUploadService $imageUploadService;
 
+    private NotificationService $notificationService;
+
 
     public function __construct(
 
         EventRepositoryInterface $eventRepository,
 
-        ImageUploadService $imageUploadService
+        ImageUploadService $imageUploadService,
+
+        NotificationService $notificationService
 
     ) {
 
         $this->eventRepository = $eventRepository;
 
         $this->imageUploadService = $imageUploadService;
+
+        $this->notificationService = $notificationService;
     }
 
 
@@ -47,14 +55,82 @@ class EventService
             $data
         );
 
+        // return $this->eventRepository
+        //     ->create($data);
 
-
-
-        return $this->eventRepository
+        $event =
+            $this->eventRepository
             ->create($data);
+
+
+
+        if (
+            $event &&
+            $data['status'] === 'published'
+        ) {
+
+            $members =
+                $this->eventRepository
+                ->findClubMembers(
+                    $data['club_id']
+                );
+
+
+
+            foreach ($members as $member) {
+
+                $this->notificationService
+                    ->notifyNewEvent(
+
+                        $member['user_id'],
+
+                        $event['id'],
+
+                        $data['title']
+
+                    );
+            }
+        }
+
+
+
+        return $event;
     }
 
 
+
+    // public function update(
+    //     int $id,
+    //     array $data,
+    //     array $files
+    // ) {
+
+    //     $event =
+    //         $this->eventRepository
+    //         ->findById($id);
+
+
+    //     if (!$event) {
+
+    //         throw new EventNotFoundException();
+    //     }
+
+    //     $data['banner'] =
+    //         $event->getBanner();
+
+    //     $this->handleImages(
+    //         $files,
+    //         $data
+    //     );
+
+
+
+    //     return $this->eventRepository
+    //         ->update(
+    //             $id,
+    //             $data
+    //         );
+    // }
 
     public function update(
         int $id,
@@ -72,8 +148,16 @@ class EventService
             throw new EventNotFoundException();
         }
 
+
+        $oldStatus =
+            $event->getStatus();
+
+
+
         $data['banner'] =
             $event->getBanner();
+
+
 
         $this->handleImages(
             $files,
@@ -82,11 +166,48 @@ class EventService
 
 
 
-        return $this->eventRepository
+        $result =
+            $this->eventRepository
             ->update(
                 $id,
                 $data
             );
+
+
+
+        if (
+            $result &&
+            $oldStatus !== 'published'
+            &&
+            $data['status'] === 'published'
+        ) {
+
+
+            $members =
+                $this->eventRepository
+                ->findClubMembers(
+                    $event->getClubId()
+                );
+
+
+
+            foreach ($members as $member) {
+
+                $this->notificationService
+                    ->notifyNewEvent(
+
+                        $member['user_id'],
+
+                        $id,
+
+                        $data['title']
+
+                    );
+            }
+        }
+
+
+        return $result;
     }
 
 
@@ -397,6 +518,8 @@ class EventService
 
         ];
     }
+
+    
 
     private function handleImages(
         array $files,

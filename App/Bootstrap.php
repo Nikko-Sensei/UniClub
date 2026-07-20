@@ -587,6 +587,10 @@ class Bootstrap
                     ),
                     $container->resolve(
                         ImageUploadService::class
+                    ),
+
+                    $container->resolve(
+                        NotificationService::class
                     )
 
                 );
@@ -734,6 +738,16 @@ class Bootstrap
 
                     $container->resolve(
                         AnnouncementRepositoryInterface::class
+                    ),
+
+
+                    $container->resolve(
+                        NotificationService::class
+                    ),
+
+
+                    $container->resolve(
+                        UserService::class
                     )
 
                 );

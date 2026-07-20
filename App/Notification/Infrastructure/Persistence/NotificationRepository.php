@@ -76,8 +76,7 @@ class NotificationRepository extends BaseRepository implements NotificationRepos
         $notifications = [];
 
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
-        {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $notifications[] =
                 $this->mapToNotification($row);
         }
@@ -184,46 +183,88 @@ class NotificationRepository extends BaseRepository implements NotificationRepos
     }
 
     public function findLatestByUser(
-    int $userId,
-    int $limit = 5
-): array {
+        int $userId,
+        int $limit = 5
+    ): array {
 
 
-    $sql = "
+        $sql = "
         CALL sp_notification_find_latest(?,?)
     ";
 
 
-    $stmt = $this->db->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
 
-    $stmt->execute([
-        $userId,
-        $limit
-    ]);
-
-
-
-    $notifications = [];
+        $stmt->execute([
+            $userId,
+            $limit
+        ]);
 
 
 
-    while($row = $stmt->fetch(PDO::FETCH_ASSOC))
-    {
+        $notifications = [];
 
-        $notifications[] =
-            $this->mapToNotification($row);
 
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            $notifications[] =
+                $this->mapToNotification($row);
+        }
+
+
+
+        $stmt->closeCursor();
+
+
+
+        return $notifications;
     }
 
+    public function findById(
+        int $id
+    ): ?Notification {
 
 
-    $stmt->closeCursor();
+        $sql = "
+        CALL sp_notification_find_by_id(?)
+    ";
+
+
+        $stmt =
+            $this->db->prepare($sql);
 
 
 
-    return $notifications;
-}
+        $stmt->execute([
+            $id
+        ]);
+
+
+
+
+        $row =
+            $stmt->fetch(
+                PDO::FETCH_ASSOC
+            );
+
+
+
+        $stmt->closeCursor();
+
+
+
+        if (!$row) {
+            return null;
+        }
+
+
+
+        return $this->mapToNotification(
+            $row
+        );
+    }
 
 
 
@@ -256,5 +297,4 @@ class NotificationRepository extends BaseRepository implements NotificationRepos
             $row['created_at']
         );
     }
-
 }

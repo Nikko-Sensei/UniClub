@@ -19,7 +19,7 @@ interface ClubRepositoryInterface
     public function delete(
         int $id
     ): bool;
-    
+
     public function findMostPopularClub(): ?Club;
 
     public function findById(
@@ -69,12 +69,16 @@ interface ClubRepositoryInterface
     ): array;
 
     public function findMembers(
-    int $clubId
-): array;
+        int $clubId
+    ): array;
 
-public function findRoles(): array;
+    public function findRoles(): array;
 
     public function findUpcomingEvents(
+        int $clubId
+    ): array;
+
+    public function findClubMembers(
         int $clubId
     ): array;
 }

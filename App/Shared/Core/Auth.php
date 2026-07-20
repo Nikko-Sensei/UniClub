@@ -61,4 +61,22 @@ class Auth
     {
         return $_SESSION['user']['profile_image'] ?? null;
     }
+
+    public static function dashboardUrl(): string
+    {
+        if (!self::check()) {
+
+            return BASE_URL . '/login';
+        }
+
+
+        return match (self::roleId()) {
+
+            1 => BASE_URL . '/admin/dashboard',
+
+            2 => BASE_URL . '/dashboard',
+
+            default => BASE_URL . '/'
+        };
+    }
 }

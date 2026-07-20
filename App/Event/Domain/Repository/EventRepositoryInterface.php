@@ -39,7 +39,7 @@ interface EventRepositoryInterface
     public function statistics();
 
 
-     public function findStudentEvents(
+    public function findStudentEvents(
         int $userId,
         int $page,
         int $limit,
@@ -92,4 +92,8 @@ interface EventRepositoryInterface
         int $userId,
         array $filters = []
     );
+
+    public function findClubMembers(
+        int $clubId
+    ): array;
 }

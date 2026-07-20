@@ -4,6 +4,8 @@ namespace App\Announcement\Application\Services;
 
 
 use App\Announcement\Domain\Repository\AnnouncementRepositoryInterface;
+use App\Notification\Application\Services\NotificationService;
+use App\User\Application\Services\UserService;
 
 
 
@@ -13,13 +15,22 @@ class AnnouncementService
 
     private AnnouncementRepositoryInterface $repository;
 
+    private NotificationService $notificationService;
+
+    private UserService $userService;
+
 
 
     public function __construct(
-        AnnouncementRepositoryInterface $repository
-    )
-    {
+        AnnouncementRepositoryInterface $repository,
+        NotificationService $notificationService,
+        UserService $userService
+    ) {
         $this->repository = $repository;
+
+        $this->notificationService = $notificationService;
+
+        $this->userService = $userService;
     }
 
 
@@ -27,13 +38,57 @@ class AnnouncementService
     /**
      * Create announcement
      */
+    // public function create(
+    //     array $data
+    // ) {
+
+    //     return $this->repository
+    //         ->create($data);
+    // }
+
     public function create(
         array $data
-    )
-    {
+    ) {
 
-        return $this->repository
+
+        $announcement =
+            $this->repository
             ->create($data);
+
+
+
+        if (
+            $announcement  &&
+            $data['status'] === 'published'
+        ) {
+
+
+            $members =
+                $this->repository
+                ->findClubMembers(
+                    $data['club_id']
+                );
+
+
+
+            foreach ($members as $member) {
+
+
+                $this->notificationService
+                    ->notifyAnnouncement(
+
+                        $member['user_id'],
+
+                        $announcement['id'],
+
+                        $data['title']
+
+                    );
+            }
+        }
+
+
+        return $announcement;
     }
 
 
@@ -41,17 +96,77 @@ class AnnouncementService
     /**
      * Update announcement
      */
+    // public function update(
+    //     int $id,
+    //     array $data
+    // ) {
+
+    //     return $this->repository
+    //         ->update(
+    //             $id,
+    //             $data
+    //         );
+    // }
+
     public function update(
         int $id,
         array $data
-    )
-    {
+    ) {
 
-        return $this->repository
+
+        $oldAnnouncement =
+            $this->repository
+            ->findById($id);
+
+
+
+        $result =
+            $this->repository
             ->update(
                 $id,
                 $data
             );
+
+
+
+        if (
+            $result
+            &&
+            $oldAnnouncement
+            &&
+            $oldAnnouncement->getStatus() !== 'published'
+            &&
+            $data['status'] === 'published'
+        ) {
+
+
+            $members =
+                $this->repository
+                ->findClubMembers(
+                    $oldAnnouncement->getClubId()
+                );
+
+
+
+            foreach ($members as $member) {
+
+
+                $this->notificationService
+                    ->notifyAnnouncement(
+
+                        $member['user_id'],
+
+                        $id,
+
+                        $data['title']
+
+                    );
+            }
+        }
+
+
+
+        return $result;
     }
 
 
@@ -61,8 +176,7 @@ class AnnouncementService
      */
     public function delete(
         int $id
-    )
-    {
+    ) {
 
         return $this->repository
             ->delete($id);
@@ -75,8 +189,7 @@ class AnnouncementService
      */
     public function getAnnouncement(
         int $id
-    )
-    {
+    ) {
 
         return $this->repository
             ->findById($id);
@@ -87,22 +200,22 @@ class AnnouncementService
     /**
      * Get all announcements
      */
-  public function getAnnouncements(
-    int $page,
-    int $limit,
-    array $filters = []
-): array {
+    public function getAnnouncements(
+        int $page,
+        int $limit,
+        array $filters = []
+    ): array {
 
 
-    $page = max(
-        1,
-        $page
-    );
+        $page = max(
+            1,
+            $page
+        );
 
 
 
-    $announcements =
-        $this->repository
+        $announcements =
+            $this->repository
             ->findAll(
                 $page,
                 $limit,
@@ -111,44 +224,43 @@ class AnnouncementService
 
 
 
-    $total =
-        $this->repository
+        $total =
+            $this->repository
             ->count(
                 $filters
             );
 
 
 
-    return [
+        return [
 
-        'announcements' =>
+            'announcements' =>
             $announcements,
 
 
-        'pagination' => [
+            'pagination' => [
 
-            'current_page' =>
+                'current_page' =>
                 $page,
 
 
-            'per_page' =>
+                'per_page' =>
                 $limit,
 
 
-            'total' =>
+                'total' =>
                 $total,
 
 
-            'total_pages' =>
+                'total_pages' =>
                 (int) ceil(
                     $total / $limit
                 )
 
-        ]
+            ]
 
-    ];
-
-}
+        ];
+    }
 
 
 
@@ -157,8 +269,7 @@ class AnnouncementService
      */
     public function getClubAnnouncements(
         int $clubId
-    )
-    {
+    ) {
 
         return $this->repository
             ->findByClub($clubId);
@@ -176,5 +287,31 @@ class AnnouncementService
             ->findPublished();
     }
 
+    private function notifyStudents(
+        int $announcementId,
+        string $title
+    ): void {
 
+
+        $students =
+            $this->userService
+            ->getStudents();
+
+
+
+        foreach ($students as $student) {
+
+
+            $this->notificationService
+                ->notifyAnnouncement(
+
+                    $student->getId(),
+
+                    $announcementId,
+
+                    $title
+
+                );
+        }
+    }
 }

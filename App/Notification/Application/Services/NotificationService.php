@@ -230,4 +230,44 @@ class NotificationService
 
         );
     }
+
+    public function getRedirectUrl(
+        Notification $notification
+    ): string {
+
+
+        return match ($notification->getReferenceType()) {
+
+            'club' =>
+            '/clubs/' .
+                $notification->getReferenceId(),
+
+
+            'event' =>
+
+            '/events/' .
+                $notification->getReferenceId(),
+
+
+            'announcement' =>
+
+            '/announcements/' .
+                $notification->getReferenceId(),
+
+
+            default =>
+            '/notifications'
+        };
+    }
+
+    public function getNotification(
+        int $id
+    ): ?Notification {
+
+
+        return $this->repository
+            ->findById(
+                $id
+            );
+    }
 }
