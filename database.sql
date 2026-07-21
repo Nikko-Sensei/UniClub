@@ -632,46 +632,49 @@ CREATE TABLE general_settings
 
 
 
-CREATE TABLE security_settings
-(
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE security_settings (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
 
 
-    max_login_attempts INT DEFAULT 5,
+    -- Authentication
+
+    allow_registration BOOLEAN DEFAULT 1,
+
+    enable_password_reset BOOLEAN DEFAULT 1,
 
 
-    lock_duration INT DEFAULT 15,
-
-
-    session_timeout INT DEFAULT 30,
-
+    -- Password Policy
 
     password_min_length INT DEFAULT 8,
 
+    require_uppercase BOOLEAN DEFAULT 1,
 
-    require_uppercase BOOLEAN DEFAULT TRUE,
-
-
-    require_number BOOLEAN DEFAULT TRUE,
+    require_number BOOLEAN DEFAULT 1,
 
 
-    require_special_character BOOLEAN DEFAULT TRUE,
+    -- Login Protection
+
+    max_login_attempts INT DEFAULT 5,
+
+    lock_time_minutes INT DEFAULT 15,
 
 
-    email_verification BOOLEAN DEFAULT FALSE,
+    -- Audit
+
+    enable_audit_log BOOLEAN DEFAULT 1,
 
 
-    two_factor_enabled BOOLEAN DEFAULT FALSE,
+    -- System Maintenance
 
-
-    maintenance_mode BOOLEAN DEFAULT FALSE,
+    maintenance_mode BOOLEAN DEFAULT 0,
 
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    ON UPDATE CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+
 );
 
 

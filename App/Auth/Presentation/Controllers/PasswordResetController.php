@@ -11,14 +11,15 @@ use App\Auth\Application\Services\PasswordResetService;
 use App\Auth\Application\Validators\ForgotPasswordValidator;
 use App\Auth\Application\Validators\VerifyOtpValidator;
 use App\Auth\Application\Validators\ResetPasswordValidator;
-
+use App\Shared\Helpers\SecuritySettingHelper;
 use App\Auth\Domain\Exceptions\InvalidOtpException;
 use Throwable;
 
 class PasswordResetController extends BaseController
 {
     public function __construct(
-        private PasswordResetService $service
+        private PasswordResetService $service,
+        private SecuritySettingHelper $security
     ) {
         parent::__construct();
 
@@ -32,6 +33,24 @@ class PasswordResetController extends BaseController
     /* ---------------- FORGOT PASSWORD ---------------- */
     public function showForgotPassword()
     {
+
+        if (
+            !$this->security->enabled(
+                'enable_password_reset'
+            )
+        ) {
+
+            Flash::set(
+                'error',
+                'Password reset is currently disabled'
+            );
+
+
+            return Response::redirect(
+                '/login'
+            );
+        }
+
         $this->view('Auth/Presentation/Views/forgot_password', [
             'csrf' => new Csrf(),
             'errors' => $_SESSION['errors'] ?? [],
@@ -43,6 +62,24 @@ class PasswordResetController extends BaseController
 
     public function forgotPassword()
     {
+
+        if (
+            !$this->security->enabled(
+                'enable_password_reset'
+            )
+        ) {
+
+            Flash::set(
+                'error',
+                'Password reset is currently disabled'
+            );
+
+
+            return Response::redirect(
+                '/login'
+            );
+        }
+
         $validator = new ForgotPasswordValidator();
         $data = $this->request->all();
 
@@ -65,6 +102,24 @@ class PasswordResetController extends BaseController
     /* ---------------- OTP ---------------- */
     public function showVerifyOtp()
     {
+
+        if (
+            !$this->security->enabled(
+                'enable_password_reset'
+            )
+        ) {
+
+            Flash::set(
+                'error',
+                'Password reset is currently disabled'
+            );
+
+
+            return Response::redirect(
+                '/login'
+            );
+        }
+
         if (($_SESSION['reset_flow']['step'] ?? '') !== 'otp_sent') {
             return Response::redirect('/login');
         }
@@ -80,6 +135,23 @@ class PasswordResetController extends BaseController
 
     public function verifyOtp()
     {
+
+        if (
+            !$this->security->enabled(
+                'enable_password_reset'
+            )
+        ) {
+
+            Flash::set(
+                'error',
+                'Password reset is currently disabled'
+            );
+
+
+            return Response::redirect(
+                '/login'
+            );
+        }
         $validator = new VerifyOtpValidator();
         $data = $this->request->all();
 
@@ -103,6 +175,24 @@ class PasswordResetController extends BaseController
     /* ---------------- RESET PASSWORD ---------------- */
     public function showResetPassword()
     {
+
+        if (
+            !$this->security->enabled(
+                'enable_password_reset'
+            )
+        ) {
+
+            Flash::set(
+                'error',
+                'Password reset is currently disabled'
+            );
+
+
+            return Response::redirect(
+                '/login'
+            );
+        }
+        
         if (($_SESSION['reset_flow']['step'] ?? '') !== 'otp_verified') {
             return Response::redirect('/login');
         }
@@ -117,7 +207,26 @@ class PasswordResetController extends BaseController
     }
 
     public function resetPassword()
+
     {
+
+        if (
+            !$this->security->enabled(
+                'enable_password_reset'
+            )
+        ) {
+
+            Flash::set(
+                'error',
+                'Password reset is currently disabled'
+            );
+
+
+            return Response::redirect(
+                '/login'
+            );
+        }
+
         $validator = new ResetPasswordValidator();
         $data = $this->request->all();
 

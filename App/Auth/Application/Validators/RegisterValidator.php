@@ -16,6 +16,7 @@ use App\Auth\Domain\ValueObjects\StudentId;
 use App\Auth\Domain\ValueObjects\Email;
 use App\Auth\Domain\ValueObjects\Password;
 use App\Auth\Domain\ValueObjects\PhoneNumber;
+use App\Auth\Application\Validators\PasswordPolicyValidator;
 
 
 class RegisterValidator extends BaseValidator
@@ -25,6 +26,15 @@ class RegisterValidator extends BaseValidator
     private ?Email $email = null;
     private ?Password $password = null;
     private ?PhoneNumber $phoneNumber = null;
+
+    private PasswordPolicyValidator $passwordPolicyValidator;
+
+    public function __construct(
+        PasswordPolicyValidator $passwordPolicyValidator
+    ) {
+
+        $this->passwordPolicyValidator = $passwordPolicyValidator;
+    }
 
     public function validate(array $data): bool
     {
@@ -131,6 +141,12 @@ class RegisterValidator extends BaseValidator
         } else {
 
             try {
+
+
+                $this->passwordPolicyValidator->validate(
+                    $data['password']
+                );
+
 
                 $this->password = new Password(
                     $data['password']

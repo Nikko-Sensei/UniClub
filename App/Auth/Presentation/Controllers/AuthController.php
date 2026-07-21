@@ -18,6 +18,7 @@ use Throwable;
 use App\Master\Application\Services\MasterService;
 use App\Shared\Middleware\RateLimitMiddleware;
 use App\Shared\Helpers\Flash;
+use App\Shared\Helpers\SecuritySettingHelper;
 
 class AuthController extends BaseController
 {
@@ -27,16 +28,24 @@ class AuthController extends BaseController
 
     private RateLimitMiddleware $rateLimiter;
 
+    private SecuritySettingHelper $security;
+
+    private RegisterValidator $registerValidator;
+
     public function __construct(
         AuthService $authService,
         MasterService $masterService,
-        RateLimitMiddleware $rateLimiter
+        RateLimitMiddleware $rateLimiter,
+        SecuritySettingHelper $security,
+        RegisterValidator $registerValidator
     ) {
         parent::__construct();
 
         $this->authService = $authService;
         $this->masterService = $masterService;
         $this->rateLimiter = $rateLimiter;
+        $this->security = $security;
+        $this->registerValidator = $registerValidator;
     }
 
     /**
@@ -155,6 +164,19 @@ class AuthController extends BaseController
     public function showRegister()
     {
 
+        if (
+            !$this->security->enabled(
+                'allow_registration'
+            )
+        ) {
+
+            Response::redirect(
+                '/login'
+            );
+
+            return;
+        }
+
         $departments = $this->masterService->getDepartments();
 
         $academicYears = $this->masterService->getAcademicYears();
@@ -187,7 +209,28 @@ class AuthController extends BaseController
      */
     public function register()
     {
-        $validator = new RegisterValidator();
+
+        if (
+            !$this->security->enabled(
+                'allow_registration'
+            )
+        ) {
+
+            Flash::set(
+                'error',
+                'Registration is currently disabled'
+            );
+
+
+            Response::redirect(
+                '/login'
+            );
+
+
+            return;
+        }
+
+        $validator = $this->registerValidator;
 
         $data = $this->request->all();
 

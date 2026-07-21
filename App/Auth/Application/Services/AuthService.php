@@ -21,6 +21,8 @@ use App\Shared\Logging\AuditLogger;
 use App\Shared\Logging\AuditAction;
 use App\Master\Application\Services\MasterService;
 use App\Auth\Domain\ValueObjects\StudentId;
+use App\Auth\Domain\ValueObjects\Password;
+
 
 
 class AuthService
@@ -47,6 +49,7 @@ class AuthService
         $this->auditLogger = $auditLogger;
 
         $this->masterService = $masterService;
+
     }
 
 
@@ -121,6 +124,8 @@ class AuthService
 
             status: 'active'
         );
+
+
 
         if (
             !$this->userRepository->create($user)

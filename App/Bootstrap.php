@@ -18,6 +18,9 @@ use App\Shared\Database\Database;
 // Auth
 use App\Auth\Presentation\Controllers\AuthController;
 use App\Auth\Application\Services\AuthService;
+use App\Auth\Application\Services\PasswordPolicyService;
+use App\Auth\Application\Validators\PasswordPolicyValidator;
+use App\Auth\Application\Validators\RegisterValidator;
 
 // User
 use App\User\Domain\Repository\UserRepositoryInterface;
@@ -112,6 +115,7 @@ use App\Shared\Middleware\RoleMiddleware;
 use App\Shared\Middleware\PermissionMiddleware;
 use App\Shared\Middleware\AdminMiddleware;
 use App\Shared\Middleware\ClubManagerMiddleware;
+use App\Shared\Middleware\MaintenanceMiddleware;
 
 // Password Reset (OTP FLOW)
 use App\Auth\Application\Services\PasswordResetService;
@@ -124,6 +128,15 @@ use App\Admin\Settings\General\Presentation\Controllers\GeneralSettingController
 use App\Admin\Settings\General\Application\Services\GeneralSettingService;
 use App\Admin\Settings\General\Domain\Repository\GeneralSettingRepositoryInterface;
 use App\Admin\Settings\General\Infrastructure\Persistence\GeneralSettingRepository;
+
+
+// Security Settings
+
+use App\Admin\Settings\Security\Presentation\Controllers\SecuritySettingController;
+use App\Admin\Settings\Security\Application\Services\SecuritySettingService;
+use App\Admin\Settings\Security\Domain\Repository\SecuritySettingRepositoryInterface;
+use App\Admin\Settings\Security\Infrastructure\Persistence\SecuritySettingRepository;
+use App\Shared\Helpers\SecuritySettingHelper;
 
 // Mail
 use App\Shared\Mail\Mailer;
@@ -180,7 +193,9 @@ class Bootstrap
             return new AuthController(
                 $container->resolve(AuthService::class),
                 $container->resolve(MasterService::class),
-                $container->resolve(RateLimitMiddleware::class)
+                $container->resolve(RateLimitMiddleware::class),
+                $container->resolve(SecuritySettingHelper::class),
+                $container->resolve(RegisterValidator::class)
             );
         });
 
@@ -217,8 +232,40 @@ class Bootstrap
                 $container->resolve(UserRepositoryInterface::class),
                 $container->resolve(AuditLogger::class),
                 $container->resolve(MasterService::class)
+
             );
         });
+
+        //  PasswordPolicyService
+        $container->bind(
+            PasswordPolicyService::class,
+            function ($container) {
+
+                return new PasswordPolicyService(
+
+                    $container->resolve(
+                        SecuritySettingHelper::class
+                    )
+
+                );
+            }
+        );
+
+        // Password Policy Validator
+
+        $container->bind(
+            PasswordPolicyValidator::class,
+            function ($container) {
+
+                return new PasswordPolicyValidator(
+
+                    $container->resolve(
+                        PasswordPolicyService::class
+                    )
+
+                );
+            }
+        );
 
         //User Service
         $container->bind(UserService::class, function ($container) {
@@ -922,6 +969,67 @@ class Bootstrap
 
         );
 
+        // Security Setting
+
+        // Security Setting Repository
+
+        $container->bind(
+            SecuritySettingRepositoryInterface::class,
+            function () {
+
+                return new SecuritySettingRepository();
+            }
+        );
+
+        // Security Setting Service
+
+        $container->bind(
+            SecuritySettingService::class,
+            function ($container) {
+
+                return new SecuritySettingService(
+
+                    $container->resolve(
+                        SecuritySettingRepositoryInterface::class
+                    )
+
+                );
+            }
+        );
+
+        // Security Setting Controller
+
+        $container->bind(
+            SecuritySettingController::class,
+            function ($container) {
+
+                return new SecuritySettingController(
+
+                    $container->resolve(
+                        SecuritySettingService::class
+                    )
+
+                );
+            }
+        );
+
+
+        // SecuritySettingHelper
+
+        $container->bind(
+            SecuritySettingHelper::class,
+            function ($container) {
+
+                return new SecuritySettingHelper(
+
+                    $container->resolve(
+                        SecuritySettingService::class
+                    )
+
+                );
+            }
+        );
+
         // Middleware
 
         $container->bind(
@@ -971,6 +1079,20 @@ class Bootstrap
             fn() => new ClubManagerMiddleware()
         );
 
+        $container->bind(
+            MaintenanceMiddleware::class,
+            function ($container) {
+
+                return new MaintenanceMiddleware(
+
+                    $container->resolve(
+                        SecuritySettingService::class
+                    )
+
+                );
+            }
+        );
+
         //Audit Logger
         $container->bind(AuditLogger::class, function () {
             return new AuditLogger(Database::getConnection());
@@ -993,7 +1115,8 @@ class Bootstrap
 
         $container->bind(PasswordResetController::class, function ($container) {
             return new PasswordResetController(
-                $container->resolve(PasswordResetService::class)
+                $container->resolve(PasswordResetService::class),
+                $container->resolve(SecuritySettingHelper::class)
             );
         });
 
@@ -1038,6 +1161,20 @@ class Bootstrap
                     $container->resolve(
                         NotificationService::class
                     )
+                );
+            }
+        );
+
+        $container->bind(
+            RegisterValidator::class,
+            function ($container) {
+
+                return new RegisterValidator(
+
+                    $container->resolve(
+                        PasswordPolicyValidator::class
+                    )
+
                 );
             }
         );

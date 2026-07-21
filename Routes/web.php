@@ -27,7 +27,7 @@ use App\Shared\Middleware\PermissionMiddleware;
 use App\Shared\Middleware\AdminMiddleware;
 use App\Shared\Middleware\ClubManagerMiddleware;
 use App\Notification\Presentation\Controllers\NotificationController;
-
+use App\Admin\Settings\Security\Presentation\Controllers\SecuritySettingController;
 use App\Admin\Settings\General\Presentation\Controllers\GeneralSettingController;
 
 
@@ -1093,6 +1093,40 @@ $router->post(
         [
             PermissionMiddleware::class,
             'settings.general.update'
+        ]
+    ]
+);
+
+
+// SECURITY SETTINGS
+
+$router->get(
+    '/admin/settings/security',
+    [
+        SecuritySettingController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class,
+        [
+            PermissionMiddleware::class,
+            'settings.security.view'
+        ]
+    ]
+);
+
+
+$router->post(
+    '/admin/settings/security/update',
+    [
+        SecuritySettingController::class,
+        'update'
+    ],
+    [
+        AuthMiddleware::class,
+        [
+            PermissionMiddleware::class,
+            'settings.security.update'
         ]
     ]
 );
