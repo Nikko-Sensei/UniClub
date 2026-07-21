@@ -71,6 +71,10 @@ interface MembershipRepositoryInterface
 
     public function getStatistics(): array;
 
+    public function getStudentStatistics(
+        int $userId
+    ): array;
+
     public function updateRole(
         int $membershipId,
         int $roleId
@@ -101,5 +105,13 @@ interface MembershipRepositoryInterface
     public function countMembersByClub(
         int $clubId,
         array $filters = []
+    ): int;
+
+    public function getPendingMembershipCount(
+        int $userId
+    ): int;
+
+    public function getUpcomingEventCount(
+        int $userId
     ): int;
 }

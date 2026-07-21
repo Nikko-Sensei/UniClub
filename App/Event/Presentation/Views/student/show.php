@@ -2,260 +2,260 @@
 
     <!-- ── Custom Styles ── -->
     <style>
-    @keyframes fadeInUp {
-        0% {
-            opacity: 0;
-            transform: translateY(30px);
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
 
-    @keyframes fadeInDown {
-        0% {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes scaleIn {
-        0% {
-            opacity: 0;
-            transform: scale(0.9);
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        100% {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
+        @keyframes scaleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
 
-    @keyframes slideInLeft {
-        0% {
-            opacity: 0;
-            transform: translateX(-30px);
-        }
-
-        100% {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes pulseGlow {
-
-        0%,
-        100% {
-            opacity: 0.3;
-            transform: scale(1);
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
-        50% {
-            opacity: 0.8;
-            transform: scale(1.1);
-        }
-    }
+        @keyframes slideInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
 
-    @keyframes float {
-
-        0%,
-        100% {
-            transform: translateY(0px);
-        }
-
-        50% {
-            transform: translateY(-8px);
-        }
-    }
-
-    @keyframes shimmer {
-        0% {
-            background-position: -200% 0;
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
-        100% {
-            background-position: 200% 0;
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
         }
-    }
 
-    .animate-fadeInUp {
-        animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
+        @keyframes float {
 
-    .animate-fadeInDown {
-        animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
 
-    .animate-scaleIn {
-        animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
 
-    .animate-slideInLeft {
-        animation: slideInLeft 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
 
-    .animate-float {
-        animation: float 5s ease-in-out infinite;
-    }
+            100% {
+                background-position: 200% 0;
+            }
+        }
 
-    .delay-100 {
-        animation-delay: 100ms;
-    }
+        .animate-fadeInUp {
+            animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
 
-    .delay-200 {
-        animation-delay: 200ms;
-    }
+        .animate-fadeInDown {
+            animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
 
-    .delay-300 {
-        animation-delay: 300ms;
-    }
+        .animate-scaleIn {
+            animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
 
-    .delay-400 {
-        animation-delay: 400ms;
-    }
+        .animate-slideInLeft {
+            animation: slideInLeft 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
 
-    .delay-500 {
-        animation-delay: 500ms;
-    }
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
+        }
 
-    .delay-600 {
-        animation-delay: 600ms;
-    }
+        .delay-100 {
+            animation-delay: 100ms;
+        }
 
-    .glass-card {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
+        .delay-200 {
+            animation-delay: 200ms;
+        }
 
-    .glass-card-light {
-        background: rgba(255, 255, 255, 0.72);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-        transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+        .delay-300 {
+            animation-delay: 300ms;
+        }
 
-    .glass-card-light:hover {
-        border-color: rgba(37, 99, 235, 0.25);
-        box-shadow: 0 16px 48px rgba(37, 99, 235, 0.10);
-        transform: translateY(-4px);
-    }
+        .delay-400 {
+            animation-delay: 400ms;
+        }
 
-    .glass-card-dark {
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
+        .delay-500 {
+            animation-delay: 500ms;
+        }
 
-    .btn-shine {
-        position: relative;
-        overflow: hidden;
-    }
+        .delay-600 {
+            animation-delay: 600ms;
+        }
 
-    .btn-shine::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-        transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-    .btn-shine:hover::before {
-        left: 100%;
-    }
+        .glass-card-light {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
 
-    .back-btn {
-        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+        .glass-card-light:hover {
+            border-color: rgba(37, 99, 235, 0.25);
+            box-shadow: 0 16px 48px rgba(37, 99, 235, 0.10);
+            transform: translateY(-4px);
+        }
 
-    .back-btn:hover {
-        transform: translateX(-4px) scale(1.05);
-        box-shadow: 0 8px 30px -8px rgba(37, 99, 235, 0.25);
-    }
+        .glass-card-dark {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-    .back-btn:active {
-        transform: scale(0.95);
-    }
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
 
-    .img-zoom {
-        transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+        .btn-shine::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
 
-    .group:hover .img-zoom {
-        transform: scale(1.06);
-    }
+        .btn-shine:hover::before {
+            left: 100%;
+        }
 
-    .bg-mesh {
-        background: radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.04) 0%, transparent 50%),
-            radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
-            #F8FAFC;
-    }
+        .back-btn {
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
 
-    .line-clamp-1 {
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+        .back-btn:hover {
+            transform: translateX(-4px) scale(1.05);
+            box-shadow: 0 8px 30px -8px rgba(37, 99, 235, 0.25);
+        }
 
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+        .back-btn:active {
+            transform: scale(0.95);
+        }
 
-    .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+        .img-zoom {
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
 
-    *:focus-visible {
-        outline: 2px solid #2563EB;
-        outline-offset: 2px;
-        border-radius: 4px;
-    }
+        .group:hover .img-zoom {
+            transform: scale(1.06);
+        }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
+        .bg-mesh {
+            background: radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+                #F8FAFC;
+        }
 
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    }
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-    ::-webkit-scrollbar-thumb {
-        background: #CBD5E1;
-        border-radius: 9999px;
-    }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: #94A3B8;
-    }
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-    /* Floating action button pulse */
-    .float-pulse {
-        animation: float 3s ease-in-out infinite, pulseGlow 4s ease-in-out infinite;
-    }
+        *:focus-visible {
+            outline: 2px solid #2563EB;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+
+        /* Floating action button pulse */
+        .float-pulse {
+            animation: float 3s ease-in-out infinite, pulseGlow 4s ease-in-out infinite;
+        }
     </style>
 
     <!-- ========================================================== -->
@@ -276,13 +276,13 @@
     <div class="group relative rounded-2xl overflow-hidden shadow-2xl animate-fadeInUp"
         style="min-height: 340px; max-height: 440px;">
         <?php if ($event->getBanner()): ?>
-        <img src="<?= BASE_URL ?>/uploads/events/<?= htmlspecialchars($event->getBanner()) ?>"
-            class="w-full h-full object-cover img-zoom" style="min-height: 340px; max-height: 440px;">
+            <img src="<?= BASE_URL ?>/uploads/events/<?= htmlspecialchars($event->getBanner()) ?>"
+                class="w-full h-full object-cover img-zoom" style="min-height: 340px; max-height: 440px;">
         <?php else: ?>
-        <div class="w-full h-full bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center"
-            style="min-height: 340px; max-height: 440px;">
-            <span class="text-white/30 font-bold text-4xl">📅</span>
-        </div>
+            <div class="w-full h-full bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center"
+                style="min-height: 340px; max-height: 440px;">
+                <span class="text-white/30 font-bold text-4xl">📅</span>
+            </div>
         <?php endif; ?>
 
         <!-- Dark gradient overlay -->
@@ -341,49 +341,59 @@
             <div class="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full shadow-sm">
                 <i data-lucide="building-2" class="w-4 h-4 text-blue-600"></i>
                 <span><strong class="text-slate-700">Organized by:</strong>
-                    <?= htmlspecialchars(
-                        method_exists($event, 'getClubName')
-                            ? $event->getClubName()
-                            : 'University Club'
-                    ) ?>
+                    <?php
+                    $clubName = '-';
+                    foreach ($clubs as $club) {
+                        if ($event->getClubId() == $club->getId()) {
+                            $clubName = $club->getName();
+                            break;
+                        }
+                    }
+                    echo htmlspecialchars($clubName);
+                    ?>
                 </span>
             </div>
             <div class="flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full shadow-sm">
                 <i data-lucide="tag" class="w-4 h-4 text-blue-600"></i>
-                <span><?= htmlspecialchars(
-                    method_exists($event, 'getCategoryName')
-                        ? $event->getCategoryName()
-                        : 'General'
-                ) ?></span>
+                <span><?php
+                        $categoryName = '-';
+                        foreach ($categories as $category) {
+                            if ($event->getCategoryId() == $category['id']) {
+                                $categoryName = $category['name'];
+                                break;
+                            }
+                        }
+                        echo htmlspecialchars($categoryName);
+                        ?></span>
             </div>
         </div>
 
         <!-- Registration CTA – floating action -->
         <div class="flex-shrink-0">
             <?php if ($registrationStatus === null): ?>
-            <button type="button" onclick="openRegisterModal()"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-300 shadow-xl shadow-blue-200/50 hover:shadow-2xl hover:scale-[1.04] btn-shine float-pulse">
-                <i data-lucide="user-plus" class="w-4 h-4"></i>
-                Register Now
-            </button>
+                <button type="button" onclick="openRegisterModal()"
+                    class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-300 shadow-xl shadow-blue-200/50 hover:shadow-2xl hover:scale-[1.04] btn-shine float-pulse">
+                    <i data-lucide="user-plus" class="w-4 h-4"></i>
+                    Register Now
+                </button>
             <?php elseif ($registrationStatus === 'pending'): ?>
-            <div
-                class="flex items-center gap-2 bg-yellow-50 text-yellow-700 px-5 py-3 rounded-xl font-medium border border-yellow-200/50 shadow-sm">
-                <i data-lucide="clock" class="w-5 h-5"></i>
-                Pending Approval
-            </div>
+                <div
+                    class="flex items-center gap-2 bg-yellow-50 text-yellow-700 px-5 py-3 rounded-xl font-medium border border-yellow-200/50 shadow-sm">
+                    <i data-lucide="clock" class="w-5 h-5"></i>
+                    Pending Approval
+                </div>
             <?php elseif ($registrationStatus === 'approved'): ?>
-            <div
-                class="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-5 py-3 rounded-xl font-medium border border-emerald-200/50 shadow-sm">
-                <i data-lucide="check-circle" class="w-5 h-5"></i>
-                ✓ Registered
-            </div>
+                <div
+                    class="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-5 py-3 rounded-xl font-medium border border-emerald-200/50 shadow-sm">
+                    <i data-lucide="check-circle" class="w-5 h-5"></i>
+                    ✓ Registered
+                </div>
             <?php elseif ($registrationStatus === 'cancelled'): ?>
-            <button type="button" onclick="openRegisterModal()"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-300 shadow-xl shadow-blue-200/50 hover:shadow-2xl hover:scale-[1.04] btn-shine">
-                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                Register Again
-            </button>
+                <button type="button" onclick="openRegisterModal()"
+                    class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-300 shadow-xl shadow-blue-200/50 hover:shadow-2xl hover:scale-[1.04] btn-shine">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    Register Again
+                </button>
             <?php endif; ?>
         </div>
     </div>
@@ -415,19 +425,19 @@
 
             <!-- Additional Info (if any) -->
             <?php if (method_exists($event, 'getAdditionalInfo') && $event->getAdditionalInfo()): ?>
-            <div
-                class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 animate-fadeInUp delay-300">
-                <div class="flex items-center gap-3 mb-5">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-sky-500 text-white flex items-center justify-center shadow-lg shadow-sky-200">
-                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                <div
+                    class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 animate-fadeInUp delay-300">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-sky-500 text-white flex items-center justify-center shadow-lg shadow-sky-200">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-slate-800">Additional Information</h2>
                     </div>
-                    <h2 class="text-xl font-bold text-slate-800">Additional Information</h2>
+                    <p class="text-slate-600 leading-relaxed">
+                        <?= nl2br(htmlspecialchars($event->getAdditionalInfo())) ?>
+                    </p>
                 </div>
-                <p class="text-slate-600 leading-relaxed">
-                    <?= nl2br(htmlspecialchars($event->getAdditionalInfo())) ?>
-                </p>
-            </div>
             <?php endif; ?>
 
         </div>
@@ -496,18 +506,18 @@
 
                 <!-- Registration count (if available) -->
                 <?php if (method_exists($event, 'getRegisteredCount')): ?>
-                <div class="mt-6 pt-4 border-t border-slate-100/80">
-                    <div class="flex items-center justify-between mb-1">
-                        <span class="text-sm text-slate-500">Registered</span>
-                        <span class="text-sm font-bold text-slate-800"><?= $event->getRegisteredCount() ?> /
-                            <?= $event->getCapacity() ?></span>
-                    </div>
-                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-1000"
-                            style="width: <?= min(100, ($event->getRegisteredCount() / max(1, $event->getCapacity())) * 100) ?>%;">
+                    <div class="mt-6 pt-4 border-t border-slate-100/80">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm text-slate-500">Registered</span>
+                            <span class="text-sm font-bold text-slate-800"><?= $event->getRegisteredCount() ?> /
+                                <?= $event->getCapacity() ?></span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full transition-all duration-1000"
+                                style="width: <?= min(100, ($event->getRegisteredCount() / max(1, $event->getCapacity())) * 100) ?>%;">
+                            </div>
                         </div>
                     </div>
-                </div>
                 <?php endif; ?>
             </div>
 
@@ -622,51 +632,51 @@
 
 <!-- ── Scripts ── -->
 <script>
-function openRegisterModal() {
-    const modal = document.getElementById('registerModal');
-    modal.classList.remove('hidden');
-    document.body.classList.add('overflow-hidden');
-    // Trigger reflow for animation
-    void modal.offsetWidth;
-}
-
-function closeRegisterModal() {
-    const modal = document.getElementById('registerModal');
-    modal.classList.add('hidden');
-    document.body.classList.remove('overflow-hidden');
-}
-
-// Close on Escape key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeRegisterModal();
-});
-
-// Lucide icons
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
+    function openRegisterModal() {
+        const modal = document.getElementById('registerModal');
+        modal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        // Trigger reflow for animation
+        void modal.offsetWidth;
     }
-});
 
-// Intersection Observer for scroll animations
-document.addEventListener('DOMContentLoaded', function() {
-    const animated = document.querySelectorAll('.animate-fadeInUp, .animate-scaleIn');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+    function closeRegisterModal() {
+        const modal = document.getElementById('registerModal');
+        modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeRegisterModal();
     });
-    animated.forEach(el => {
-        if (!el.classList.contains('back-btn') && !el.classList.contains('float-pulse')) {
-            el.style.opacity = '0';
-            observer.observe(el);
+
+    // Lucide icons
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
         }
     });
-});
+
+    // Intersection Observer for scroll animations
+    document.addEventListener('DOMContentLoaded', function() {
+        const animated = document.querySelectorAll('.animate-fadeInUp, .animate-scaleIn');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        animated.forEach(el => {
+            if (!el.classList.contains('back-btn') && !el.classList.contains('float-pulse')) {
+                el.style.opacity = '0';
+                observer.observe(el);
+            }
+        });
+    });
 </script>

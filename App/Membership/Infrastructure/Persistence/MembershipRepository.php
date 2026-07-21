@@ -144,7 +144,43 @@ class MembershipRepository extends BaseRepository implements MembershipRepositor
 
         return (int)$result['affected'] > 0;
     }
+    public function getPendingMembershipCount(
+        int $userId
+    ): int {
 
+        $stmt = $this->db->prepare(
+            "CALL sp_membership_pending_count(:user_id)"
+        );
+
+        $stmt->execute([
+            'user_id' => $userId
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $stmt->closeCursor();
+
+        return (int)($result['total'] ?? 0);
+    }
+
+    public function getUpcomingEventCount(
+        int $userId
+    ): int {
+
+        $stmt = $this->db->prepare(
+            "CALL sp_membership_upcoming_event_count(:user_id)"
+        );
+
+        $stmt->execute([
+            'user_id' => $userId
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $stmt->closeCursor();
+
+        return (int)($result['total'] ?? 0);
+    }
 
 
 
@@ -423,6 +459,48 @@ class MembershipRepository extends BaseRepository implements MembershipRepositor
         $stmt->closeCursor();
 
         return $statistics;
+    }
+
+    public function getStudentStatistics(
+        int $userId
+    ): array {
+
+
+        $stmt =
+            $this->db->prepare(
+
+                "CALL sp_membership_student_statistics(
+                :user_id
+            )"
+
+            );
+
+
+        $stmt->execute([
+
+            'user_id' => $userId
+
+        ]);
+
+
+        $result =
+            $stmt->fetch(
+                PDO::FETCH_ASSOC
+            );
+
+
+        $stmt->closeCursor();
+
+
+        return $result ?? [
+
+            'joined_count' => 0,
+
+            'pending_count' => 0,
+
+            'upcoming_event_count' => 0
+
+        ];
     }
 
     public function updateRole(

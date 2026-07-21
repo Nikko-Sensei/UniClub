@@ -49,10 +49,10 @@
                             <select name="club_id" required
                                 class="w-full pl-4 pr-10 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm appearance-none">
                                 <option value="">Select Club</option>
-                                <?php foreach($clubs as $club): ?>
-                                <option value="<?= $club->getId() ?>">
-                                    <?= htmlspecialchars($club->getName()) ?>
-                                </option>
+                                <?php foreach ($clubs as $club): ?>
+                                    <option value="<?= $club->getId() ?>">
+                                        <?= htmlspecialchars($club->getName()) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                             <span
@@ -110,31 +110,126 @@
 
             <!-- ===== Settings ===== -->
             <div>
+
                 <div class="flex items-center gap-3 mb-4">
+
                     <div
                         class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-sm">
+
                         <i data-lucide="settings" class="w-4 h-4"></i>
+
                     </div>
-                    <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider">Settings</h2>
+
+                    <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider">
+                        Settings
+                    </h2>
+
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1.5">
-                        Status <span class="text-red-500">*</span>
-                    </label>
-                    <div class="relative">
-                        <select name="status"
-                            class="w-full pl-4 pr-10 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm appearance-none">
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
-                        </select>
-                        <span
-                            class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
-                            <i data-lucide="chevron-down" class="w-4 h-4"></i>
-                        </span>
+
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+
+                    <!-- Visibility -->
+
+                    <div>
+
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
+
+                            Visibility <span class="text-red-500">*</span>
+
+                        </label>
+
+
+                        <div class="relative">
+
+                            <select name="visibility"
+                                class="w-full pl-4 pr-10 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm appearance-none">
+
+
+                                <option value="all">
+                                    🌎 Public
+                                </option>
+
+
+                                <option value="club_members">
+                                    👥 Club Members
+                                </option>
+
+
+                            </select>
+
+
+                            <span
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+
+                                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+
+                            </span>
+
+                        </div>
+
+
+                        <p class="mt-1 text-xs text-slate-400">
+                            Choose who can see this announcement
+                        </p>
+
                     </div>
-                    <p class="mt-1 text-xs text-slate-400">Changing status affects visibility</p>
+
+
+
+
+
+                    <!-- Status -->
+
+                    <div>
+
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
+
+                            Status <span class="text-red-500">*</span>
+
+                        </label>
+
+
+                        <div class="relative">
+
+                            <select name="status"
+                                class="w-full pl-4 pr-10 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm appearance-none">
+
+
+                                <option value="draft">
+                                    Draft
+                                </option>
+
+
+                                <option value="published">
+                                    Published
+                                </option>
+
+
+                            </select>
+
+
+                            <span
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+
+                                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+
+                            </span>
+
+                        </div>
+
+
+                        <p class="mt-1 text-xs text-slate-400">
+                            Draft announcements are hidden from users
+                        </p>
+
+                    </div>
+
+
                 </div>
+
             </div>
 
             <!-- ========================================================== -->
@@ -161,9 +256,9 @@
 
 <!-- ── Scripts for Lucide Icons ── -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
 </script>

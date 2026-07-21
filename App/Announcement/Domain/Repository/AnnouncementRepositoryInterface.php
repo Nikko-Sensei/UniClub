@@ -75,4 +75,12 @@ interface AnnouncementRepositoryInterface
     public function findClubMembers(
         int $clubId
     ): array;
+
+    public function findForUser(
+
+        int $userId,
+
+        array $filters = []
+
+    ): array;
 }

@@ -98,6 +98,78 @@
                         <p class="mt-1 text-xs text-slate-400">Changing status affects visibility</p>
                     </div>
 
+
+                    <!-- Visibility -->
+
+                    <div>
+
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                            Visibility <span class="text-red-500">*</span>
+                        </label>
+
+
+                        <div class="relative">
+
+                            <select name="visibility" class="
+            w-full
+            pl-4
+            pr-10
+            py-2.5
+            border
+            border-slate-200/80
+            rounded-xl
+            bg-white/50
+            backdrop-blur-sm
+            focus:outline-none
+            focus:ring-2
+            focus:ring-blue-500/30
+            focus:border-blue-500
+            transition
+            hover:border-blue-200
+            text-sm
+            appearance-none
+            ">
+
+
+                                <option value="all"
+                                    <?= $announcement->getVisibility() === 'public' ? 'selected' : '' ?>>
+                                    🌐 All Users
+                                </option>
+
+
+                                <option value="club_members"
+                                    <?= $announcement->getVisibility() === 'club_members' ? 'selected' : '' ?>>
+                                    👥 Club Members
+                                </option>
+
+
+                            </select>
+
+
+                            <span class="
+            absolute
+            inset-y-0
+            right-0
+            flex
+            items-center
+            pr-3
+            pointer-events-none
+            text-slate-400
+            ">
+
+                                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+
+                            </span>
+
+                        </div>
+
+
+                        <p class="mt-1 text-xs text-slate-400">
+                            Choose who can see this announcement.
+                        </p>
+
+                    </div>
+
                     <!-- Content -->
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">

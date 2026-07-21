@@ -108,6 +108,60 @@ class MembershipController extends BaseController
     /**
      * Student My Clubs
      */
+    // public function myClubs()
+    // {
+
+    //     $userId =
+    //         $_SESSION['user']['id'];
+
+
+    //     $page =
+    //         isset($_GET['page'])
+    //         ? (int)$_GET['page']
+    //         : 1;
+
+
+    //     $limit = 6;
+
+
+
+    //     $result =
+    //         $this->membershipService
+    //         ->getMyClubs(
+    //             $userId,
+    //             $page,
+    //             $limit
+    //         );
+
+
+
+    //     $this->view(
+
+    //         'Membership/Presentation/Views/student/my-clubs',
+
+    //         [
+
+    //             'title' => 'My Clubs',
+
+    //             'clubs' => $result['data'],
+
+    //             'pagination' => [
+
+    //                 'current_page' =>
+    //                 $result['current_page'],
+
+    //                 'total_pages' =>
+    //                 $result['total_pages']
+
+    //             ]
+
+    //         ],
+
+    //         'app'
+
+    //     );
+    // }
+
     public function myClubs()
     {
 
@@ -125,12 +179,26 @@ class MembershipController extends BaseController
 
 
 
+        /*
+        Get paginated clubs
+    */
         $result =
             $this->membershipService
             ->getMyClubs(
                 $userId,
                 $page,
                 $limit
+            );
+
+
+
+        /*
+        Get dashboard statistics
+    */
+        $statistics =
+            $this->membershipService
+            ->getStudentStatistics(
+                $userId
             );
 
 
@@ -143,15 +211,41 @@ class MembershipController extends BaseController
 
                 'title' => 'My Clubs',
 
-                'clubs' => $result['data'],
 
+
+                // Current page clubs
+                'clubs' =>
+                $result['data'],
+
+
+
+                // Dashboard statistics
+                'joinedCount' =>
+                $statistics['joined_count'],
+
+
+                'pendingCount' =>
+                $statistics['pending_count'],
+
+
+                'upcomingEventCount' =>
+                $statistics['upcoming_event_count'],
+
+
+
+                // Pagination
                 'pagination' => [
 
                     'current_page' =>
-                    $result['current_page'],
+                    $result['pagination']['current_page'],
+
 
                     'total_pages' =>
-                    $result['total_pages']
+                    $result['pagination']['total_pages'],
+
+
+                    'total' =>
+                    $result['pagination']['total']
 
                 ]
 

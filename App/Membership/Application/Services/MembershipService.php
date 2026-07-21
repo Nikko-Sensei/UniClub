@@ -209,6 +209,53 @@ class MembershipService
     /**
      * Get Student Clubs With Pagination
      */
+    // public function getMyClubs(
+    //     int $userId,
+    //     int $page,
+    //     int $limit
+    // ): array {
+
+
+    //     $clubs =
+    //         $this->membershipRepository
+    //         ->getMyClubs(
+    //             $userId,
+    //             $page,
+    //             $limit
+    //         );
+
+
+
+    //     $total =
+    //         $this->membershipRepository
+    //         ->getMyClubsCount(
+    //             $userId
+    //         );
+
+
+
+    //     $totalPages =
+    //         (int)ceil(
+    //             $total / $limit
+    //         );
+
+
+
+    //     return [
+
+    //         'data' => $clubs,
+
+    //         'current_page' => $page,
+
+    //         'total_pages' => $totalPages
+
+    //     ];
+    // }
+
+
+    /**
+     * Get Student Clubs With Pagination + Dashboard Statistics
+     */
     public function getMyClubs(
         int $userId,
         int $page,
@@ -225,7 +272,6 @@ class MembershipService
             );
 
 
-
         $total =
             $this->membershipRepository
             ->getMyClubsCount(
@@ -233,23 +279,40 @@ class MembershipService
             );
 
 
-
-        $totalPages =
-            (int)ceil(
-                $total / $limit
-            );
-
-
-
         return [
 
             'data' => $clubs,
 
-            'current_page' => $page,
 
-            'total_pages' => $totalPages
+            'pagination' => [
+
+                'current_page' =>
+                $page,
+
+
+                'total_pages' =>
+                ceil(
+                    $total / $limit
+                ),
+
+
+                'total' =>
+                $total
+
+            ]
 
         ];
+    }
+
+    public function getStudentStatistics(
+        int $userId
+    ): array {
+
+
+        return $this->membershipRepository
+            ->getStudentStatistics(
+                $userId
+            );
     }
 
 

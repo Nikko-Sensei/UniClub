@@ -7,6 +7,8 @@ use App\Shared\Core\BaseController;
 use App\Shared\Core\Response;
 use App\Event\Application\Services\EventService;
 use App\Shared\Helpers\Flash;
+use App\Master\Application\Services\MasterService;
+use App\Club\Application\Services\ClubService;
 
 
 class EventController extends BaseController
@@ -14,18 +16,25 @@ class EventController extends BaseController
 
 
     private EventService $eventService;
+    private MasterService $masterService;
+    private ClubService $clubService;
 
 
 
     public function __construct(
-        EventService $eventService
+        EventService $eventService,
+        ClubService $clubService,
+        MasterService $masterService
     ) {
 
         parent::__construct();
 
 
-        $this->eventService =
-            $eventService;
+        $this->masterService = $masterService;
+
+        $this->eventService = $eventService;
+
+        $this->clubService = $clubService;
     }
 
 
@@ -35,7 +44,7 @@ class EventController extends BaseController
      */
     public function index()
     {
-          
+
 
         $page = max(
             1,
@@ -43,7 +52,7 @@ class EventController extends BaseController
         );
 
 
-        $limit = 9;
+        $limit = 6;
 
 
         $userId =
@@ -121,7 +130,10 @@ class EventController extends BaseController
                 $id
             );
 
+        $clubs = $this->clubService->getActiveClubs();
 
+
+        $categories = $this->masterService->getEventCategories();
 
         $userId =
             $_SESSION['user']['id'];
@@ -149,9 +161,12 @@ class EventController extends BaseController
                 'title' => $event->getTitle(),
 
                 'event' => $event,
+                
+                'clubs' => $clubs,
 
-                'registrationStatus'
-                => $registrationStatus
+                'categories' => $categories,
+
+                'registrationStatus' => $registrationStatus
 
             ],
 

@@ -2,20 +2,13 @@
 
 namespace App\Announcement\Infrastructure\Persistence;
 
-
 use App\Announcement\Domain\Repository\AnnouncementRepositoryInterface;
-
 use App\Announcement\Domain\Entities\Announcement;
-
 use App\Shared\Database\Database;
-
 use App\Shared\Infrastructure\Persistence\BaseRepository;
-
-
 
 class AnnouncementRepository extends BaseRepository implements AnnouncementRepositoryInterface
 {
-
 
     public function __construct()
     {
@@ -25,16 +18,14 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
     }
 
 
-
     public function create(
         array $data
     ) {
 
         $stmt = $this->db
             ->prepare(
-                "CALL sp_announcement_create(?,?,?,?,?,?,?)"
+                "CALL sp_announcement_create(?,?,?,?,?,?,?,?)"
             );
-
 
         $stmt->execute([
 
@@ -50,14 +41,14 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
 
             $data['status'],
 
+            $data['visibility'] ?? 'all',
+
             $data['created_by']
 
         ]);
 
-
         return $stmt->fetch();
     }
-
 
 
     public function update(
@@ -67,9 +58,8 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
 
         $stmt = $this->db
             ->prepare(
-                "CALL sp_announcement_update(?,?,?,?,?,?)"
+                "CALL sp_announcement_update(?,?,?,?,?,?,?)"
             );
-
 
         return $stmt->execute([
 
@@ -83,11 +73,12 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
 
             $data['image'] ?? null,
 
-            $data['status']
+            $data['status'],
+
+            $data['visibility'] ?? 'all'
 
         ]);
     }
-
 
 
     public function delete(
@@ -99,14 +90,12 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
                 "CALL sp_announcement_delete(?)"
             );
 
-
         return $stmt->execute([
 
             $id
 
         ]);
     }
-
 
 
     public function findById(
@@ -118,26 +107,21 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
                 "CALL sp_announcement_find_by_id(?)"
             );
 
-
         $stmt->execute([
 
             $id
 
         ]);
 
-
         $announcement = $stmt->fetch();
-
 
         if (!$announcement) {
 
             return null;
         }
 
-
         return $this->mapToAnnouncement($announcement);
     }
-
 
 
     public function findAll(
@@ -146,35 +130,23 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
         array $filters = []
     ) {
 
-
         $offset =
             ($page - 1) * $limit;
-
-
 
         $search =
             $filters['search'] ?? '';
 
-
-
         $priority =
             $filters['priority'] ?? '';
 
-
-
         $status =
             $filters['status'] ?? '';
-
-
-
 
         $stmt = $this->db->prepare(
 
             "CALL sp_announcement_find_all(?,?,?,?,?)"
 
         );
-
-
 
         $stmt->execute([
 
@@ -190,11 +162,7 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
 
         ]);
 
-
-
         $announcements = [];
-
-
 
         while (
             $row =
@@ -205,11 +173,94 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
                 $this->mapToAnnouncement($row);
         }
 
-
-
         while (
             $stmt->nextRowset()
         ) {
+        }
+
+        $stmt->closeCursor();
+
+        return $announcements;
+    }
+
+
+    public function count(
+        array $filters = []
+    ): int {
+
+        $stmt =
+            $this->db->prepare(
+
+                "CALL sp_announcement_count(?,?,?)"
+
+            );
+
+        $stmt->execute([
+
+            $filters['search'] ?? '',
+
+            $filters['priority'] ?? '',
+
+            $filters['status'] ?? ''
+
+        ]);
+
+        $result =
+            $stmt->fetch();
+
+        $stmt->closeCursor();
+
+        return (int)(
+            $result['total'] ?? 0
+        );
+    }
+
+    public function findForUser(
+
+        int $userId,
+
+        array $filters = []
+
+    ): array {
+
+
+        $stmt = $this->db->prepare(
+
+            "CALL sp_announcement_find_for_user(?,?,?,?)"
+
+        );
+
+
+
+        $stmt->execute([
+
+
+            $userId,
+
+
+            $filters['search'] ?? '',
+
+
+            $filters['priority'] ?? '',
+
+
+            $filters['time'] ?? ''
+
+
+        ]);
+
+
+
+        $announcements = [];
+
+
+
+        while (
+            $row = $stmt->fetch(\PDO::FETCH_ASSOC)
+        ) {
+
+            $announcements[] =
+                $this->mapToAnnouncement($row);
         }
 
 
@@ -221,49 +272,6 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
         return $announcements;
     }
 
-    public function count(
-        array $filters = []
-    ): int {
-
-
-        $stmt =
-            $this->db->prepare(
-
-                "CALL sp_announcement_count(?,?,?)"
-
-            );
-
-
-
-        $stmt->execute([
-
-
-            $filters['search'] ?? '',
-
-
-            $filters['priority'] ?? '',
-
-
-            $filters['status'] ?? ''
-
-
-        ]);
-
-
-
-        $result =
-            $stmt->fetch();
-
-
-
-        $stmt->closeCursor();
-
-
-
-        return (int)(
-            $result['total'] ?? 0
-        );
-    }
 
     public function findByClub(
         int $clubId
@@ -274,17 +282,14 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
                 "CALL sp_announcement_find_by_club(?)"
             );
 
-
         $stmt->execute([
 
             $clubId
 
         ]);
 
-
         return $stmt->fetchAll();
     }
-
 
 
     public function findPublished()
@@ -295,31 +300,25 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
                 "CALL sp_announcement_find_published()"
             );
 
-
         $stmt->execute();
-
 
         $announcements = [];
 
-
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-
 
             $announcements[] =
                 $this->mapToAnnouncement($row);
         }
 
-
         $stmt->closeCursor();
-
 
         return $announcements;
     }
 
+
     public function findClubMembers(
         int $clubId
     ): array {
-
 
         $stmt = $this->db->prepare(
             "
@@ -330,21 +329,17 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
         "
         );
 
-
         $stmt->execute([
             $clubId
         ]);
-
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
 
-
     private function mapToAnnouncement(
         array $row
     ): Announcement {
-
 
         return new Announcement(
 
@@ -361,6 +356,8 @@ class AnnouncementRepository extends BaseRepository implements AnnouncementRepos
             $row['image'],
 
             $row['status'],
+
+            $row['visibility'] ?? 'all',
 
             $row['created_by_name'] ?? null,
 

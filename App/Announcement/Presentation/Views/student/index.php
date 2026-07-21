@@ -219,59 +219,226 @@ $priorityFilter = $_GET['priority'] ?? '';
 
         <!-- LEFT FILTER (glass) -->
         <div class="lg:col-span-1 animate-fadeInUp delay-100">
+
             <div
                 class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-5 sticky top-20 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50">
 
-                <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+
+                <h3 class="font-bold text-slate-800 mb-5 flex items-center gap-2">
+
                     <i data-lucide="filter" class="w-4 h-4 text-blue-600"></i>
+
                     Filter
+
                 </h3>
 
-                <!-- Search -->
-                <form method="GET" class="mb-5">
+
+
+                <!-- SEARCH -->
+                <form method="GET" class="mb-6">
+
                     <div class="relative">
-                        <i data-lucide="search" class="absolute left-3 top-3 w-4 h-4 text-slate-400"></i>
+
+                        <i data-lucide="search" class="absolute left-3 top-3 w-4 h-4 text-slate-400">
+                        </i>
+
+
                         <input type="text" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-                            placeholder="Search..."
-                            class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200/80 bg-white/50 text-sm placeholder:text-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 focus:bg-white outline-none transition-all duration-300 shadow-sm focus:shadow-lg hover:border-blue-200">
+                            placeholder="Search announcements..."
+                            class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200/80 bg-white/50 text-sm placeholder:text-slate-400 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/60 outline-none transition-all"
+                            onkeypress="if(event.key==='Enter'){this.form.submit();}">
+
+
+                        <?php if(isset($_GET['priority'])): ?>
+
+                        <input type="hidden" name="priority" value="<?= htmlspecialchars($_GET['priority']) ?>">
+
+                        <?php endif; ?>
+
+
+                        <?php if(isset($_GET['time'])): ?>
+
+                        <input type="hidden" name="time" value="<?= htmlspecialchars($_GET['time']) ?>">
+
+                        <?php endif; ?>
+
+
                     </div>
+
                 </form>
 
-                <!-- Priority Filter -->
-                <p class="text-xs uppercase font-semibold text-slate-400 mb-3 tracking-wider">Priority</p>
+
+
+
+                <!-- PRIORITY -->
+
+                <p class="text-xs uppercase font-semibold text-slate-400 mb-3 tracking-wider">
+
+                    Priority
+
+                </p>
+
+
 
                 <div class="space-y-2">
-                    <?php
-                    $filters = [
-                        '' => ['label' => 'All Announcements', 'icon' => 'bell'],
-                        'high' => ['label' => 'Important', 'icon' => 'flame'],
-                        'medium' => ['label' => 'Updates', 'icon' => 'megaphone'],
-                        'low' => ['label' => 'Notices', 'icon' => 'info']
-                    ];
 
-                    foreach ($filters as $key => $filter):
-                        $active = $priorityFilter == $key;
-                    ?>
-                    <a href="?priority=<?= $key ?>" class="
-                        flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-300
-                        <?= $active 
-                            ? 'glass-card-light-active text-blue-600 font-semibold shadow-sm' 
-                            : 'text-slate-600 hover:bg-slate-50/70 hover:shadow-sm' 
-                        ?>
-                        group
-                    ">
-                        <i data-lucide="<?= $filter['icon'] ?>"
-                            class="w-4 h-4 <?= $active ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-500' ?>"></i>
-                        <?= $filter['label'] ?>
-                        <?php if ($active): ?>
-                        <span class="ml-auto w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+
+                    <?php
+
+        $priorityFilters = [
+
+            '' => [
+                'label'=>'All',
+                'icon'=>'bell'
+            ],
+
+            'high'=>[
+                'label'=>'Important',
+                'icon'=>'flame'
+            ],
+
+            'medium'=>[
+                'label'=>'Updates',
+                'icon'=>'megaphone'
+            ],
+
+            'low'=>[
+                'label'=>'Notices',
+                'icon'=>'info'
+            ]
+
+        ];
+
+
+        foreach($priorityFilters as $key=>$item):
+
+
+            $active =
+                ($_GET['priority'] ?? '') === $key;
+
+
+            $params=$_GET;
+
+            $params['priority']=$key;
+
+
+        ?>
+
+
+                    <a href="?<?= http_build_query($params) ?>" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-300
+
+            <?= $active
+
+            ? 'bg-blue-50 text-blue-600 font-semibold shadow-sm'
+
+            : 'text-slate-600 hover:bg-slate-50'
+
+            ?>">
+
+
+                        <i data-lucide="<?= $item['icon'] ?>" class="w-4 h-4">
+                        </i>
+
+
+                        <?= $item['label'] ?>
+
+
+                        <?php if($active): ?>
+
+                        <span class="ml-auto w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse">
+                        </span>
+
                         <?php endif; ?>
+
+
                     </a>
+
+
                     <?php endforeach; ?>
+
+
                 </div>
 
+
+
+
+
+
+                <!-- TIME -->
+
+                <p class="text-xs uppercase font-semibold text-slate-400 mb-3 mt-7 tracking-wider">
+
+                    Time
+
+                </p>
+
+
+
+                <div class="space-y-2">
+
+
+                    <?php
+
+
+        $timeFilters = [
+
+            '' => 'Latest',
+
+            'week'=>'This Week',
+
+            'month'=>'This Month'
+
+        ];
+
+
+
+        foreach($timeFilters as $key=>$label):
+
+
+            $active =
+                ($_GET['time'] ?? '') === $key;
+
+
+            $params=$_GET;
+
+            $params['time']=$key;
+
+
+        ?>
+
+
+                    <a href="?<?= http_build_query($params) ?>" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all duration-300
+
+            <?= $active
+
+            ? 'bg-blue-50 text-blue-600 font-semibold'
+
+            : 'text-slate-600 hover:bg-slate-50'
+
+            ?>">
+
+
+                        <span class="w-2 h-2 rounded-full border border-current">
+                        </span>
+
+
+                        <?= $label ?>
+
+
+                    </a>
+
+
+                    <?php endforeach; ?>
+
+
+                </div>
+
+
+
             </div>
+
         </div>
+
 
         <!-- RIGHT DATA -->
         <div class="lg:col-span-3">

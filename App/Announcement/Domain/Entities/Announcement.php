@@ -19,6 +19,8 @@ class Announcement
 
     private string $status;
 
+    private string $visibility;
+
     private ?string $createdByName;
 
     private int $createdBy;
@@ -38,6 +40,7 @@ class Announcement
         string $priority,
         ?string $image,
         string $status,
+        string $visibility,
         ?string $createdByName,
         int $createdBy,
         ?string $createdAt = null,
@@ -57,6 +60,8 @@ class Announcement
         $this->image = $image;
 
         $this->status = $status;
+
+        $this->visibility = $visibility;
 
         $this->createdByName = $createdByName;
 
@@ -114,6 +119,11 @@ class Announcement
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    public function getVisibility(): string
+    {
+        return $this->visibility;
     }
 
 

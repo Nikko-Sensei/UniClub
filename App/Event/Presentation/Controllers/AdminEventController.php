@@ -21,7 +21,6 @@ class AdminEventController extends BaseController
 
     private EventService $eventService;
     private MasterService $masterService;
-
     private ClubService $clubService;
 
 

@@ -287,6 +287,34 @@ class AnnouncementService
             ->findPublished();
     }
 
+    // public function getAnnouncementsForUser(
+    //     int $userId
+    // ): array {
+
+    //     return $this->repository
+    //         ->findForUser($userId);
+    // }
+
+
+    public function getAnnouncementsForUser(
+
+        int $userId,
+
+        array $filters = []
+
+    ): array {
+
+
+        return $this->repository
+            ->findForUser(
+
+                $userId,
+
+                $filters
+
+            );
+    }
+    
     private function notifyStudents(
         int $announcementId,
         string $title

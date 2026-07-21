@@ -93,6 +93,7 @@
                     <tr>
                         <th class="px-5 py-3.5 text-left">Announcement</th>
                         <th class="px-5 py-3.5 text-left">Priority</th>
+                        <th class="px-5 py-3.5 text-left">Visibility</th>
                         <th class="px-5 py-3.5 text-left">Status</th>
                         <th class="px-5 py-3.5 text-left">Date</th>
                         <th class="px-5 py-3.5 text-right">Actions</th>
@@ -125,25 +126,76 @@
                         </td>
                         <td class="px-5 py-3.5">
                             <?php
-                                $priority = $announcement->getPriority();
-                                $priorityClass = match ($priority) {
-                                    'high' => 'bg-red-50 text-red-700 border-red-200/50',
-                                    'medium' => 'bg-amber-50 text-amber-700 border-amber-200/50',
-                                    default => 'bg-blue-50 text-blue-700 border-blue-200/50'
-                                };
-                            ?>
+                                    $priority = $announcement->getPriority();
+                                    $priorityClass = match ($priority) {
+                                        'high' => 'bg-red-50 text-red-700 border-red-200/50',
+                                        'medium' => 'bg-amber-50 text-amber-700 border-amber-200/50',
+                                        default => 'bg-blue-50 text-blue-700 border-blue-200/50'
+                                    };
+                                    ?>
                             <span
                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?= $priorityClass ?> border">
                                 <?= ucfirst($priority) ?>
                             </span>
                         </td>
+
                         <td class="px-5 py-3.5">
+
                             <?php
-                                $status = $announcement->getStatus();
-                                $statusClass = $status === 'published'
-                                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200/50'
-                                    : 'bg-yellow-50 text-yellow-700 border-yellow-200/50';
-                            ?>
+
+$visibility = $announcement->getVisibility();
+
+
+$visibilityStyle = match($visibility){
+
+    'club_members' => [
+        'class' => 'bg-purple-50 text-purple-700 border-purple-200/50',
+        'icon'  => 'users',
+        'label' => 'Club Members'
+    ],
+
+
+    default => [
+        'class' => 'bg-blue-50 text-blue-700 border-blue-200/50',
+        'icon'  => 'globe',
+        'label' => 'All Users'
+    ]
+
+};
+
+?>
+
+                            <span class="
+        inline-flex
+        items-center
+        gap-1.5
+        px-3
+        py-1
+        rounded-full
+        text-xs
+        font-medium
+        border
+        <?= $visibilityStyle['class'] ?>
+    ">
+
+                                <i data-lucide="<?= $visibilityStyle['icon'] ?>" class="w-3.5 h-3.5">
+                                </i>
+
+
+                                <?= $visibilityStyle['label'] ?>
+
+
+                            </span>
+
+
+                        </td>
+                        <td class="px-5.5 py-3.5 ">
+                            <?php
+                                    $status = $announcement->getStatus();
+                                    $statusClass = $status === 'published'
+                                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200/50'
+                                        : 'bg-yellow-50 text-yellow-700 border-yellow-200/50';
+                                    ?>
                             <span
                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?= $statusClass ?> border">
                                 <?= ucfirst($status) ?>
@@ -218,7 +270,7 @@
                     $range = 2;
                     $start = max(1, $current - $range);
                     $end = min($totalPages, $current + $range);
-                ?>
+                    ?>
                 <?php if ($start > 1): ?>
                 <a href="<?= buildAnnouncementPaginationUrl(1, $_GET) ?>"
                     class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">1</a>

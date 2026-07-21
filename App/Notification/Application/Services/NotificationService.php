@@ -235,27 +235,37 @@ class NotificationService
         Notification $notification
     ): string {
 
+        return match ($notification->getType()) {
 
-        return match ($notification->getReferenceType()) {
+            'membership_request' =>
 
-            'club' =>
+            '/admin/memberships',
+
+
+            'membership_approved',
+
+            'membership_rejected' =>
+
             '/clubs/' .
                 $notification->getReferenceId(),
 
 
-            'event' =>
+            'event_created',
+
+            'event_updated' =>
 
             '/events/' .
                 $notification->getReferenceId(),
 
 
-            'announcement' =>
+            'announcement_created' =>
 
             '/announcements/' .
                 $notification->getReferenceId(),
 
 
             default =>
+
             '/notifications'
         };
     }

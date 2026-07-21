@@ -58,15 +58,15 @@ class AdminAnnouncementController extends BaseController
         $filters = [
 
             'search' =>
-                trim($_GET['search'] ?? ''),
+            trim($_GET['search'] ?? ''),
 
 
             'priority' =>
-                $_GET['priority'] ?? '',
+            $_GET['priority'] ?? '',
 
 
             'status' =>
-                $_GET['status'] ?? ''
+            $_GET['status'] ?? ''
 
         ];
 
@@ -89,19 +89,19 @@ class AdminAnnouncementController extends BaseController
             [
 
                 'title' =>
-                    'Announcement Management',
+                'Announcement Management',
 
 
                 'announcements' =>
-                    $result['announcements'],
+                $result['announcements'],
 
 
                 'filters' =>
-                    $filters,
+                $filters,
 
 
                 'pagination' =>
-                    $result['pagination']
+                $result['pagination']
 
             ],
 
@@ -133,7 +133,7 @@ class AdminAnnouncementController extends BaseController
             [
 
                 'clubs' =>
-                    $clubs
+                $clubs
 
             ],
 
@@ -156,31 +156,33 @@ class AdminAnnouncementController extends BaseController
         $data = [
 
             'club_id' =>
-                $_POST['club_id'],
+            $_POST['club_id'],
 
 
             'title' =>
-                $_POST['title'],
+            $_POST['title'],
 
 
             'content' =>
-                $_POST['content'],
+            $_POST['content'],
 
 
             'priority' =>
-                $_POST['priority'],
+            $_POST['priority'],
 
 
             'image' =>
-                $_POST['image'] ?? null,
+            $_POST['image'] ?? null,
 
 
             'status' =>
-                $_POST['status'],
+            $_POST['status'],
+
+            'visibility' => $_POST['visibility'],
 
 
             'created_by' =>
-                $_SESSION['user']['id']
+            $_SESSION['user']['id']
 
         ];
 
@@ -233,7 +235,7 @@ class AdminAnnouncementController extends BaseController
             [
 
                 'announcement' =>
-                    $announcement
+                $announcement
 
             ],
 
@@ -257,23 +259,25 @@ class AdminAnnouncementController extends BaseController
         $data = [
 
             'title' =>
-                $_POST['title'],
+            $_POST['title'],
 
 
             'content' =>
-                $_POST['content'],
+            $_POST['content'],
 
 
             'priority' =>
-                $_POST['priority'],
+            $_POST['priority'],
 
 
             'image' =>
-                $_POST['image'] ?? null,
+            $_POST['image'] ?? null,
 
 
             'status' =>
-                $_POST['status']
+            $_POST['status'],
+
+            'visibility' => $_POST['visibility']
 
         ];
 
@@ -373,5 +377,4 @@ class AdminAnnouncementController extends BaseController
 
         );
     }
-
 }

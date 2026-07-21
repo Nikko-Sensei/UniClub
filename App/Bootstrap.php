@@ -605,6 +605,12 @@ class Bootstrap
 
                     $container->resolve(
                         EventService::class
+                    ),
+                    $container->resolve(
+                        ClubService::class
+                    ),
+                    $container->resolve(
+                        MasterService::class
                     )
 
                 );

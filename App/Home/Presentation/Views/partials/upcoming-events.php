@@ -83,12 +83,12 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         Upcoming
                     </span>
-                    <a href="<?= BASE_URL ?>/events/<?= $event['id'] ?>"
+                    <!-- <a href="<?= BASE_URL ?>/events/<?= $event['id'] ?>"
                         class="inline-flex items-center gap-1 text-sm font-semibold text-slate-600 hover:text-blue-600 transition group/link">
                         View Event
                         <i data-lucide="arrow-right"
                             class="w-3.5 h-3.5 transition-all duration-300 group-hover/link:translate-x-1 group-hover/link:scale-110"></i>
-                    </a>
+                    </a> -->
                 </div>
             </div>
 

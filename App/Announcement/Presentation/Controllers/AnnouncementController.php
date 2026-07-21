@@ -4,7 +4,7 @@ namespace App\Announcement\Presentation\Controllers;
 
 
 use App\Announcement\Application\Services\AnnouncementService;
-
+use App\Shared\Core\Auth;
 use App\Shared\Core\BaseController;
 
 
@@ -19,15 +19,13 @@ class AnnouncementController extends BaseController
 
     public function __construct(
         AnnouncementService $announcementService
-    )
-    {
+    ) {
 
         parent::__construct();
 
 
         $this->announcementService =
             $announcementService;
-
     }
 
 
@@ -35,13 +33,69 @@ class AnnouncementController extends BaseController
     /**
      * Display published announcements
      */
+    //    public function index()
+    // {
+
+    //     $userId = Auth::id();
+
+
+    //     $announcements =
+    //         $this->announcementService
+    //             ->getAnnouncementsForUser($userId);
+
+
+
+    //     return $this->view(
+
+    //         'Announcement/Presentation/Views/student/index',
+
+    //         [
+
+    //             'announcements' => $announcements
+
+    //         ],
+
+    //         'App'
+
+
+    //     );
+
+    // }
+
+
+
     public function index()
     {
+
+        $userId = Auth::id();
+
+
+        $filters = [
+
+            'search' =>
+            $_GET['search'] ?? '',
+
+
+            'priority' =>
+            $_GET['priority'] ?? '',
+
+
+            'time' =>
+            $_GET['time'] ?? ''
+
+        ];
+
 
 
         $announcements =
             $this->announcementService
-                ->getPublishedAnnouncements();
+            ->getAnnouncementsForUser(
+
+                $userId,
+
+                $filters
+
+            );
 
 
 
@@ -55,11 +109,9 @@ class AnnouncementController extends BaseController
 
             ],
 
-            'app'
-
+            'App'
 
         );
-
     }
 
 
@@ -69,13 +121,12 @@ class AnnouncementController extends BaseController
      */
     public function show(
         int $id
-    )
-    {
+    ) {
 
 
         $announcement =
             $this->announcementService
-                ->getAnnouncement($id);
+            ->getAnnouncement($id);
 
 
 
@@ -89,12 +140,9 @@ class AnnouncementController extends BaseController
 
             ],
 
-            'app'
+            'App'
 
 
         );
-
     }
-
-
 }
