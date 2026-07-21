@@ -86,11 +86,22 @@ class SecuritySettingController extends BaseController
             'lock_time_minutes' =>
             $_POST['lock_time_minutes'] ?? 15,
 
+            'enable_rate_limit' =>
+            isset($_POST['enable_rate_limit']) ? 1 : 0,
+
+
+            'rate_limit_attempts' =>
+            $_POST['rate_limit_attempts'] ?? 5,
+
+
+            'rate_limit_minutes' =>
+            $_POST['rate_limit_minutes'] ?? 5,
+
 
             'enable_audit_log' =>
             isset($_POST['enable_audit_log']) ? 1 : 0,
-            
-            
+
+
             'maintenance_mode' =>
             isset($_POST['maintenance_mode']) ? 1 : 0
 

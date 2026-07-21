@@ -13,6 +13,10 @@ use App\Shared\Application\Services\ImageUploadService;
 
 use App\Notification\Application\Services\NotificationService;
 
+use App\Shared\Logging\AuditLogger;
+
+use App\Shared\Logging\AuditAction;
+
 
 
 class EventService
@@ -24,6 +28,7 @@ class EventService
 
     private NotificationService $notificationService;
 
+    private AuditLogger $auditLogger;
 
     public function __construct(
 
@@ -31,7 +36,9 @@ class EventService
 
         ImageUploadService $imageUploadService,
 
-        NotificationService $notificationService
+        NotificationService $notificationService,
+
+        AuditLogger $auditLogger
 
     ) {
 
@@ -40,6 +47,8 @@ class EventService
         $this->imageUploadService = $imageUploadService;
 
         $this->notificationService = $notificationService;
+
+        $this->auditLogger = $auditLogger;
     }
 
 
@@ -61,6 +70,27 @@ class EventService
         $event =
             $this->eventRepository
             ->create($data);
+
+
+
+        if ($event) {
+
+            $this->auditLogger->log(
+
+                AuditAction::CREATE_EVENT,
+
+                $data['created_by'] ?? null,
+
+                'Event',
+
+                $event['id'],
+
+                [
+                    'title' => $data['title']
+                ]
+
+            );
+        }
 
 
 
@@ -143,6 +173,8 @@ class EventService
             ->findById($id);
 
 
+
+
         if (!$event) {
 
             throw new EventNotFoundException();
@@ -173,7 +205,24 @@ class EventService
                 $data
             );
 
+        if ($result) {
 
+            $this->auditLogger->log(
+
+                AuditAction::UPDATE_EVENT,
+
+                $_SESSION['user']['id'],
+
+                'Event',
+
+                $id,
+
+                [
+                    'title' => $data['title']
+                ]
+
+            );
+        }
 
         if (
             $result &&
@@ -226,8 +275,32 @@ class EventService
         }
 
 
-        return $this->eventRepository
+        $result =
+            $this->eventRepository
             ->delete($id);
+
+
+        if ($result) {
+
+            $this->auditLogger->log(
+
+                AuditAction::DELETE_EVENT,
+
+                $_SESSION['user']['id'],
+
+                'Event',
+
+                $id,
+
+                [
+                    'title' => $event->getTitle()
+                ]
+
+            );
+        }
+
+
+        return $result;
     }
     public function getEvent(
         int $id
@@ -348,13 +421,36 @@ class EventService
         }
 
 
-
-        return $this->eventRepository
+        $result =
+            $this->eventRepository
             ->createRegistration(
                 $eventId,
                 $userId,
                 $note
             );
+
+
+        if ($result) {
+
+            $this->auditLogger->log(
+
+                AuditAction::REGISTER_EVENT,
+
+                $userId,
+
+                'Event',
+
+                $eventId,
+
+                [
+                    'message' => 'Student registered for event'
+                ]
+
+            );
+        }
+
+
+        return $result;
     }
 
     /**
@@ -395,11 +491,36 @@ class EventService
 
 
 
-        return $this->eventRepository
+        $result =
+            $this->eventRepository
             ->cancelRegistration(
                 $eventId,
                 $userId
             );
+
+
+        if ($result) {
+
+            $this->auditLogger->log(
+
+                AuditAction::CANCEL_EVENT_REGISTRATION,
+
+                $userId,
+
+                'Event',
+
+                $eventId,
+
+                [
+                    'message' =>
+                    'Cancelled event registration'
+                ]
+
+            );
+        }
+
+
+        return $result;
     }
 
 
@@ -519,7 +640,7 @@ class EventService
         ];
     }
 
-    
+
 
     private function handleImages(
         array $files,

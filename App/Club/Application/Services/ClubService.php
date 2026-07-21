@@ -89,6 +89,10 @@ class ClubService
                 ? (int)$data['member_limit']
                 : null,
 
+            membershipFee: isset($data['membership_fee'])
+                ? (float)$data['membership_fee']
+                : 0,
+
             status: 'active',
 
             createdBy: $userId
@@ -206,6 +210,10 @@ class ClubService
             memberLimit: isset($data['member_limit'])
                 ? (int)$data['member_limit']
                 : $existing->getMemberLimit(),
+
+            membershipFee: isset($data['membership_fee'])
+                ? (float)$data['membership_fee']
+                : $existing->getMembershipFee(),
 
             status: $data['status']
                 ?? $existing->getStatus(),
@@ -397,9 +405,9 @@ class ClubService
     }
 
     public function getFeaturedClub(): ?Club
-{
-    return $this->repository->findMostPopularClub();
-}
+    {
+        return $this->repository->findMostPopularClub();
+    }
 
 
     /**
@@ -466,24 +474,21 @@ class ClubService
     }
 
     public function getMembers(
-    int $clubId
-): array
-{
+        int $clubId
+    ): array {
 
-    return $this->repository
-        ->findMembers(
-            $clubId
-        );
+        return $this->repository
+            ->findMembers(
+                $clubId
+            );
+    }
 
-}
+    public function getClubRoles(): array
+    {
 
-public function getClubRoles(): array
-{
-
-    return $this->repository
-        ->findRoles();
-
-}
+        return $this->repository
+            ->findRoles();
+    }
 
     public function getUpcomingEvents(
         int $clubId

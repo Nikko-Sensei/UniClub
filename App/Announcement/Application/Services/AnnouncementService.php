@@ -6,6 +6,8 @@ namespace App\Announcement\Application\Services;
 use App\Announcement\Domain\Repository\AnnouncementRepositoryInterface;
 use App\Notification\Application\Services\NotificationService;
 use App\User\Application\Services\UserService;
+use App\Shared\Logging\AuditLogger;
+use App\Shared\Logging\AuditAction;
 
 
 
@@ -19,18 +21,21 @@ class AnnouncementService
 
     private UserService $userService;
 
-
+    private AuditLogger $auditLogger;
 
     public function __construct(
         AnnouncementRepositoryInterface $repository,
         NotificationService $notificationService,
-        UserService $userService
+        UserService $userService,
+        AuditLogger $auditLogger
     ) {
         $this->repository = $repository;
 
         $this->notificationService = $notificationService;
 
         $this->userService = $userService;
+
+        $this->auditLogger = $auditLogger;
     }
 
 
@@ -87,7 +92,25 @@ class AnnouncementService
             }
         }
 
+        if ($announcement) {
 
+
+            $this->auditLogger->log(
+
+                AuditAction::CREATE_ANNOUNCEMENT,
+
+                $_SESSION['user']['id'] ?? null,
+
+                'Announcement',
+
+                $announcement['id'],
+
+                [
+                    'title' => $data['title']
+                ]
+
+            );
+        }
         return $announcement;
     }
 
@@ -164,7 +187,25 @@ class AnnouncementService
             }
         }
 
+        if ($result) {
 
+
+            $this->auditLogger->log(
+
+                AuditAction::UPDATE_ANNOUNCEMENT,
+
+                $_SESSION['user']['id'] ?? null,
+
+                'Announcement',
+
+                $id,
+
+                [
+                    'title' => $data['title']
+                ]
+
+            );
+        }
 
         return $result;
     }
@@ -178,8 +219,43 @@ class AnnouncementService
         int $id
     ) {
 
-        return $this->repository
+
+        $announcement =
+            $this->repository
+            ->findById($id);
+
+
+
+        $result =
+            $this->repository
             ->delete($id);
+
+
+
+        if ($result) {
+
+
+            $this->auditLogger->log(
+
+                AuditAction::DELETE_ANNOUNCEMENT,
+
+                $_SESSION['user']['id'] ?? null,
+
+                'Announcement',
+
+                $id,
+
+                [
+                    'title' =>
+                    $announcement?->getTitle()
+                ]
+
+            );
+        }
+
+
+
+        return $result;
     }
 
 
@@ -314,7 +390,7 @@ class AnnouncementService
 
             );
     }
-    
+
     private function notifyStudents(
         int $announcementId,
         string $title

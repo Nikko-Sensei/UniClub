@@ -3,6 +3,7 @@
 namespace App\Shared\Core;
 
 use App\Shared\Container\Container;
+use App\Shared\Middleware\MaintenanceMiddleware;
 
 class Router
 {
@@ -68,6 +69,8 @@ class Router
         string $uri,
         string $method
     ): void {
+
+    $this->container->resolve(MaintenanceMiddleware::class)->handle();
 
         $uri = $this->cleanUri($uri);
 

@@ -122,6 +122,9 @@ use App\Auth\Application\Services\PasswordResetService;
 use App\Auth\Presentation\Controllers\PasswordResetController;
 use App\Auth\Domain\Repository\PasswordResetRepositoryInterface;
 use App\Auth\Infrastructure\Persistence\PasswordResetRepository;
+use App\Auth\Application\Validators\ResetPasswordValidator;
+use App\Auth\Application\Validators\ForgotPasswordValidator;
+use App\Auth\Application\Validators\VerifyOtpValidator;
 
 // General
 use App\Admin\Settings\General\Presentation\Controllers\GeneralSettingController;
@@ -142,6 +145,11 @@ use App\Shared\Helpers\SecuritySettingHelper;
 use App\Shared\Mail\Mailer;
 use App\Shared\Mail\EmailService;
 
+// Login Attempt
+use App\Auth\Domain\Repository\LoginAttemptRepositoryInterface;
+use App\Auth\Infrastructure\Persistence\LoginAttemptRepository;
+use App\Auth\Application\Services\LoginProtectionService;
+
 // Notification
 
 use App\Notification\Domain\Repository\NotificationRepositoryInterface;
@@ -149,11 +157,24 @@ use App\Notification\Infrastructure\Persistence\NotificationRepository;
 use App\Notification\Application\Services\NotificationService;
 use App\Notification\Presentation\Controllers\NotificationController;
 
+use App\Shared\Presentation\Controllers\MaintenanceController;
+
 class Bootstrap
 {
     public static function create(): Container
     {
         $container = new Container();
+
+
+        // Maintenance
+
+        $container->bind(
+            MaintenanceController::class,
+            function ($container) {
+
+                return new MaintenanceController();
+            }
+        );
 
         // Home Controller
 
@@ -231,7 +252,8 @@ class Bootstrap
             return new AuthService(
                 $container->resolve(UserRepositoryInterface::class),
                 $container->resolve(AuditLogger::class),
-                $container->resolve(MasterService::class)
+                $container->resolve(MasterService::class),
+                $container->resolve(LoginProtectionService::class)
 
             );
         });
@@ -264,6 +286,39 @@ class Bootstrap
                     )
 
                 );
+            }
+        );
+
+        // ResetPasswordValidator
+
+        $container->bind(
+            ResetPasswordValidator::class,
+            function ($container) {
+
+                return new ResetPasswordValidator(
+
+                    $container->resolve(
+                        PasswordPolicyValidator::class
+                    )
+
+                );
+            }
+        );
+
+        $container->bind(
+            ForgotPasswordValidator::class,
+            function () {
+
+                return new ForgotPasswordValidator();
+            }
+        );
+
+
+        $container->bind(
+            VerifyOtpValidator::class,
+            function () {
+
+                return new VerifyOtpValidator();
             }
         );
 
@@ -577,6 +632,9 @@ class Bootstrap
 
                     $container->resolve(
                         UserService::class
+                    ),
+                    $container->resolve(
+                        AuditLogger::class
                     )
 
                 );
@@ -638,7 +696,8 @@ class Bootstrap
 
                     $container->resolve(
                         NotificationService::class
-                    )
+                    ),
+                    $container->resolve(AuditLogger::class)
 
                 );
             }
@@ -801,6 +860,10 @@ class Bootstrap
 
                     $container->resolve(
                         UserService::class
+                    ),
+
+                    $container->resolve(
+                        AuditLogger::class
                     )
 
                 );
@@ -991,6 +1054,9 @@ class Bootstrap
 
                     $container->resolve(
                         SecuritySettingRepositoryInterface::class
+                    ),
+                    $container->resolve(
+                        AuditLogger::class
                     )
 
                 );
@@ -1030,6 +1096,36 @@ class Bootstrap
             }
         );
 
+        // login Attempt
+
+        $container->bind(
+            LoginAttemptRepositoryInterface::class,
+            function () {
+
+                return new LoginAttemptRepository();
+            }
+        );
+
+
+
+        $container->bind(
+            LoginProtectionService::class,
+            function ($container) {
+
+                return new LoginProtectionService(
+
+                    $container->resolve(
+                        LoginAttemptRepositoryInterface::class
+                    ),
+
+                    $container->resolve(
+                        SecuritySettingHelper::class
+                    )
+
+                );
+            }
+        );
+
         // Middleware
 
         $container->bind(
@@ -1046,7 +1142,16 @@ class Bootstrap
 
         $container->bind(
             RateLimitMiddleware::class,
-            fn() => new RateLimitMiddleware()
+            function ($container) {
+
+                return new RateLimitMiddleware(
+
+                    $container->resolve(
+                        SecuritySettingHelper::class
+                    )
+
+                );
+            }
         );
 
 
@@ -1093,6 +1198,20 @@ class Bootstrap
             }
         );
 
+        $container->bind(
+            MaintenanceMiddleware::class,
+            function ($container) {
+
+                return new MaintenanceMiddleware(
+
+                    $container->resolve(
+                        SecuritySettingHelper::class
+                    )
+
+                );
+            }
+        );
+
         //Audit Logger
         $container->bind(AuditLogger::class, function () {
             return new AuditLogger(Database::getConnection());
@@ -1113,12 +1232,35 @@ class Bootstrap
             );
         });
 
-        $container->bind(PasswordResetController::class, function ($container) {
-            return new PasswordResetController(
-                $container->resolve(PasswordResetService::class),
-                $container->resolve(SecuritySettingHelper::class)
-            );
-        });
+        $container->bind(
+            PasswordResetController::class,
+            function ($container) {
+
+                return new PasswordResetController(
+
+                    $container->resolve(
+                        PasswordResetService::class
+                    ),
+
+                    $container->resolve(
+                        SecuritySettingHelper::class
+                    ),
+
+                    $container->resolve(
+                        ForgotPasswordValidator::class
+                    ),
+
+                    $container->resolve(
+                        VerifyOtpValidator::class
+                    ),
+
+                    $container->resolve(
+                        ResetPasswordValidator::class
+                    )
+
+                );
+            }
+        );
 
         //Mail
         $container->bind(Mailer::class, fn() => new Mailer());

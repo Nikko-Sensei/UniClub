@@ -417,7 +417,195 @@ $security = $setting ?? [];
 
 
 
+        <!-- REQUEST PROTECTION / RATE LIMIT -->
 
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+
+
+            <div class="flex items-center gap-4 mb-6">
+
+
+                <div class="w-12 h-12 rounded-xl
+                    bg-blue-50
+                    flex items-center justify-center
+                    text-blue-600">
+
+
+                    <i data-lucide="gauge" class="w-6 h-6">
+                    </i>
+
+
+                </div>
+
+
+
+                <div>
+
+                    <h2 class="text-lg font-bold text-slate-800">
+                        Request Protection
+                    </h2>
+
+
+                    <p class="text-sm text-slate-500">
+                        Control excessive login requests and prevent abuse
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <div class="space-y-5">
+
+
+
+                <!-- Enable Rate Limit -->
+
+
+                <div class="flex items-center justify-between">
+
+
+                    <div>
+
+                        <p class="font-medium text-slate-700">
+                            Enable Rate Limit
+                        </p>
+
+
+                        <p class="text-sm text-slate-500">
+                            Limit repeated login requests temporarily
+                        </p>
+
+                    </div>
+
+
+
+                    <label class="relative inline-flex items-center cursor-pointer">
+
+
+                        <input type="checkbox" name="enable_rate_limit" class="sr-only peer" <?= ($security['enable_rate_limit'] ?? 0)
+                            ? 'checked'
+                            : ''
+                       ?>>
+
+
+                        <div class="
+                    w-11 h-6
+                    bg-slate-200
+                    rounded-full
+                    peer
+                    peer-checked:bg-blue-600
+                    after:absolute
+                    after:top-[2px]
+                    after:left-[2px]
+                    after:bg-white
+                    after:border
+                    after:rounded-full
+                    after:h-5
+                    after:w-5
+                    after:transition-all
+                    peer-checked:after:translate-x-full">
+                        </div>
+
+
+                    </label>
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- Rate Limit Attempts -->
+
+
+                <div class="grid md:grid-cols-2 gap-5">
+
+
+                    <div>
+
+
+                        <label class="text-sm font-medium text-slate-700">
+
+                            Maximum Requests
+
+                        </label>
+
+
+                        <p class="text-xs text-slate-500 mt-1">
+
+                            Allowed login attempts within time window
+
+                        </p>
+
+
+
+                        <input type="number" name="rate_limit_attempts"
+                            value="<?= $security['rate_limit_attempts'] ?? 5 ?>" class="
+                       mt-2
+                       w-full
+                       rounded-xl
+                       border-slate-200
+                       focus:ring-blue-500">
+
+
+                    </div>
+
+
+
+
+
+
+
+                    <!-- Rate Limit Window -->
+
+
+                    <div>
+
+
+                        <label class="text-sm font-medium text-slate-700">
+
+                            Time Window (minutes)
+
+                        </label>
+
+
+                        <p class="text-xs text-slate-500 mt-1">
+
+                            Reset request counter after this time
+
+                        </p>
+
+
+
+                        <input type="number" name="rate_limit_minutes"
+                            value="<?= $security['rate_limit_minutes'] ?? 5 ?>" class="
+                       mt-2
+                       w-full
+                       rounded-xl
+                       border-slate-200
+                       focus:ring-blue-500">
+
+
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
 
 
 

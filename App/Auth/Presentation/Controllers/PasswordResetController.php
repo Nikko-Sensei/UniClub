@@ -17,9 +17,21 @@ use Throwable;
 
 class PasswordResetController extends BaseController
 {
+    private ForgotPasswordValidator $forgotValidator;
+
+    private VerifyOtpValidator $otpValidator;
+
+    private ResetPasswordValidator $resetValidator;
     public function __construct(
         private PasswordResetService $service,
-        private SecuritySettingHelper $security
+
+        private SecuritySettingHelper $security,
+
+        ForgotPasswordValidator $forgotValidator,
+
+        VerifyOtpValidator $otpValidator,
+
+        ResetPasswordValidator $resetValidator
     ) {
         parent::__construct();
 
@@ -80,7 +92,9 @@ class PasswordResetController extends BaseController
             );
         }
 
-        $validator = new ForgotPasswordValidator();
+       // $validator = new ForgotPasswordValidator();
+
+        $validator = $this->forgotValidator;
         $data = $this->request->all();
 
         if (!$validator->validate($data)) {
@@ -152,7 +166,9 @@ class PasswordResetController extends BaseController
                 '/login'
             );
         }
-        $validator = new VerifyOtpValidator();
+        //$validator = new VerifyOtpValidator();
+
+        $validator = $this->otpValidator;
         $data = $this->request->all();
 
         if (!$validator->validate($data)) {
@@ -192,7 +208,7 @@ class PasswordResetController extends BaseController
                 '/login'
             );
         }
-        
+
         if (($_SESSION['reset_flow']['step'] ?? '') !== 'otp_verified') {
             return Response::redirect('/login');
         }
@@ -227,7 +243,8 @@ class PasswordResetController extends BaseController
             );
         }
 
-        $validator = new ResetPasswordValidator();
+        $validator = $this->resetValidator;
+        
         $data = $this->request->all();
 
         if (!$validator->validate($data)) {

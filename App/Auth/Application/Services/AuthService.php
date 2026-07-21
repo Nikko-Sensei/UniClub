@@ -33,6 +33,8 @@ class AuthService
 
     private MasterService $masterService;
 
+    private LoginProtectionService $loginProtection;
+
 
     public function __construct(
 
@@ -40,7 +42,9 @@ class AuthService
 
         AuditLogger $auditLogger,
 
-        MasterService $masterService
+        MasterService $masterService,
+
+        LoginProtectionService $loginProtection
 
     ) {
 
@@ -50,6 +54,7 @@ class AuthService
 
         $this->masterService = $masterService;
 
+        $this->loginProtection = $loginProtection;
     }
 
 
@@ -167,9 +172,25 @@ class AuthService
         LoginDTO $dto
     ): ?User {
 
+        if (
+            $this->loginProtection->isLocked(
+                $dto->email
+            )
+        ) {
+
+            throw new InvalidCredentialsException(
+                "Account temporarily locked. Please try again later."
+            );
+        }
+
+
         $user = $this->userRepository->findByEmail($dto->email);
 
         if (!$user) {
+
+            $this->loginProtection->failed(
+                $dto->email
+            );
 
             $this->auditLogger->log(
 
@@ -197,6 +218,10 @@ class AuthService
                 $user->getPassword()
             )
         ) {
+
+            $this->loginProtection->failed(
+                $dto->email
+            );
 
             $this->auditLogger->log(
 
@@ -243,6 +268,10 @@ class AuthService
 
         $this->userRepository->updateLastLogin(
             $user->getId()
+        );
+
+        $this->loginProtection->success(
+            $dto->email
         );
 
         /*

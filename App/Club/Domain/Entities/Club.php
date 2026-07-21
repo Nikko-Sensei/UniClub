@@ -30,6 +30,8 @@ class Club
 
     private ?int $memberLimit;
 
+    private float $membershipFee;
+
     private int $memberCount;
 
     private string $status;
@@ -60,6 +62,7 @@ class Club
         ?string $phone = null,
         ?string $establishedDate = null,
         ?int $memberLimit = null,
+        float $membershipFee = 0,
         int $memberCount = 0,
         string $status = 'active',
         ?int $createdBy = null,
@@ -81,6 +84,7 @@ class Club
         $this->phone = $phone;
         $this->establishedDate = $establishedDate;
         $this->memberLimit = $memberLimit;
+        $this->membershipFee = $membershipFee;
         $this->memberCount = $memberCount;
         $this->status = $status;
         $this->createdBy = $createdBy;
@@ -170,6 +174,11 @@ class Club
     public function getMemberLimit(): ?int
     {
         return $this->memberLimit;
+    }
+
+    public function getMembershipFee(): float
+    {
+        return $this->membershipFee;
     }
 
     public function getMemberCount(): int

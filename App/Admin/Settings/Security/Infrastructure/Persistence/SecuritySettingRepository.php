@@ -72,6 +72,13 @@ implements SecuritySettingRepositoryInterface
 
 
             lock_time_minutes = ?,
+            
+
+            enable_rate_limit = ?,
+
+            rate_limit_attempts = ?,
+
+            rate_limit_minutes = ?,
 
 
             enable_audit_log = ?,
@@ -100,6 +107,12 @@ implements SecuritySettingRepositoryInterface
             $data['max_login_attempts'],
 
             $data['lock_time_minutes'],
+
+            $data['enable_rate_limit'],
+
+            $data['rate_limit_attempts'],
+
+            $data['rate_limit_minutes'],
 
             $data['enable_audit_log'],
 

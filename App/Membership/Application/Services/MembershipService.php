@@ -6,6 +6,8 @@ namespace App\Membership\Application\Services;
 use App\Membership\Domain\Repository\MembershipRepositoryInterface;
 use App\Notification\Application\Services\NotificationService;
 use App\User\Application\Services\UserService;
+use App\Shared\Logging\AuditLogger;
+use App\Shared\Logging\AuditAction;
 
 
 class MembershipService
@@ -13,24 +15,25 @@ class MembershipService
 
     private MembershipRepositoryInterface $membershipRepository;
     private NotificationService $notificationService;
-
     private UserService $userService;
+    private AuditLogger $auditLogger;
 
 
 
     public function __construct(
         MembershipRepositoryInterface $membershipRepository,
         NotificationService $notificationService,
-        UserService $userService
+        UserService $userService,
+        AuditLogger $auditLogger
     ) {
 
         $this->membershipRepository = $membershipRepository;
 
-
         $this->notificationService = $notificationService;
 
-
         $this->userService = $userService;
+
+        $this->auditLogger = $auditLogger;
     }
 
 
@@ -175,6 +178,21 @@ class MembershipService
             return false;
         }
 
+        $this->auditLogger->log(
+
+            AuditAction::JOIN_CLUB,
+
+            $userId,
+
+            'Membership',
+
+            $clubId,
+
+            [
+                'action' => 'Student requested to join club'
+            ]
+
+        );
 
 
         /*
@@ -322,11 +340,36 @@ class MembershipService
     ): bool {
 
 
-        return $this->membershipRepository
+        $result =
+            $this->membershipRepository
             ->leave(
                 $clubId,
                 $userId
             );
+
+
+        if ($result) {
+
+
+            $this->auditLogger->log(
+
+                AuditAction::LEAVE_CLUB,
+
+                $userId,
+
+                'Membership',
+
+                $clubId,
+
+                [
+                    'action' => 'Student left club'
+                ]
+
+            );
+        }
+
+
+        return $result;
     }
 
     public function getPendingMemberships(): array
@@ -406,6 +449,24 @@ class MembershipService
                 'club',
                 $membership['club_id']
             );
+
+        $this->auditLogger->log(
+
+            AuditAction::APPROVE_MEMBERSHIP,
+
+            $adminId,
+
+            'Membership',
+
+            $membershipId,
+
+            [
+                'user_id' => $membership['user_id'],
+                'club_id' => $membership['club_id'],
+                'action' => 'Membership approved'
+            ]
+
+        );
     }
 
 
@@ -428,6 +489,22 @@ class MembershipService
                 'Membership request could not be rejected'
             );
         }
+
+        $this->auditLogger->log(
+
+            AuditAction::REJECT_MEMBERSHIP,
+
+            $adminId,
+
+            'Membership',
+
+            $membershipId,
+
+            [
+                'action' => 'Membership rejected'
+            ]
+
+        );
     }
 
     public function getStatistics(): array
@@ -473,11 +550,36 @@ class MembershipService
 
 
 
-        return $this->membershipRepository
+        $result =
+            $this->membershipRepository
             ->updateRole(
                 $membershipId,
                 $roleId
             );
+
+
+        if ($result) {
+
+
+            $this->auditLogger->log(
+
+                AuditAction::UPDATE_MEMBER_ROLE,
+
+                $_SESSION['user']['id'],
+
+                'Membership',
+
+                $membershipId,
+
+                [
+                    'new_role_id' => $roleId
+                ]
+
+            );
+        }
+
+
+        return $result;
     }
     public function getMembersByClub(
         int $clubId,
@@ -591,10 +693,35 @@ class MembershipService
 
 
 
-        return $this->membershipRepository
+        $result =
+            $this->membershipRepository
             ->remove(
                 $membershipId
             );
+
+
+        if ($result) {
+
+
+            $this->auditLogger->log(
+
+                AuditAction::REMOVE_MEMBER,
+
+                $_SESSION['user']['id'],
+
+                'Membership',
+
+                $membershipId,
+
+                [
+                    'action' => 'Member removed'
+                ]
+
+            );
+        }
+
+
+        return $result;
     }
 
     private function notifyAdmins(

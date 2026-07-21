@@ -30,6 +30,16 @@ use App\Notification\Presentation\Controllers\NotificationController;
 use App\Admin\Settings\Security\Presentation\Controllers\SecuritySettingController;
 use App\Admin\Settings\General\Presentation\Controllers\GeneralSettingController;
 
+use App\Shared\Presentation\Controllers\MaintenanceController;
+
+
+$router->get(
+    '/maintenance',
+    [
+        MaintenanceController::class,
+        'index'
+    ]
+);
 
 //Home
 $router->get(

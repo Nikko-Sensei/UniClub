@@ -27,7 +27,6 @@ class ClubValidator
         ) {
 
             $errors['name'] = 'Club name is required.';
-
         } elseif (
             strlen($data['name']) > 150
         ) {
@@ -65,6 +64,18 @@ class ClubValidator
             $errors['member_limit'] = 'Member limit must be greater than zero.';
         }
 
+        if (
+            isset($data['membership_fee'])
+            &&
+            $data['membership_fee'] !== ''
+            &&
+            (float)$data['membership_fee'] < 0
+        ) {
+
+            $errors['membership_fee'] =
+                'Membership fee cannot be negative.';
+        }
+
         return $errors;
     }
 
@@ -73,7 +84,5 @@ class ClubValidator
     ): array {
 
         return $this->validateCreate($data);
-
     }
-
 }

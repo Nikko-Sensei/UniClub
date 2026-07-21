@@ -744,3 +744,24 @@ CREATE TABLE general_settings
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ON UPDATE CURRENT_TIMESTAMP
 );
+
+CREATE TABLE login_attempts (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    email VARCHAR(255) NOT NULL,
+
+    attempts INT DEFAULT 0,
+
+    last_attempt_at TIMESTAMP NULL,
+
+    locked_until TIMESTAMP NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    UNIQUE(email)
+
+);

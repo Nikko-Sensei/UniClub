@@ -2,23 +2,21 @@
 
 namespace App\Shared\Middleware;
 
-
-use App\Admin\Settings\Security\Application\Services\SecuritySettingService;
+use App\Shared\Core\Response;
+use App\Shared\Helpers\SecuritySettingHelper;
 
 
 class MaintenanceMiddleware
 {
 
-    private SecuritySettingService $service;
+    private SecuritySettingHelper $security;
 
 
     public function __construct(
-        SecuritySettingService $service
-    )
-    {
+        SecuritySettingHelper $security
+    ) {
 
-        $this->service = $service;
-
+        $this->security = $security;
     }
 
 
@@ -26,36 +24,99 @@ class MaintenanceMiddleware
     public function handle(): void
     {
 
-        $setting =
-            $this->service->getSetting();
 
-
-
-        if(
-            $setting &&
-            $setting['maintenance_mode']
-        )
-        {
-
-            if(
-                !isset($_SESSION['user'])
-                ||
-                $_SESSION['user']['role_id'] != 1
+        if (
+            !$this->security->enabled(
+                'maintenance_mode'
             )
-            {
+        ) {
 
-                header(
-                    "Location: /maintenance"
-                );
-
-                exit;
-
-            }
-
+            return;
         }
 
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | Allow Admin
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            isset($_SESSION['user'])
+            &&
+            ($_SESSION['user']['role_id'] ?? null) == 1
+        ) {
+
+            return;
+        }
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Prevent Redirect Loop
+        |--------------------------------------------------------------------------
+        */
+
+        $path = parse_url(
+            $_SERVER['REQUEST_URI'],
+            PHP_URL_PATH
+        );
+
+
+        if (
+            $this->isAllowedDuringMaintenance($path)
+        ) {
+
+            return;
+        }
+
+
+
+        Response::redirect(
+            '/maintenance'
+        );
+
+        exit;
     }
 
 
+
+
+
+    /**
+     * Routes accessible during maintenance
+     */
+    private function isAllowedDuringMaintenance(
+        string $path
+    ): bool {
+
+        $allowed = [
+
+            '/login',
+
+            '/logout',
+
+            '/maintenance',
+
+        ];
+
+
+        foreach ($allowed as $route) {
+
+            if (
+                str_ends_with(
+                    $path,
+                    $route
+                )
+            ) {
+
+                return true;
+            }
+        }
+
+
+        return false;
+    }
 }

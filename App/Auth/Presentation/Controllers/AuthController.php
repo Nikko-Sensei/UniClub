@@ -83,11 +83,7 @@ class AuthController extends BaseController
     {
         $key = $_SERVER['REMOTE_ADDR'];
 
-        $this->rateLimiter->handle(
-            $key,
-            5,
-            5
-        );
+        $this->rateLimiter->handle($key);
 
         $validator = new LoginValidator();
 

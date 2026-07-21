@@ -39,6 +39,7 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
                 :phone,
                 :established_date,
                 :member_limit,
+                :membership_fee,
                 :created_by
             )"
         );
@@ -69,6 +70,8 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
             'established_date' => $club->getEstablishedDate(),
 
             'member_limit' => $club->getMemberLimit(),
+            
+            'membership_fee' => $club->getMembershipFee(),
 
             'created_by' => $club->getCreatedBy()
 
@@ -101,6 +104,7 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
                 :phone,
                 :established_date,
                 :member_limit,
+                :membership_fee,
                 :status
             )"
         );
@@ -133,6 +137,8 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
             'established_date' => $club->getEstablishedDate(),
 
             'member_limit' => $club->getMemberLimit(),
+
+            'membership_fee' => $club->getMembershipFee(),
 
             'status' => $club->getStatus()
 
@@ -666,6 +672,10 @@ class ClubRepository extends BaseRepository  implements ClubRepositoryInterface
             memberLimit: isset($row['member_limit'])
                 ? (int)$row['member_limit']
                 : null,
+
+            membershipFee: isset($row['membership_fee'])
+                ? (float)$row['membership_fee']
+                : 0,
 
             memberCount: (int)($row['member_count'] ?? 0),
 
