@@ -1,6 +1,6 @@
 <?php
 
-$security = $setting ?? [];
+$security = $security ?? null;
 
 ?>
 

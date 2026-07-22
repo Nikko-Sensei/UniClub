@@ -18,7 +18,8 @@
     <!-- ========================================================== -->
     <!-- FORM – Glass cards with organized sections                -->
     <!-- ========================================================== -->
-    <form method="POST" action="<?= BASE_URL ?>/admin/settings/general/update" class="space-y-6">
+    <form method="POST" enctype="multipart/form-data" action="<?= BASE_URL ?>/admin/settings/general/update"
+        class="space-y-6">
 
         <!-- ========================================================== -->
         <!-- APPLICATION INFORMATION – Glass card                     -->
@@ -37,28 +38,107 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+
+                <!-- System Logo -->
+                <div class="md:col-span-2">
+
+                    <label class="block text-sm font-medium text-slate-700 mb-3">
+                        System Logo
+                    </label>
+
+
+                    <div class="flex items-center gap-5">
+
+
+                        <!-- Logo Preview -->
+                        <div
+                            class="w-24 h-24 rounded-2xl border border-slate-200/80 bg-white/50 backdrop-blur-sm flex items-center justify-center overflow-hidden shadow-sm">
+
+
+                            <?php if ($setting->getLogo()): ?>
+
+                            <img src="<?= BASE_URL . '/' . $setting->getLogo() ?>" alt="System Logo"
+                                class="w-full h-full object-contain">
+
+
+                            <?php else: ?>
+
+                            <div
+                                class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+
+                                <i data-lucide="graduation-cap" class="w-10 h-10"></i>
+
+                            </div>
+
+
+                            <?php endif; ?>
+
+
+                        </div>
+
+
+
+                        <!-- Upload -->
+                        <div class="flex-1">
+
+                            <label
+                                class="flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-dashed border-blue-300 bg-blue-50/50 text-blue-700 font-medium cursor-pointer hover:bg-blue-100 transition">
+
+                                <i data-lucide="upload" class="w-4 h-4"></i>
+
+                                Upload Logo
+
+
+                                <input type="file" name="logo" accept="image/png,image/jpeg,image/svg+xml"
+                                    class="hidden">
+
+                            </label>
+
+
+                            <p class="text-xs text-slate-400 mt-2">
+                                Recommended: PNG, JPG or SVG. Maximum size 2MB.
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
                 <!-- Site Name -->
                 <div>
+
                     <label class="block text-sm font-medium text-slate-700 mb-1.5">
                         Site Name
                     </label>
-                    <div class="relative">
 
-                        <input type="text" name="site_name" value="<?= $setting->getSiteName() ?>"
-                            class="w-full pl-4 pr-4 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm peer focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm">
-                    </div>
+
+                    <input type="text" name="site_name" value="<?= htmlspecialchars($setting->getSiteName()) ?>"
+                        class="w-full pl-4 pr-4 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm">
+
                 </div>
+
+
+
                 <!-- University -->
                 <div>
+
                     <label class="block text-sm font-medium text-slate-700 mb-1.5">
                         University Name
                     </label>
-                    <div class="relative">
 
-                        <input type="text" name="university_name" value="<?= $setting->getUniversityName() ?>"
-                            class="w-full pl-4 pr-4 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm peer focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm">
-                    </div>
+
+                    <input type="text" name="university_name"
+                        value="<?= htmlspecialchars($setting->getUniversityName()) ?>"
+                        class="w-full pl-4 pr-4 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm">
+
                 </div>
+
+
             </div>
         </div>
 

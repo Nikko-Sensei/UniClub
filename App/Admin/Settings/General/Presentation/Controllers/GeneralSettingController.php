@@ -26,7 +26,6 @@ class GeneralSettingController extends BaseController
 
         $this->service =
             $service;
-
     }
 
 
@@ -48,58 +47,114 @@ class GeneralSettingController extends BaseController
             ],
             'admin'
         );
-
     }
 
 
 
 
 
+    // public function update(): void
+    // {
+
+
+    //     $data = [
+
+    //         'site_name' =>
+    //             $_POST['site_name'] ?? '',
+
+
+    //         'university_name' =>
+    //             $_POST['university_name'] ?? '',
+
+
+    //         'address' =>
+    //             $_POST['address'] ?? '',
+
+
+    //         'email' =>
+    //             $_POST['email'] ?? '',
+
+
+    //         'phone' =>
+    //             $_POST['phone'] ?? '',
+
+
+    //         'logo' =>
+    //             $_POST['logo'] ?? null,
+
+
+    //         'favicon' =>
+    //             $_POST['favicon'] ?? null,
+
+
+    //         'timezone' =>
+    //             $_POST['timezone'] ?? 'Asia/Yangon'
+
+    //     ];
+
+
+
+    //     $this->service->update(
+    //         $data
+    //     );
+
+
+
+    //     Flash::set(
+    //         'success',
+    //         'General settings updated successfully'
+    //     );
+
+
+
+    //     Response::redirect(
+    //         '/admin/settings/general'
+    //     );
+
+    // }
+
+
+
     public function update(): void
     {
-
 
         $data = [
 
             'site_name' =>
-                $_POST['site_name'] ?? '',
-
+            $_POST['site_name'] ?? '',
 
             'university_name' =>
-                $_POST['university_name'] ?? '',
-
+            $_POST['university_name'] ?? '',
 
             'address' =>
-                $_POST['address'] ?? '',
-
+            $_POST['address'] ?? '',
 
             'email' =>
-                $_POST['email'] ?? '',
-
+            $_POST['email'] ?? '',
 
             'phone' =>
-                $_POST['phone'] ?? '',
-
+            $_POST['phone'] ?? '',
 
             'logo' =>
-                $_POST['logo'] ?? null,
-
-
-            'favicon' =>
-                $_POST['favicon'] ?? null,
-
+            $_FILES['logo'] ?? null,
 
             'timezone' =>
-                $_POST['timezone'] ?? 'Asia/Yangon'
+            $_POST['timezone'] ?? 'Asia/Yangon'
 
         ];
 
 
+        if (
+            isset($_FILES['logo']) &&
+            $_FILES['logo']['error'] === UPLOAD_ERR_OK
+        ) {
 
-        $this->service->update(
-            $data
-        );
+            $data['logo'] =
+                $_FILES['logo'];
+        }
 
+
+        $this->service->update($data);
 
 
         Flash::set(
@@ -108,12 +163,8 @@ class GeneralSettingController extends BaseController
         );
 
 
-
         Response::redirect(
             '/admin/settings/general'
         );
-
     }
-
-
 }

@@ -138,6 +138,25 @@
                         </div>
                     </div>
 
+                    <!-- Membership Fee -->
+                    <div>
+                        <label class="block text-sm text-slate-600 font-medium">
+                            Membership Fee (MMK)
+                        </label>
+
+                        <div class="relative group">
+
+                            <input type="number" name="membership_fee" min="0" step="0.01" value="0"
+                                class="w-full mt-1 pl-4 pr-4 py-2.5 border border-slate-200/80 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition hover:border-blue-200 text-sm"
+                                placeholder="e.g. 5000">
+
+                        </div>
+
+                        <p class="mt-1 text-xs text-slate-500">
+                            Enter 0 if this club has no membership fee.
+                        </p>
+                    </div>
+
                 </div>
             </div>
 

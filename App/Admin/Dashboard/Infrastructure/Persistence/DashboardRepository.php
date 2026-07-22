@@ -69,19 +69,72 @@ class DashboardRepository extends BaseRepository implements DashboardRepositoryI
     }
 
 
-    public function getRecentActivities(int $limit = 10): array
-    {
+    // public function getRecentActivities(int $limit = 10): array
+    // {
+    //     $sql = "
+    //         SELECT 
+    //             action,
+    //             created_at
+    //         FROM audit_logs
+    //         ORDER BY created_at DESC
+    //         LIMIT :limit
+    //     ";
+
+
+    //     $stmt = $this->db->prepare($sql);
+
+    //     $stmt->bindValue(
+    //         ':limit',
+    //         $limit,
+    //         PDO::PARAM_INT
+    //     );
+
+    //     $stmt->execute();
+
+
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
+
+
+
+    public function getRecentActivities(
+        int $limit = 10
+    ): array {
+
+
         $sql = "
-            SELECT 
-                action,
-                created_at
-            FROM audit_logs
-            ORDER BY created_at DESC
-            LIMIT :limit
-        ";
+        SELECT
+
+            a.action,
+
+            a.entity,
+
+            a.created_at,
+
+            u.name AS user_name,
+
+            u.profile_image
+
+
+        FROM audit_logs a
+
+
+        LEFT JOIN users u
+
+            ON u.id = a.user_id
+
+
+        ORDER BY a.created_at DESC
+
+
+        LIMIT :limit
+    ";
+
 
 
         $stmt = $this->db->prepare($sql);
+
+
 
         $stmt->bindValue(
             ':limit',
@@ -89,12 +142,12 @@ class DashboardRepository extends BaseRepository implements DashboardRepositoryI
             PDO::PARAM_INT
         );
 
+
         $stmt->execute();
 
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
     public function getUsersByDepartment(): array
     {
         $sql = "

@@ -62,7 +62,7 @@
         <div
             class="glass-card-light rounded-xl border border-slate-100/60 shadow-xl p-4 flex items-center gap-3 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 hover:-translate-y-1">
             <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center shadow-sm">
-                <i data-lucide="archive-check" class="w-5 h-5"></i>
+                <i data-lucide="circle-check" class="w-5 h-5"></i>
             </div>
             <div>
                 <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">Closed</p>
@@ -72,6 +72,69 @@
                 <p class="text-[11px] text-slate-400">Archived</p>
             </div>
         </div>
+
+    </div>
+
+
+    <!-- ========================================================== -->
+    <!-- SEARCH & FILTER                                            -->
+    <!-- ========================================================== -->
+    <div class="glass-card-light rounded-xl border border-slate-100/60 shadow-xl p-4">
+
+        <form method="GET" action="<?= BASE_URL ?>/admin/contacts" class="flex flex-col lg:flex-row gap-3">
+
+            <!-- Search -->
+            <div class="relative flex-1">
+
+                <i data-lucide="search" class="absolute left-4 top-3 text-slate-400 w-4 h-4">
+                </i>
+
+                <input type="text" name="search" placeholder="Search name, email, subject..."
+                    value="<?= htmlspecialchars($filters['search'] ?? '') ?>" onchange="this.form.submit()"
+                    onkeypress="if(event.key==='Enter') this.form.submit();" class="w-full pl-11 pr-4 py-2.5
+                rounded-xl
+                border border-slate-200
+                focus:border-blue-500
+                focus:ring-2 focus:ring-blue-500/20
+                outline-none
+                transition">
+
+            </div>
+
+            <!-- Status -->
+            <div class="relative lg:w-56">
+
+                <select name="status" onchange="this.form.submit()" class="appearance-none w-full
+                pl-4 pr-10 py-2.5
+                rounded-xl
+                border border-slate-200
+                focus:border-blue-500
+                focus:ring-2 focus:ring-blue-500/20
+                outline-none
+                transition">
+
+                    <option value="">All Status</option>
+
+                    <option value="pending" <?= ($filters['status'] ?? '') === 'pending' ? 'selected' : '' ?>>
+                        Pending
+                    </option>
+
+                    <option value="replied" <?= ($filters['status'] ?? '') === 'replied' ? 'selected' : '' ?>>
+                        Replied
+                    </option>
+
+                    <option value="closed" <?= ($filters['status'] ?? '') === 'closed' ? 'selected' : '' ?>>
+                        Closed
+                    </option>
+
+                </select>
+
+                <i data-lucide="chevron-down" class="absolute right-4 top-3 w-4 h-4 text-slate-400 pointer-events-none">
+                </i>
+
+            </div>
+
+        </form>
 
     </div>
 
@@ -133,14 +196,14 @@
                         <!-- Status -->
                         <td class="px-5 py-3.5">
                             <?php
-                                $status = $message->getStatus();
-                                $statusClass = match($status) {
-                                    'pending' => 'bg-yellow-50 text-yellow-700 border-yellow-200/50',
-                                    'replied' => 'bg-green-50 text-green-700 border-green-200/50',
-                                    'closed'  => 'bg-slate-100 text-slate-700 border-slate-200/50',
-                                    default   => 'bg-gray-100 text-gray-700 border-gray-200/50'
-                                };
-                            ?>
+                                    $status = $message->getStatus();
+                                    $statusClass = match ($status) {
+                                        'pending' => 'bg-yellow-50 text-yellow-700 border-yellow-200/50',
+                                        'replied' => 'bg-green-50 text-green-700 border-green-200/50',
+                                        'closed'  => 'bg-slate-100 text-slate-700 border-slate-200/50',
+                                        default   => 'bg-gray-100 text-gray-700 border-gray-200/50'
+                                    };
+                                    ?>
                             <span
                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?= $statusClass ?> border">
                                 <?= ucfirst($status) ?>
@@ -234,7 +297,7 @@
                     $range = 2;
                     $start = max(1, $current - $range);
                     $end = min($totalPages, $current + $range);
-                ?>
+                    ?>
                 <?php if ($start > 1): ?>
                 <a href="<?= buildContactPaginationUrl(1, $_GET) ?>"
                     class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">1</a>

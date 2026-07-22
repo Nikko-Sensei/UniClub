@@ -3,7 +3,8 @@
 use App\Shared\Core\Auth;
 
 // ── Helper: Determine if a link is active ──
-function isActive($linkPath) {
+function isActive($linkPath)
+{
     $currentUri = $_SERVER['REQUEST_URI'];
     $currentPath = parse_url($currentUri, PHP_URL_PATH);
     $linkPath = parse_url($linkPath, PHP_URL_PATH);
@@ -233,14 +234,36 @@ function isActive($linkPath) {
     <!-- Logo + Toggle -->
     <div class="h-16 flex items-center justify-between px-5 border-b border-white/5 flex-shrink-0">
         <div class="flex items-center gap-3">
+
             <div
-                class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 overflow-hidden">
+
+                <?php if ($setting->getLogo()): ?>
+
+                <img src="<?= BASE_URL . '/' . $setting->getLogo() ?>"
+                    alt="<?= htmlspecialchars($setting->getSiteName()) ?>" class="w-full h-full object-contain">
+
+                <?php else: ?>
+
                 <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
+
+                <?php endif; ?>
+
             </div>
+
+
             <div class="logo-text">
-                <h2 class="text-base font-bold text-white tracking-tight">UniClub</h2>
-                <p class="logo-sub text-xs text-white/40">Admin Panel</p>
+
+                <h2 class="text-base font-bold text-white tracking-tight">
+                    <?= htmlspecialchars($setting->getSiteName()) ?>
+                </h2>
+
+                <p class="logo-sub text-xs text-white/40">
+                    Admin Panel
+                </p>
+
             </div>
+
         </div>
         <!-- Collapse Toggle (desktop only) -->
         <button id="sidebarToggle"
@@ -296,15 +319,15 @@ function isActive($linkPath) {
             </p>
             <div class="space-y-0.5">
                 <?php
-                $settingsLinks = [
-                    'General'             => ['url' => '/admin/settings/general', 'icon' => 'settings'],
-                    'Roles & Permissions' => ['url' => '/admin/settings/roles', 'icon' => 'shield-check'],
-                    'Security'            => ['url' => '/admin/settings/security', 'icon' => 'lock-keyhole'],
-                ];
-                foreach ($settingsLinks as $label => $data):
-                    $fullUrl = BASE_URL . $data['url'];
-                    $active = isActive($fullUrl) ? 'active' : '';
-                ?>
+                    $settingsLinks = [
+                        'General'             => ['url' => '/admin/settings/general', 'icon' => 'settings'],
+                        'Roles & Permissions' => ['url' => '/admin/settings/roles', 'icon' => 'shield-check'],
+                        'Security'            => ['url' => '/admin/settings/security', 'icon' => 'lock-keyhole'],
+                    ];
+                    foreach ($settingsLinks as $label => $data):
+                        $fullUrl = BASE_URL . $data['url'];
+                        $active = isActive($fullUrl) ? 'active' : '';
+                    ?>
                 <a href="<?= $fullUrl ?>"
                     class="nav-item <?= $active ?> flex items-center gap-3 px-4 py-2.5 text-sm font-medium">
                     <i data-lucide="<?= $data['icon'] ?>" class="w-5 h-5"></i>

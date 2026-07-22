@@ -269,6 +269,50 @@ class UserManagementRepository extends BaseRepository implements UserManagementR
         );
     }
 
+    public function getUserStatistics(): array
+    {
+        $stmt = $this->db->prepare(
+            "
+        SELECT
+
+            COUNT(*) AS total_users,
+
+            SUM(
+                CASE 
+                    WHEN status = 'active'
+                    THEN 1
+                    ELSE 0
+                END
+            ) AS active_users,
+
+            SUM(
+                CASE 
+                    WHEN role_id = 2
+                    THEN 1
+                    ELSE 0
+                END
+            ) AS students,
+
+            SUM(
+                CASE 
+                    WHEN role_id = 3
+                    THEN 1
+                    ELSE 0
+                END
+            ) AS club_managers
+
+
+        FROM users
+
+        WHERE deleted_at IS NULL
+        "
+        );
+
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     public function findById(
         int $id

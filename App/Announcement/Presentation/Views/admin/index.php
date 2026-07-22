@@ -81,6 +81,185 @@
     </div>
 
     <!-- ========================================================== -->
+    <!-- SEARCH & FILTER                                           -->
+    <!-- ========================================================== -->
+    <div class="glass-card-light rounded-xl border border-slate-100/60 shadow-xl p-4">
+
+        <form method="GET" action="<?= BASE_URL ?>/admin/announcements" class="flex flex-col lg:flex-row gap-3"
+            id="announcementFilter">
+
+
+            <!-- Search -->
+            <div class="flex-1">
+
+                <div class="flex items-center gap-3
+                w-full
+                px-4
+                py-2.5
+                rounded-xl
+                border border-slate-200
+                bg-white
+                focus-within:ring-2
+                focus-within:ring-blue-500/30
+                focus-within:border-blue-400
+                transition">
+
+
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400">
+                    </i>
+
+
+                    <input type="text" name="search" value="<?= htmlspecialchars($filters['search']) ?>"
+                        placeholder="Search announcements..." onkeyup="searchAnnouncement()" class="flex-1
+                    bg-transparent
+                    text-sm
+                    text-slate-700
+                    outline-none">
+
+                </div>
+
+            </div>
+
+
+
+
+            <!-- Priority Filter -->
+            <div>
+
+                <div class="flex items-center gap-3
+                px-4
+                py-2.5
+                rounded-xl
+                border border-slate-200
+                bg-white
+                transition">
+
+
+                    <i data-lucide="filter" class="w-4 h-4 text-slate-400">
+                    </i>
+
+
+                    <select name="priority" onchange="this.form.submit()" class="w-full lg:w-44
+                    bg-transparent
+                    text-sm
+                    text-slate-700
+                    outline-none">
+
+
+                        <option value="">
+                            All Priorities
+                        </option>
+
+
+                        <option value="high" <?= $filters['priority'] === 'high' ? 'selected' : '' ?>>
+                            High Priority
+                        </option>
+
+
+                        <option value="medium" <?= $filters['priority'] === 'medium' ? 'selected' : '' ?>>
+                            Medium Priority
+                        </option>
+
+
+                        <option value="low" <?= $filters['priority'] === 'low' ? 'selected' : '' ?>>
+                            Low Priority
+                        </option>
+
+
+                    </select>
+
+
+                </div>
+
+            </div>
+
+
+
+
+            <!-- Status Filter -->
+            <div>
+
+                <div class="flex items-center gap-3
+                px-4
+                py-2.5
+                rounded-xl
+                border border-slate-200
+                bg-white
+                transition">
+
+
+                    <i data-lucide="circle-check" class="w-4 h-4 text-slate-400">
+                    </i>
+
+
+                    <select name="status" onchange="this.form.submit()" class="w-full lg:w-40
+                    bg-transparent
+                    text-sm
+                    text-slate-700
+                    outline-none">
+
+
+                        <option value="">
+                            All Status
+                        </option>
+
+
+                        <option value="published" <?= $filters['status'] === 'published' ? 'selected' : '' ?>>
+                            Published
+                        </option>
+
+
+                        <option value="draft" <?= $filters['status'] === 'draft' ? 'selected' : '' ?>>
+                            Draft
+                        </option>
+
+
+                    </select>
+
+
+                </div>
+
+            </div>
+
+
+
+
+            <!-- Clear -->
+            <!-- <?php if (
+            !empty($filters['search']) ||
+            !empty($filters['priority']) ||
+            !empty($filters['status'])
+        ): ?>
+
+
+            <a href="<?= BASE_URL ?>/admin/announcements" class="inline-flex items-center justify-center gap-2
+            px-5
+            py-2.5
+            rounded-xl
+            border border-slate-200
+            text-slate-600
+            hover:bg-slate-50
+            transition">
+
+
+                <i data-lucide="x" class="w-4 h-4">
+                </i>
+
+
+                Clear
+
+
+            </a>
+
+
+            <?php endif; ?> -->
+
+
+        </form>
+
+    </div>
+
+    <!-- ========================================================== -->
     <!-- ANNOUNCEMENT TABLE – Glass card                           -->
     <!-- ========================================================== -->
     <div
@@ -143,27 +322,26 @@
 
                             <?php
 
-$visibility = $announcement->getVisibility();
+                                    $visibility = $announcement->getVisibility();
 
 
-$visibilityStyle = match($visibility){
+                                    $visibilityStyle = match ($visibility) {
 
-    'club_members' => [
-        'class' => 'bg-purple-50 text-purple-700 border-purple-200/50',
-        'icon'  => 'users',
-        'label' => 'Club Members'
-    ],
+                                        'club_members' => [
+                                            'class' => 'bg-purple-50 text-purple-700 border-purple-200/50',
+                                            'icon'  => 'users',
+                                            'label' => 'Club Members'
+                                        ],
 
 
-    default => [
-        'class' => 'bg-blue-50 text-blue-700 border-blue-200/50',
-        'icon'  => 'globe',
-        'label' => 'All Users'
-    ]
+                                        default => [
+                                            'class' => 'bg-blue-50 text-blue-700 border-blue-200/50',
+                                            'icon'  => 'globe',
+                                            'label' => 'All Users'
+                                        ]
+                                    };
 
-};
-
-?>
+                                    ?>
 
                             <span class="
         inline-flex

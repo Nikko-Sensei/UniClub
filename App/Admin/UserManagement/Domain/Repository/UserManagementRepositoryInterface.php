@@ -35,4 +35,6 @@ interface UserManagementRepositoryInterface
     public function delete(
         int $id
     ): bool;
+
+    public function getUserStatistics(): array;
 }

@@ -7,6 +7,7 @@ use App\Shared\Core\BaseController;
 use App\Shared\Core\Response;
 use App\Contact\Application\Services\ContactService;
 use App\Shared\Helpers\Flash;
+use App\Admin\Settings\General\Application\Services\GeneralSettingService;
 
 
 class ContactController extends BaseController
@@ -15,17 +16,19 @@ class ContactController extends BaseController
 
     private ContactService $contactService;
 
-
+    private GeneralSettingService $service;
 
     public function __construct(
-        ContactService $contactService
+        ContactService $contactService,
+        GeneralSettingService $service
     ) {
 
         parent::__construct();
 
 
-        $this->contactService =
-            $contactService;
+        $this->contactService = $contactService;
+
+        $this->service = $service;
     }
 
 
@@ -36,7 +39,7 @@ class ContactController extends BaseController
      */
     public function index()
     {
-
+        $setting = $this->service->getSetting();
 
         $this->view(
 
@@ -44,11 +47,13 @@ class ContactController extends BaseController
 
             [
 
-                'title' => 'Contact Us'
+                'title' => 'Contact Us',
+
+                'setting' => $setting
 
             ],
 
-            'app'
+            'App'
 
         );
     }
@@ -101,7 +106,6 @@ class ContactController extends BaseController
                 throw new \Exception(
                     'Please fill all fields'
                 );
-
             }
 
 
@@ -130,8 +134,6 @@ class ContactController extends BaseController
                 'Your message has been sent successfully'
 
             );
-
-
         } catch (\Exception $e) {
 
 
@@ -142,7 +144,6 @@ class ContactController extends BaseController
                 $e->getMessage()
 
             );
-
         }
 
 
@@ -151,5 +152,4 @@ class ContactController extends BaseController
             '/contact'
         );
     }
-
 }

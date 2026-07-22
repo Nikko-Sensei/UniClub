@@ -15,7 +15,15 @@ interface ContactRepositoryInterface
 
 
 
-    public function findAll(): array;
+    public function findAll(
+        int $page,
+        int $limit,
+        array $filters = []
+    ): array;
+
+    public function count(
+        array $filters = []
+    ): int;
 
 
 

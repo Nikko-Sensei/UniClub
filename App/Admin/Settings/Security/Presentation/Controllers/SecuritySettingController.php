@@ -31,19 +31,17 @@ class SecuritySettingController extends BaseController
 
 
 
-
     public function index(): void
     {
 
-        $setting =
+        $security =
             $this->service->getSetting();
-
 
 
         $this->view(
             'Admin/Settings/Security/Presentation/Views/security/index',
             [
-                'setting' => $setting
+                'security' => $security
             ],
             'admin'
         );

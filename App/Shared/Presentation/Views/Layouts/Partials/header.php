@@ -9,17 +9,37 @@ use App\Shared\Core\Auth;
 
         <!-- Left: mobile toggle + logo -->
         <div class="flex items-center gap-3">
+
             <button id="menu-toggle" aria-label="Open menu"
                 class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/15 transition">
                 <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
 
+
             <a href="<?= BASE_URL ?>/dashboard" class="flex items-center gap-2.5 font-bold text-lg tracking-tight">
-                <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-white/15">
-                    <i data-lucide="landmark" class="w-5 h-5"></i>
+
+                <span class="flex items-center justify-center w-11 h-11 rounded-xl bg-white/15 overflow-hidden">
+
+                    <?php if ($setting->getLogo()): ?>
+
+                    <img src="<?= BASE_URL . '/' . $setting->getLogo() ?>"
+                        alt="<?= htmlspecialchars($setting->getSiteName()) ?>" class="w-full h-full object-contain">
+
+                    <?php else: ?>
+
+                    <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+
+                    <?php endif; ?>
+
                 </span>
-                <span>uniClub</span>
+
+
+                <span>
+                    <?= htmlspecialchars($setting->getSiteName()) ?>
+                </span>
+
             </a>
+
         </div>
 
         <!-- Center: desktop nav -->

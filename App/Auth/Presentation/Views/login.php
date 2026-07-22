@@ -181,13 +181,31 @@
                 <div class="relative z-10 flex h-full flex-col justify-between p-10 text-white">
 
                     <!-- Logo -->
-                    <a href="<?= BASE_URL ?>/" class="inline-flex w-fit items-center gap-3 text-lg font-semibold group">
+                    <div class="inline-flex w-fit items-center gap-3 text-lg font-semibold">
+
                         <span
-                            class="grid h-11 w-11 place-items-center rounded-xl bg-white/10 backdrop-blur-sm text-white border border-white/20 transition-all group-hover:bg-white/20">
+                            class="grid h-11 w-11 place-items-center rounded-xl bg-white/10 backdrop-blur-sm text-white border border-white/20 overflow-hidden">
+
+                            <?php if ($setting->getLogo()): ?>
+
+                            <img src="<?= BASE_URL . '/' . $setting->getLogo() ?>"
+                                alt="<?= htmlspecialchars($setting->getSiteName()) ?>"
+                                class="h-full w-full object-contain p-1">
+
+                            <?php else: ?>
+
                             <i data-lucide="graduation-cap" class="h-6 w-6"></i>
+
+                            <?php endif; ?>
+
                         </span>
-                        <span class="text-white/90">UniClub</span>
-                    </a>
+
+
+                        <span class="text-white/90">
+                            <?= htmlspecialchars($setting->getSiteName()) ?>
+                        </span>
+
+                    </div>
 
                     <!-- Hero Text -->
                     <div class="max-w-xl animate-fadeInUp">

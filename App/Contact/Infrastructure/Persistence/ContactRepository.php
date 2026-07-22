@@ -46,22 +46,41 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
     }
 
 
-    public function findAll(): array
-    {
+    public function findAll(
+        int $page,
+        int $limit,
+        array $filters = []
+    ): array {
+
+        $offset =
+            ($page - 1) * $limit;
+
 
         $statement =
             $this->db->prepare(
-                "CALL sp_contact_find_all()"
+
+                "CALL sp_contact_find_all(?,?,?,?)"
+
             );
 
 
-        $statement->execute();
+        $statement->execute([
+
+            $offset,
+
+            $limit,
+
+            $filters['search'] ?? null,
+
+            $filters['status'] ?? null
+
+        ]);
 
 
         $contacts = [];
 
 
-        while ($row = $statement->fetch()) {
+        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
 
             $contacts[] =
                 $this->mapToEntity($row);
@@ -74,6 +93,37 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
         return $contacts;
     }
 
+
+    public function count(
+        array $filters = []
+    ): int {
+
+        $statement =
+            $this->db->prepare(
+
+                "CALL sp_contact_count(?,?)"
+
+            );
+
+
+        $statement->execute([
+
+            $filters['search'] ?? null,
+
+            $filters['status'] ?? null
+
+        ]);
+
+
+        $result =
+            $statement->fetch(\PDO::FETCH_ASSOC);
+
+
+        $statement->closeCursor();
+
+
+        return (int) $result['total'];
+    }
 
     public function updateStatus(
         int $id,
@@ -173,7 +223,7 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
         int $id
     ): bool {
 
-    
+
         $sql = "
         UPDATE contact_messages
         SET deleted_at = NOW()

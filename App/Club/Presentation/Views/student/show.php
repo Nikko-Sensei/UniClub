@@ -424,8 +424,12 @@
                                 </div>
                                 <div
                                     class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
-                                    <i data-lucide="award" class="w-4 h-4 text-blue-300"></i>
-                                    <span>Verified Club</span>
+                                    <i data-lucide="wallet" class="w-4 h-4 text-blue-300"></i>
+                                    <span>
+                                        <?= $club->getMembershipFee() > 0
+                                            ? '$' . number_format($club->getMembershipFee(), 2)
+                                            : 'Free Membership' ?>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -448,8 +452,28 @@
                                 class="w-full">
                                 <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
                                 <button type="submit"
-                                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 px-8 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg shadow-blue-600/30 btn-shine flex items-center justify-center gap-2">
-                                    <i data-lucide="user-plus" class="w-4 h-4"></i> Join Club
+                                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 px-8 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg shadow-blue-600/30 btn-shine">
+
+                                    <div class="flex flex-col items-center">
+
+                                        <span class="flex items-center gap-2">
+                                            <i data-lucide="user-plus" class="w-4 h-4"></i>
+                                            Join Club
+                                        </span>
+
+                                        <?php if ($club->getMembershipFee() > 0): ?>
+                                        <span class="text-xs text-blue-100 mt-1">
+                                            Membership Fee:
+                                            $<?= number_format($club->getMembershipFee(), 2) ?>
+                                        </span>
+                                        <?php else: ?>
+                                        <span class="text-xs text-blue-100 mt-1">
+                                            Free Membership
+                                        </span>
+                                        <?php endif; ?>
+
+                                    </div>
+
                                 </button>
                             </form>
                             <?php endif; ?>
@@ -499,12 +523,12 @@
                         <div class="text-2xl font-bold text-blue-600"><?= $club->getMemberCount() ?></div>
                         <div class="text-xs text-slate-500 font-medium">Total Members</div>
                     </div>
-                    <div
+                    <!-- <div
                         class="glass-card-light rounded-xl p-4 text-center transition-all hover:shadow-lg animate-fadeInUp delay-200">
                         <div class="text-2xl font-bold text-blue-600"><?= date('Y', strtotime($club->getCreatedAt())) ?>
                         </div>
                         <div class="text-xs text-slate-500 font-medium">Founded</div>
-                    </div>
+                    </div> -->
                     <div
                         class="glass-card-light rounded-xl p-4 text-center transition-all hover:shadow-lg animate-fadeInUp delay-300">
                         <div class="text-2xl font-bold text-blue-600"><?= count($leadership) ?></div>
@@ -514,6 +538,21 @@
                         class="glass-card-light rounded-xl p-4 text-center transition-all hover:shadow-lg animate-fadeInUp delay-400">
                         <div class="text-2xl font-bold text-blue-600"><?= count($events) ?></div>
                         <div class="text-xs text-slate-500 font-medium">Events</div>
+                    </div>
+
+                    <div
+                        class="glass-card-light rounded-xl p-4 text-center transition-all hover:shadow-lg animate-fadeInUp delay-500">
+
+                        <div class="text-2xl font-bold text-blue-600">
+                            <?= $club->getMembershipFee() > 0
+                                ? '$' . number_format($club->getMembershipFee(), 0)
+                                : 'Free' ?>
+                        </div>
+
+                        <div class="text-xs text-slate-500 font-medium">
+                            Membership Fee
+                        </div>
+
                     </div>
                 </div>
 
@@ -544,6 +583,19 @@
                                 <i data-lucide="users" class="w-4 h-4 text-slate-400"></i> Members
                             </span>
                             <span class="font-semibold text-slate-800"><?= $club->getMemberCount() ?></span>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-3">
+                            <span class="text-slate-500 text-sm flex items-center gap-2">
+                                <i data-lucide="wallet" class="w-4 h-4 text-slate-400"></i>
+                                Membership Fee
+                            </span>
+
+                            <span class="font-semibold text-slate-800">
+                                <?= $club->getMembershipFee() > 0
+                                    ? '$' . number_format($club->getMembershipFee(), 2)
+                                    : 'Free' ?>
+                            </span>
                         </div>
 
                         <div class="flex justify-between items-center pt-3">

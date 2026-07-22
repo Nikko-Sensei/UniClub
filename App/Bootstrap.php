@@ -14,6 +14,10 @@ use App\Home\Application\Services\HomeService;
 // Auditlog + DB
 use App\Shared\Logging\AuditLogger;
 use App\Shared\Database\Database;
+use App\Audit\Domain\Repository\AuditRepositoryInterface;
+use App\Audit\Infrastructure\Persistence\AuditRepository;
+use App\Audit\Application\Services\AuditService;
+use App\Audit\Presentation\Controllers\AuditController;
 
 // Auth
 use App\Auth\Presentation\Controllers\AuthController;
@@ -947,6 +951,9 @@ class Bootstrap
 
                     $container->resolve(
                         ContactService::class
+                    ),
+                    $container->resolve(
+                        GeneralSettingService::class
                     )
 
                 );
@@ -1315,6 +1322,47 @@ class Bootstrap
 
                     $container->resolve(
                         PasswordPolicyValidator::class
+                    )
+
+                );
+            }
+        );
+
+
+
+
+        $container->bind(
+            AuditRepositoryInterface::class,
+            function () {
+
+                return new AuditRepository();
+            }
+        );
+
+
+
+        $container->bind(
+            AuditService::class,
+            function ($container) {
+
+                return new AuditService(
+
+                    $container->resolve(
+                        AuditRepositoryInterface::class
+                    )
+
+                );
+            }
+        );
+
+        $container->bind(
+            AuditController::class,
+            function ($container) {
+
+                return new AuditController(
+
+                    $container->resolve(
+                        AuditService::class
                     )
 
                 );

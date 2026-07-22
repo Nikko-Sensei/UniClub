@@ -50,15 +50,82 @@ class ContactService
 
         return $this->contactRepository
             ->create($contactMessage);
+
     }
 
 
 
-    public function getMessages(): array
+    /**
+     * Get Contact Messages
+     * With Pagination + Search + Status Filter
+     */
+    public function getMessages(
+        int $page,
+        int $limit,
+        array $filters = []
+    ): array
     {
 
-        return $this->contactRepository
-            ->findAll();
+        $page =
+            max(
+                1,
+                $page
+            );
+
+
+        $messages =
+            $this->contactRepository
+            ->findAll(
+
+                $page,
+
+                $limit,
+
+                $filters
+
+            );
+
+
+        $total =
+            $this->contactRepository
+            ->count(
+
+                $filters
+
+            );
+
+
+        return [
+
+            'messages' =>
+                $messages,
+
+
+            'pagination' => [
+
+                'current_page' =>
+                    $page,
+
+
+                'per_page' =>
+                    $limit,
+
+
+                'total' =>
+                    $total,
+
+
+                'total_pages' =>
+                    (int) ceil(
+
+                        $total / $limit
+
+                    )
+
+            ]
+
+        ];
+
     }
 
 
@@ -71,27 +138,45 @@ class ContactService
 
         return $this->contactRepository
             ->updateStatus(
+
                 $id,
+
                 $status
+
             );
+
     }
+
+
 
     public function getMessage(
         int $id
     ): ?ContactMessage {
 
+
         return $this->contactRepository
-            ->findById($id);
+            ->findById(
+
+                $id
+
+            );
+
     }
+
+
 
     public function delete(
         int $id
     ): void {
 
-   
 
-        $this->contactRepository->delete(
-            $id
-        );
+        $this->contactRepository
+            ->delete(
+
+                $id
+
+            );
+
     }
+
 }

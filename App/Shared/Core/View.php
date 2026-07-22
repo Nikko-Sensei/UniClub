@@ -4,6 +4,7 @@ namespace App\Shared\Core;
 
 use App\Shared\Helpers\PermissionHelper;
 use App\Shared\Container\Container;
+use App\Admin\Settings\General\Application\Services\GeneralSettingService;
 
 class View
 {
@@ -31,6 +32,11 @@ class View
                 PermissionHelper::class
             );
 
+        $setting =
+            $container->resolve(
+                GeneralSettingService::class
+            )->getSetting();
+
 
 
         $viewFile =
@@ -46,7 +52,6 @@ class View
             throw new \Exception(
                 "View not found: {$view}"
             );
-
         }
 
 
@@ -64,6 +69,5 @@ class View
             '/App/Shared/Presentation/Views/Layouts/' .
             $layout .
             '.php';
-
     }
 }

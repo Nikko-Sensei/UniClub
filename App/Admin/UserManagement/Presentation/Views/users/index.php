@@ -17,57 +17,129 @@
     <!-- ========================================================== -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
+
         <!-- Total Users -->
         <div
             class="glass-card-light rounded-xl border border-slate-100/60 shadow-xl p-4 flex items-center gap-3 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 hover:-translate-y-1">
+
             <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm">
                 <i data-lucide="users" class="w-5 h-5"></i>
             </div>
+
             <div>
-                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">Total Users</p>
-                <p class="text-xl font-bold text-slate-800">1,250</p>
-                <p class="text-[11px] text-slate-400">Registered accounts</p>
+                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">
+                    Total Users
+                </p>
+
+                <p class="text-xl font-bold text-slate-800">
+                    <?= number_format($userStatistics['total_users'] ?? 0) ?>
+                </p>
+
+                <p class="text-[11px] text-slate-400">
+                    Registered accounts
+                </p>
             </div>
+
         </div>
+
+
 
         <!-- Active Users -->
         <div
             class="glass-card-light rounded-xl border border-slate-100/60 shadow-xl p-4 flex items-center gap-3 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 hover:-translate-y-1">
+
             <div class="w-10 h-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center shadow-sm">
                 <i data-lucide="user-check" class="w-5 h-5"></i>
             </div>
+
             <div>
-                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">Active Users</p>
-                <p class="text-xl font-bold text-slate-800">1,180</p>
-                <p class="text-[11px] text-slate-400">Available accounts</p>
+
+                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">
+                    Active Users
+                </p>
+
+                <p class="text-xl font-bold text-slate-800">
+                    <?= number_format($userStatistics['active_users'] ?? 0) ?>
+                </p>
+
+                <p class="text-[11px] text-slate-400">
+                    Available accounts
+                </p>
+
             </div>
+
         </div>
+
+
+
 
         <!-- Students -->
         <div
             class="glass-card-light rounded-xl border border-slate-100/60 shadow-xl p-4 flex items-center gap-3 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 hover:-translate-y-1">
+
+
             <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shadow-sm">
                 <i data-lucide="graduation-cap" class="w-5 h-5"></i>
             </div>
+
+
             <div>
-                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">Students</p>
-                <p class="text-xl font-bold text-slate-800">1,150</p>
-                <p class="text-[11px] text-slate-400">Student accounts</p>
+
+                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">
+                    Students
+                </p>
+
+
+                <p class="text-xl font-bold text-slate-800">
+                    <?= number_format($userStatistics['students'] ?? 0) ?>
+                </p>
+
+
+                <p class="text-[11px] text-slate-400">
+                    Student accounts
+                </p>
+
             </div>
+
+
         </div>
+
+
+
 
         <!-- Club Managers -->
         <div
             class="glass-card-light rounded-xl border border-slate-100/60 shadow-xl p-4 flex items-center gap-3 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 hover:-translate-y-1">
+
+
             <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shadow-sm">
+
                 <i data-lucide="shield-check" class="w-5 h-5"></i>
+
             </div>
+
+
             <div>
-                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">Club Managers</p>
-                <p class="text-xl font-bold text-slate-800">35</p>
-                <p class="text-[11px] text-slate-400">Club administrators</p>
+
+                <p class="text-[11px] uppercase tracking-wide text-slate-400 font-medium">
+                    Club Managers
+                </p>
+
+
+                <p class="text-xl font-bold text-slate-800">
+                    <?= number_format($userStatistics['club_managers'] ?? 0) ?>
+                </p>
+
+
+                <p class="text-[11px] text-slate-400">
+                    Club administrators
+                </p>
+
             </div>
+
+
         </div>
+
 
     </div>
 
@@ -163,15 +235,15 @@
                                         class="w-full h-full object-cover">
                                     <?php else: ?>
                                     <?php
-                                        $name = trim($user->getName());
-                                        $words = preg_split('/\s+/', $name);
-                                        if (count($words) >= 2) {
-                                            $initials = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
-                                        } else {
-                                            $initials = strtoupper(substr($words[0], 0, 1));
-                                        }
-                                        echo htmlspecialchars($initials);
-                                    ?>
+                                                $name = trim($user->getName());
+                                                $words = preg_split('/\s+/', $name);
+                                                if (count($words) >= 2) {
+                                                    $initials = strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
+                                                } else {
+                                                    $initials = strtoupper(substr($words[0], 0, 1));
+                                                }
+                                                echo htmlspecialchars($initials);
+                                                ?>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -202,19 +274,19 @@
                         <!-- Status -->
                         <td class="px-5 py-3.5">
                             <?php
-                                $status = $user->getStatus();
-                                $statusLabel = ucfirst($status);
-                                $dotColor = match ($status) {
-                                    'active' => 'bg-emerald-500',
-                                    'suspended' => 'bg-amber-500',
-                                    default => 'bg-red-500'
-                                };
-                                $bgColor = match ($status) {
-                                    'active' => 'bg-emerald-50 text-emerald-700 border-emerald-200/50',
-                                    'suspended' => 'bg-amber-50 text-amber-700 border-amber-200/50',
-                                    default => 'bg-red-50 text-red-700 border-red-200/50'
-                                };
-                            ?>
+                                    $status = $user->getStatus();
+                                    $statusLabel = ucfirst($status);
+                                    $dotColor = match ($status) {
+                                        'active' => 'bg-emerald-500',
+                                        'suspended' => 'bg-amber-500',
+                                        default => 'bg-red-500'
+                                    };
+                                    $bgColor = match ($status) {
+                                        'active' => 'bg-emerald-50 text-emerald-700 border-emerald-200/50',
+                                        'suspended' => 'bg-amber-50 text-amber-700 border-amber-200/50',
+                                        default => 'bg-red-50 text-red-700 border-red-200/50'
+                                    };
+                                    ?>
                             <span
                                 class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-full <?= $bgColor ?> border">
                                 <span class="inline-block w-2 h-2 rounded-full <?= $dotColor ?> mr-1.5"></span>
@@ -288,7 +360,7 @@
                     $range = 2;
                     $start = max(1, $current - $range);
                     $end = min($totalPages, $current + $range);
-                ?>
+                    ?>
                 <?php if ($start > 1): ?>
                 <a href="<?= buildPaginationUrl(1, $_GET) ?>"
                     class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">

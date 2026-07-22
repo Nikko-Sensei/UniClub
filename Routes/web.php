@@ -1140,3 +1140,11 @@ $router->post(
         ]
     ]
 );
+
+$router->get(
+    '/admin/audit-logs',
+    [
+        \App\Audit\Presentation\Controllers\AuditController::class,
+        'index'
+    ]
+);

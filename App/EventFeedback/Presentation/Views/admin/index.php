@@ -110,109 +110,204 @@
                     <?php endif; ?>
                 </tbody>
             </table>
-        </div>
 
-        <!-- Pagination -->
-        <?php if ($pagination && $pagination['total_pages'] > 1): ?>
-        <div
-            class="px-5 py-3.5 border-t border-slate-200/60 bg-slate-50/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-slate-500">
-            <span>
-                Showing
-                <span class="font-medium text-slate-700">
-                    <?= (($pagination['current_page'] - 1) * $pagination['per_page']) + 1 ?>
-                    -
-                    <?= min($pagination['current_page'] * $pagination['per_page'], $pagination['total']) ?>
+            <!-- Pagination -->
+            <?php if ($pagination): ?>
+
+            <div class="px-5 py-3.5 border-t border-slate-200/60 bg-slate-50/20 
+    flex flex-col sm:flex-row sm:items-center sm:justify-between 
+    gap-3 text-xs text-slate-500">
+
+
+                <!-- Showing -->
+                <span>
+
+                    Showing
+
+                    <span class="font-medium text-slate-700">
+
+                        <?= (($pagination['current_page'] - 1) * $pagination['per_page']) + 1 ?>
+
+                        -
+
+                        <?= min(
+                                $pagination['current_page'] * $pagination['per_page'],
+                                $pagination['total']
+                            ) ?>
+
+                    </span>
+
+                    of
+
+                    <span class="font-medium text-slate-700">
+
+                        <?= $pagination['total'] ?>
+
+                    </span>
+
+                    feedbacks.
+
                 </span>
-                of
-                <span class="font-medium text-slate-700"><?= $pagination['total'] ?></span>
-                feedbacks.
-            </span>
-            <div class="flex items-center gap-2">
-                <!-- Previous -->
-                <?php if ($pagination['current_page'] > 1): ?>
-                <a href="<?= buildPaginationUrl($pagination['current_page'] - 1, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">
-                    <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
-                </a>
-                <?php else: ?>
-                <span
-                    class="w-8 h-8 border border-slate-200 rounded-lg opacity-50 pointer-events-none flex items-center justify-center">
-                    <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
-                </span>
-                <?php endif; ?>
 
-                <!-- Page Numbers -->
-                <?php
-                    $totalPages = $pagination['total_pages'];
-                    $current = $pagination['current_page'];
-                    $range = 2;
-                    $start = max(1, $current - $range);
-                    $end = min($totalPages, $current + $range);
-                ?>
-                <?php if ($start > 1): ?>
-                <a href="<?= buildPaginationUrl(1, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">1</a>
-                <?php if ($start > 2): ?>
-                <span class="px-1">…</span>
-                <?php endif; ?>
-                <?php endif; ?>
 
-                <?php for ($i = $start; $i <= $end; $i++): ?>
-                <?php if ($i == $current): ?>
-                <span
-                    class="w-8 h-8 bg-blue-600 text-white rounded-lg text-xs font-medium flex items-center justify-center shadow-sm"><?= $i ?></span>
-                <?php else: ?>
-                <a href="<?= buildPaginationUrl($i, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center"><?= $i ?></a>
-                <?php endif; ?>
-                <?php endfor; ?>
 
-                <?php if ($end < $totalPages): ?>
-                <?php if ($end < $totalPages - 1): ?>
-                <span class="px-1">…</span>
-                <?php endif; ?>
-                <a href="<?= buildPaginationUrl($totalPages, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center"><?= $totalPages ?></a>
-                <?php endif; ?>
 
-                <!-- Next -->
-                <?php if ($pagination['current_page'] < $totalPages): ?>
-                <a href="<?= buildPaginationUrl($pagination['current_page'] + 1, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-                </a>
-                <?php else: ?>
-                <span
-                    class="w-8 h-8 border border-slate-200 rounded-lg opacity-50 pointer-events-none flex items-center justify-center">
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-                </span>
-                <?php endif; ?>
+                <!-- Pagination Buttons -->
+                <div class="flex items-center gap-2">
+
+
+                    <!-- Previous -->
+                    <?php if ($pagination['current_page'] > 1): ?>
+
+                    <a href="<?= buildPaginationUrl(
+                                            $pagination['current_page'] - 1,
+                                            $_GET
+                                        ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg 
+            hover:bg-slate-100 transition flex items-center justify-center">
+
+                        <i data-lucide="chevron-left" class="w-3.5 h-3.5">
+                        </i>
+
+                    </a>
+
+                    <?php else: ?>
+
+                    <span class="w-8 h-8 border border-slate-200 rounded-lg 
+            opacity-50 flex items-center justify-center">
+
+                        <i data-lucide="chevron-left" class="w-3.5 h-3.5">
+                        </i>
+
+                    </span>
+
+                    <?php endif; ?>
+
+
+
+
+                    <!-- Page Numbers -->
+
+                    <?php
+
+                        $current = $pagination['current_page'];
+
+                        $totalPages = $pagination['total_pages'];
+
+                        $range = 2;
+
+                        $start = max(
+                            1,
+                            $current - $range
+                        );
+
+                        $end = min(
+                            $totalPages,
+                            $current + $range
+                        );
+
+                        ?>
+
+
+
+                    <?php for ($i = $start; $i <= $end; $i++): ?>
+
+
+                    <?php if ($i == $current): ?>
+
+                    <span class="w-8 h-8 bg-blue-600 text-white rounded-lg 
+                    flex items-center justify-center font-medium">
+
+                        <?= $i ?>
+
+                    </span>
+
+
+                    <?php else: ?>
+
+                    <a href="<?= buildPaginationUrl(
+                                                $i,
+                                                $_GET
+                                            ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg 
+                    hover:bg-slate-100 transition flex items-center justify-center">
+
+                        <?= $i ?>
+
+                    </a>
+
+
+                    <?php endif; ?>
+
+
+                    <?php endfor; ?>
+
+
+
+
+
+                    <!-- Next -->
+                    <?php if ($pagination['current_page'] < $totalPages): ?>
+
+
+                    <a href="<?= buildPaginationUrl(
+                                            $pagination['current_page'] + 1,
+                                            $_GET
+                                        ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg 
+            hover:bg-slate-100 transition flex items-center justify-center">
+
+
+                        <i data-lucide="chevron-right" class="w-3.5 h-3.5">
+                        </i>
+
+
+                    </a>
+
+
+                    <?php else: ?>
+
+
+                    <span class="w-8 h-8 border border-slate-200 rounded-lg 
+            opacity-50 flex items-center justify-center">
+
+
+                        <i data-lucide="chevron-right" class="w-3.5 h-3.5">
+                        </i>
+
+
+                    </span>
+
+
+                    <?php endif; ?>
+
+
+                </div>
+
+
             </div>
+
+            <?php endif; ?>
         </div>
-        <?php endif; ?>
-    </div>
 
-</div>
 
-<?php
-/**
- * Build pagination URL with current filters
- */
-function buildPaginationUrl($page, $query)
-{
-    $query['page'] = $page;
-    $query = array_filter($query, function ($value) {
-        return $value !== '' && $value !== null;
-    });
-    return BASE_URL . '/admin/feedbacks?' . http_build_query($query);
-}
-?>
 
-<!-- ── Scripts for Lucide Icons ── -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-});
-</script>
+        <?php
+        /**
+         * Build pagination URL with current filters
+         */
+        function buildPaginationUrl($page, $query)
+        {
+            $query['page'] = $page;
+            $query = array_filter($query, function ($value) {
+                return $value !== '' && $value !== null;
+            });
+            return BASE_URL . '/admin/feedbacks?' . http_build_query($query);
+        }
+        ?>
+
+        <!-- ── Scripts for Lucide Icons ── -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+        </script>

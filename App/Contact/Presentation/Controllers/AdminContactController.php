@@ -41,11 +41,42 @@ class AdminContactController extends BaseController
     public function index()
     {
 
+        $page =
+            max(
+                1,
+                (int)($_GET['page'] ?? 1)
+            );
 
-        $messages =
+
+        $limit = 10;
+
+
+        $filters = [
+
+            'search' =>
+            trim(
+                $_GET['search'] ?? ''
+            ),
+
+
+            'status' =>
+            $_GET['status'] ?? ''
+
+        ];
+
+
+
+        $result =
             $this->contactService
-            ->getMessages();
+            ->getMessages(
 
+                $page,
+
+                $limit,
+
+                $filters
+
+            );
 
 
 
@@ -55,9 +86,20 @@ class AdminContactController extends BaseController
 
             [
 
-                'title' => 'Contact Messages',
+                'title' =>
+                'Contact Messages',
 
-                'messages' => $messages
+
+                'messages' =>
+                $result['messages'],
+
+
+                'filters' =>
+                $filters,
+
+
+                'pagination' =>
+                $result['pagination']
 
             ],
 

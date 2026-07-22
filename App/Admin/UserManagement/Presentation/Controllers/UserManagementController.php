@@ -68,6 +68,10 @@ class UserManagementController extends BaseController
         $academicYears = $this->masterService
             ->getAcademicYears();
 
+        $userStatistics =
+            $this->userManagementService
+            ->getUserStatistics();
+
 
         $this->view(
             'Admin/UserManagement/Presentation/Views/users/index',
@@ -83,7 +87,9 @@ class UserManagementController extends BaseController
 
                 'departments' => $departments,
 
-                'academicYears' => $academicYears
+                'academicYears' => $academicYears,
+
+                'userStatistics' => $userStatistics
 
             ],
             'admin'
@@ -163,16 +169,15 @@ class UserManagementController extends BaseController
     }
 
     public function delete(
-    int $id
-) {
+        int $id
+    ) {
 
-    $this->userManagementService
-        ->deleteUser($id);
+        $this->userManagementService
+            ->deleteUser($id);
 
 
-    return Response::redirect(
-        '/admin/users'
-    );
-
-}
+        return Response::redirect(
+            '/admin/users'
+        );
+    }
 }

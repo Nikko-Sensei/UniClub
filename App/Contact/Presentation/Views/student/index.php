@@ -255,10 +255,19 @@
                         class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0 shadow-sm">
                         <i data-lucide="map-pin" class="w-5 h-5"></i>
                     </div>
+
                     <div>
-                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Address</p>
-                        <p class="text-slate-800 font-medium">Computer University</p>
-                        <p class="text-sm text-slate-500">Yangon, Myanmar</p>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            Address
+                        </p>
+
+                        <p class="text-slate-800 font-medium">
+                            <?= htmlspecialchars($setting->getUniversityName()) ?>
+                        </p>
+
+                        <p class="text-sm text-slate-500">
+                            <?= htmlspecialchars($setting->getAddress()) ?>
+                        </p>
                     </div>
                 </div>
 
@@ -275,36 +284,59 @@
                     </div>
                 </div>
 
+
                 <!-- Email -->
                 <div class="flex gap-4 items-start">
+
                     <div
                         class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0 shadow-sm">
                         <i data-lucide="mail" class="w-5 h-5"></i>
                     </div>
+
                     <div>
-                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Email</p>
-                        <p class="text-blue-700 font-medium">support@uniclub.com</p>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            Email
+                        </p>
+
+                        <p class="text-blue-700 font-medium">
+                            <?= htmlspecialchars($setting->getEmail()) ?>
+                        </p>
                     </div>
+
                 </div>
 
+
                 <!-- Phone -->
-                <div class="flex gap-4 items-start">
+                <div class="flex gap-4 items-start ">
+
                     <div
                         class="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0 shadow-sm">
                         <i data-lucide="phone" class="w-5 h-5"></i>
                     </div>
+
                     <div>
-                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Phone</p>
-                        <p class="text-blue-700 font-medium">+95 9 XXX XXX XXX</p>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            Phone
+                        </p>
+
+                        <p class="text-blue-700 font-medium">
+                            <?= htmlspecialchars($setting->getPhone()) ?>
+                        </p>
                     </div>
+
                 </div>
 
+
             </div>
 
-            <!-- Decorative glow (subtle) -->
+
+            <!-- Decorative glow -->
             <div class="mt-6 pt-4 border-t border-slate-100/80">
-                <p class="text-xs text-slate-400">We usually respond within 24 hours.</p>
+                <p class="text-xs text-slate-400">
+                    We usually respond within 24 hours.
+                </p>
             </div>
+
         </div>
 
     </div>

@@ -86,4 +86,10 @@ class UserManagementService
             $id
         );
     }
+
+    public function getUserStatistics(): array
+    {
+        return $this->repository
+            ->getUserStatistics();
+    }
 }
