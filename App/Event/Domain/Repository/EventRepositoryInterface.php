@@ -96,4 +96,12 @@ interface EventRepositoryInterface
     public function findClubMembers(
         int $clubId
     ): array;
+
+    public function getApprovedParticipants(
+        int $eventId
+    ): array;
+
+    public function getRegistrationById(
+        int $id
+    );
 }

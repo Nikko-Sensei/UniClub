@@ -2,260 +2,260 @@
 
     <!-- ── Custom Styles ── -->
     <style>
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
         }
 
-        @keyframes fadeInDown {
-            0% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+    @keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            transform: translateY(-20px);
         }
 
-        @keyframes scaleIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.9);
-            }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+    @keyframes scaleIn {
+        0% {
+            opacity: 0;
+            transform: scale(0.9);
         }
 
-        @keyframes slideInLeft {
-            0% {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
 
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
+    @keyframes slideInLeft {
+        0% {
+            opacity: 0;
+            transform: translateX(-30px);
         }
 
-        @keyframes pulseGlow {
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
 
-            0%,
-            100% {
-                opacity: 0.3;
-                transform: scale(1);
-            }
+    @keyframes pulseGlow {
 
-            50% {
-                opacity: 0.8;
-                transform: scale(1.1);
-            }
+        0%,
+        100% {
+            opacity: 0.3;
+            transform: scale(1);
         }
 
-        @keyframes float {
+        50% {
+            opacity: 0.8;
+            transform: scale(1.1);
+        }
+    }
 
-            0%,
-            100% {
-                transform: translateY(0px);
-            }
+    @keyframes float {
 
-            50% {
-                transform: translateY(-8px);
-            }
+        0%,
+        100% {
+            transform: translateY(0px);
         }
 
-        @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
+        50% {
+            transform: translateY(-8px);
+        }
+    }
 
-            100% {
-                background-position: 200% 0;
-            }
+    @keyframes shimmer {
+        0% {
+            background-position: -200% 0;
         }
 
-        .animate-fadeInUp {
-            animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        100% {
+            background-position: 200% 0;
         }
+    }
 
-        .animate-fadeInDown {
-            animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
+    .animate-fadeInUp {
+        animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
 
-        .animate-scaleIn {
-            animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
+    .animate-fadeInDown {
+        animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
 
-        .animate-slideInLeft {
-            animation: slideInLeft 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
+    .animate-scaleIn {
+        animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
 
-        .animate-float {
-            animation: float 5s ease-in-out infinite;
-        }
+    .animate-slideInLeft {
+        animation: slideInLeft 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
 
-        .delay-100 {
-            animation-delay: 100ms;
-        }
+    .animate-float {
+        animation: float 5s ease-in-out infinite;
+    }
 
-        .delay-200 {
-            animation-delay: 200ms;
-        }
+    .delay-100 {
+        animation-delay: 100ms;
+    }
 
-        .delay-300 {
-            animation-delay: 300ms;
-        }
+    .delay-200 {
+        animation-delay: 200ms;
+    }
 
-        .delay-400 {
-            animation-delay: 400ms;
-        }
+    .delay-300 {
+        animation-delay: 300ms;
+    }
 
-        .delay-500 {
-            animation-delay: 500ms;
-        }
+    .delay-400 {
+        animation-delay: 400ms;
+    }
 
-        .delay-600 {
-            animation-delay: 600ms;
-        }
+    .delay-500 {
+        animation-delay: 500ms;
+    }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+    .delay-600 {
+        animation-delay: 600ms;
+    }
 
-        .glass-card-light {
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-        }
+    .glass-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
 
-        .glass-card-light:hover {
-            border-color: rgba(37, 99, 235, 0.25);
-            box-shadow: 0 16px 48px rgba(37, 99, 235, 0.10);
-            transform: translateY(-4px);
-        }
+    .glass-card-light {
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-        .glass-card-dark {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    .glass-card-light:hover {
+        border-color: rgba(37, 99, 235, 0.25);
+        box-shadow: 0 16px 48px rgba(37, 99, 235, 0.10);
+        transform: translateY(-4px);
+    }
 
-        .btn-shine {
-            position: relative;
-            overflow: hidden;
-        }
+    .glass-card-dark {
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-        .btn-shine::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-            transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
+    .btn-shine {
+        position: relative;
+        overflow: hidden;
+    }
 
-        .btn-shine:hover::before {
-            left: 100%;
-        }
+    .btn-shine::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+        transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-        .back-btn {
-            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-        }
+    .btn-shine:hover::before {
+        left: 100%;
+    }
 
-        .back-btn:hover {
-            transform: translateX(-4px) scale(1.05);
-            box-shadow: 0 8px 30px -8px rgba(37, 99, 235, 0.25);
-        }
+    .back-btn {
+        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-        .back-btn:active {
-            transform: scale(0.95);
-        }
+    .back-btn:hover {
+        transform: translateX(-4px) scale(1.05);
+        box-shadow: 0 8px 30px -8px rgba(37, 99, 235, 0.25);
+    }
 
-        .img-zoom {
-            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
+    .back-btn:active {
+        transform: scale(0.95);
+    }
 
-        .group:hover .img-zoom {
-            transform: scale(1.06);
-        }
+    .img-zoom {
+        transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-        .bg-mesh {
-            background: radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
-                #F8FAFC;
-        }
+    .group:hover .img-zoom {
+        transform: scale(1.06);
+    }
 
-        .line-clamp-1 {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
+    .bg-mesh {
+        background: radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.04) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+            #F8FAFC;
+    }
 
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
+    .line-clamp-1 {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 
-        .line-clamp-3 {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 
-        *:focus-visible {
-            outline: 2px solid #2563EB;
-            outline-offset: 2px;
-            border-radius: 4px;
-        }
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
+    *:focus-visible {
+        outline: 2px solid #2563EB;
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
 
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
 
-        ::-webkit-scrollbar-thumb {
-            background: #CBD5E1;
-            border-radius: 9999px;
-        }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94A3B8;
-        }
+    ::-webkit-scrollbar-thumb {
+        background: #CBD5E1;
+        border-radius: 9999px;
+    }
 
-        /* Floating action button pulse */
-        .float-pulse {
-            animation: float 3s ease-in-out infinite, pulseGlow 4s ease-in-out infinite;
-        }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #94A3B8;
+    }
+
+    /* Floating action button pulse */
+    .float-pulse {
+        animation: float 3s ease-in-out infinite, pulseGlow 4s ease-in-out infinite;
+    }
     </style>
 
     <!-- ========================================================== -->
@@ -276,13 +276,13 @@
     <div class="group relative rounded-2xl overflow-hidden shadow-2xl animate-fadeInUp"
         style="min-height: 340px; max-height: 440px;">
         <?php if ($event->getBanner()): ?>
-            <img src="<?= BASE_URL ?>/uploads/events/<?= htmlspecialchars($event->getBanner()) ?>"
-                class="w-full h-full object-cover img-zoom" style="min-height: 340px; max-height: 440px;">
+        <img src="<?= BASE_URL ?>/uploads/events/<?= htmlspecialchars($event->getBanner()) ?>"
+            class="w-full h-full object-cover img-zoom" style="min-height: 340px; max-height: 440px;">
         <?php else: ?>
-            <div class="w-full h-full bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center"
-                style="min-height: 340px; max-height: 440px;">
-                <span class="text-white/30 font-bold text-4xl">📅</span>
-            </div>
+        <div class="w-full h-full bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center"
+            style="min-height: 340px; max-height: 440px;">
+            <span class="text-white/30 font-bold text-4xl">📅</span>
+        </div>
         <?php endif; ?>
 
         <!-- Dark gradient overlay -->
@@ -368,63 +368,602 @@
             </div>
         </div>
 
-        <!-- Registration CTA – floating action -->
+        <!-- Registration CTA -->
         <div class="flex-shrink-0">
+
+            <?php
+            $eventDate = strtotime($event->getEventDate());
+            $today = strtotime(date('Y-m-d'));
+
+            $isCompleted = $eventDate < $today;
+            ?>
+
+
+            <?php if (!$isCompleted): ?>
+
+
             <?php if ($registrationStatus === null): ?>
-                <button type="button" onclick="openRegisterModal()"
-                    class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-300 shadow-xl shadow-blue-200/50 hover:shadow-2xl hover:scale-[1.04] btn-shine float-pulse">
-                    <i data-lucide="user-plus" class="w-4 h-4"></i>
-                    Register Now
-                </button>
+
+            <button type="button" onclick="openRegisterModal()" class="inline-flex items-center gap-2 px-6 py-3 
+                bg-gradient-to-r from-blue-600 to-indigo-600 
+                hover:from-blue-700 hover:to-indigo-700 
+                text-white rounded-xl font-semibold text-sm 
+                transition-all duration-300 shadow-xl 
+                hover:scale-[1.04] btn-shine">
+
+                <i data-lucide="user-plus" class="w-4 h-4"></i>
+
+                Register Now
+
+            </button>
+
+
             <?php elseif ($registrationStatus === 'pending'): ?>
-                <div
-                    class="flex items-center gap-2 bg-yellow-50 text-yellow-700 px-5 py-3 rounded-xl font-medium border border-yellow-200/50 shadow-sm">
-                    <i data-lucide="clock" class="w-5 h-5"></i>
-                    Pending Approval
-                </div>
+
+
+            <div class="flex items-center gap-2 
+                bg-yellow-50 text-yellow-700 
+                px-5 py-3 rounded-xl font-medium 
+                border border-yellow-200">
+
+                <i data-lucide="clock" class="w-5 h-5"></i>
+
+                Pending Approval
+
+            </div>
+
+
             <?php elseif ($registrationStatus === 'approved'): ?>
-                <div
-                    class="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-5 py-3 rounded-xl font-medium border border-emerald-200/50 shadow-sm">
-                    <i data-lucide="check-circle" class="w-5 h-5"></i>
-                    ✓ Registered
-                </div>
-            <?php elseif ($registrationStatus === 'cancelled'): ?>
-                <button type="button" onclick="openRegisterModal()"
-                    class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm transition-all duration-300 shadow-xl shadow-blue-200/50 hover:shadow-2xl hover:scale-[1.04] btn-shine">
-                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                    Register Again
-                </button>
+
+
+            <div class="flex items-center gap-2 
+                bg-emerald-50 text-emerald-700 
+                px-5 py-3 rounded-xl font-medium 
+                border border-emerald-200">
+
+                <i data-lucide="check-circle" class="w-5 h-5"></i>
+
+                Registered
+
+            </div>
+
+
             <?php endif; ?>
+
+
+            <?php else: ?>
+
+
+            <!-- Event Completed -->
+            <div class="flex items-center gap-2 
+            bg-slate-100 text-slate-600 
+            px-5 py-3 rounded-xl font-medium 
+            border border-slate-200">
+
+
+                <i data-lucide="calendar-check" class="w-5 h-5"></i>
+
+                Event Finished
+
+            </div>
+
+
+            <?php endif; ?>
+
+
         </div>
     </div>
 
     <!-- ========================================================== -->
-    <!-- MAIN CONTENT – 2‑column glass layout                      -->
+    <!-- STUDENT PARTICIPATION PANEL                                -->
     <!-- ========================================================== -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
 
-        <!-- LEFT: Overview + Details -->
-        <div class="lg:col-span-2 space-y-6">
+    <div class="mt-8 space-y-6 animate-fadeInUp">
 
-            <!-- Overview -->
-            <div
-                class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 animate-fadeInUp delay-200">
-                <div class="flex items-center gap-3 mb-5">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-200">
-                        <i data-lucide="info" class="w-5 h-5"></i>
-                    </div>
-                    <h2 class="text-xl font-bold text-slate-800">About This Event</h2>
-                </div>
-                <div class="prose prose-slate max-w-none">
-                    <p class="text-slate-600 leading-relaxed text-base">
-                        <?= nl2br(htmlspecialchars($event->getDescription())) ?>
-                    </p>
-                </div>
+
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+
+
+            <div>
+
+                <h2 class="text-xl font-bold text-slate-800">
+
+                    My Participation
+
+                </h2>
+
+
+                <p class="text-sm text-slate-500">
+
+                    Track your event progress and achievements.
+
+                </p>
+
             </div>
 
-            <!-- Additional Info (if any) -->
-            <?php if (method_exists($event, 'getAdditionalInfo') && $event->getAdditionalInfo()): ?>
+
+
+            <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center shadow-lg">
+
+                <i data-lucide="activity" class="w-6 h-6"></i>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <!-- Participation Cards -->
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+
+
+
+
+            <!-- Registration -->
+
+            <div class="glass-card-light rounded-2xl border border-slate-100 shadow-xl p-5 hover:shadow-2xl transition">
+
+
+                <div class="flex items-center gap-4">
+
+
+                    <div class="w-12 h-12 rounded-xl bg-blue-500 text-white flex items-center justify-center">
+
+
+                        <i data-lucide="clipboard-check"></i>
+
+
+                    </div>
+
+
+
+                    <div>
+
+
+                        <p class="text-xs uppercase text-slate-400 font-semibold">
+
+                            Registration
+
+                        </p>
+
+
+
+                        <p class="text-lg font-bold text-slate-800">
+
+
+                            <?=
+                            ucfirst(
+                                $registrationStatus ?? 'Pending'
+                            )
+                            ?>
+
+
+                        </p>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+                <div class="mt-4">
+
+
+                    <?php if ($registrationStatus === 'approved'): ?>
+
+
+                    <span
+                        class="inline-flex items-center gap-1 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-semibold">
+
+
+                        <i data-lucide="check" class="w-3 h-3"></i>
+
+                        Approved
+
+
+                    </span>
+
+
+
+                    <?php else: ?>
+
+
+                    <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">
+
+                        Pending
+
+                    </span>
+
+
+                    <?php endif; ?>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+
+            <!-- Attendance -->
+
+            <div class="glass-card-light rounded-2xl border border-slate-100 shadow-xl p-5 hover:shadow-2xl transition">
+
+
+                <div class="flex items-center gap-4">
+
+
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-green-600 text-white flex items-center justify-center">
+
+
+                        <i data-lucide="user-check"></i>
+
+
+                    </div>
+
+
+
+                    <div>
+
+
+                        <p class="text-xs uppercase text-slate-400 font-semibold">
+
+                            Attendance
+
+                        </p>
+
+
+
+                        <?php if ($attendance && $attendance->isPresent()): ?>
+
+
+                        <p class="text-lg font-bold text-emerald-600">
+
+                            Present
+
+                        </p>
+
+
+                        <?php else: ?>
+
+
+                        <p class="text-lg font-bold text-yellow-600">
+
+                            Pending
+
+                        </p>
+
+
+                        <?php endif; ?>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="mt-4 text-sm text-slate-500">
+
+
+                    <?php if ($attendance && $attendance->isPresent()): ?>
+
+
+                    <span class="flex items-center gap-1">
+
+                        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+
+                        Attendance confirmed
+
+                    </span>
+
+
+                    <?php else: ?>
+
+
+                    Attendance will be marked during event
+
+
+                    <?php endif; ?>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+
+
+            <!-- Certificate -->
+
+            <div class="glass-card-light rounded-2xl border border-slate-100 shadow-xl p-5 hover:shadow-2xl transition">
+
+
+                <div class="flex items-center gap-4">
+
+
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 text-white flex items-center justify-center">
+
+
+                        <i data-lucide="award"></i>
+
+
+                    </div>
+
+
+
+                    <div>
+
+
+                        <p class="text-xs uppercase text-slate-400 font-semibold">
+
+                            Certificate
+
+                        </p>
+
+
+                        <?php if (
+                            $attendance &&
+                            $attendance->isPresent() &&
+                            $event->isCertificateEnabled()
+                        ): ?>
+
+
+                        <p class="text-lg font-bold text-blue-600">
+
+                            Available
+
+                        </p>
+
+
+                        <?php else: ?>
+
+
+                        <p class="text-lg font-bold text-slate-400">
+
+                            Locked
+
+                        </p>
+
+
+                        <?php endif; ?>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <?php if (
+                    $attendance &&
+                    $attendance->isPresent()
+                ): ?>
+
+
+                <a href="<?= BASE_URL ?>/certificates/event/<?= $event->getId() ?>"
+                    class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-600">
+
+
+                    <i data-lucide="download" class="w-4 h-4"></i>
+
+
+                    Download Certificate
+
+
+                </a>
+
+
+                <?php endif; ?>
+
+
+
+            </div>
+
+
+
+
+
+
+            <!-- Feedback -->
+
+            <div class="glass-card-light rounded-2xl border border-slate-100 shadow-xl p-5 hover:shadow-2xl transition">
+
+
+                <?php
+
+                $eventEnd = strtotime(
+                    $event->getEventDate()
+                        . ' '
+                        . $event->getEndTime()
+                );
+
+                $isCompleted = $eventEnd < time();
+
+                ?>
+
+
+                <div class="flex items-center gap-4">
+
+
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white flex items-center justify-center">
+
+                        <i data-lucide="message-square" class="w-5 h-5"></i>
+
+                    </div>
+
+
+
+                    <div>
+
+
+                        <p class="text-xs uppercase text-slate-400 font-semibold">
+
+                            Feedback
+
+                        </p>
+
+
+
+                        <?php if (!$isCompleted): ?>
+
+
+                        <p class="text-lg font-bold text-slate-400">
+
+                            Locked
+
+                        </p>
+
+
+
+                        <?php elseif ($feedbackSubmitted): ?>
+
+
+                        <p class="text-lg font-bold text-emerald-600">
+
+                            Submitted ✓
+
+                        </p>
+
+
+
+                        <?php else: ?>
+
+
+                        <p class="text-lg font-bold text-purple-600">
+
+                            Available
+
+                        </p>
+
+
+
+                        <?php endif; ?>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div class="mt-4">
+
+
+                    <?php if (!$isCompleted): ?>
+
+
+                    <div class="flex items-center gap-2 text-sm text-slate-400">
+
+                        <i data-lucide="lock" class="w-4 h-4"></i>
+
+                        Available after event completion
+
+                    </div>
+
+
+
+
+                    <?php elseif (!$feedbackSubmitted): ?>
+
+
+
+                    <div class="flex items-start gap-2 text-sm text-purple-600">
+                        <a href="#feedback-form"
+                            class="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-700">
+
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+
+                            Give Feedback
+
+                            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+
+                        </a>
+                    </div>
+
+
+
+                    <?php else: ?>
+
+
+                    <div class="flex items-center gap-2 text-sm text-emerald-600 font-semibold">
+
+
+                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+
+                        Feedback Submitted
+
+
+                    </div>
+
+
+                    <?php endif; ?>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ========================================================== -->
+        <!-- MAIN CONTENT – 2‑column glass layout                      -->
+        <!-- ========================================================== -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+
+            <!-- LEFT: Overview + Details -->
+            <div class="lg:col-span-2 space-y-6">
+
+                <!-- Overview -->
+                <div
+                    class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 animate-fadeInUp delay-200">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-200">
+                            <i data-lucide="info" class="w-5 h-5"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-slate-800">About This Event</h2>
+                    </div>
+                    <div class="prose prose-slate max-w-none">
+                        <p class="text-slate-600 leading-relaxed text-base">
+                            <?= nl2br(htmlspecialchars($event->getDescription())) ?>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Additional Info (if any) -->
+                <?php if (method_exists($event, 'getAdditionalInfo') && $event->getAdditionalInfo()): ?>
                 <div
                     class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 animate-fadeInUp delay-300">
                     <div class="flex items-center gap-3 mb-5">
@@ -438,74 +977,76 @@
                         <?= nl2br(htmlspecialchars($event->getAdditionalInfo())) ?>
                     </p>
                 </div>
-            <?php endif; ?>
+                <?php endif; ?>
 
-        </div>
+            </div>
 
-        <!-- RIGHT: Sidebar – Event Details Card -->
-        <div class="lg:col-span-1 space-y-6">
+            <!-- RIGHT: Sidebar – Event Details Card -->
+            <div class="lg:col-span-1 space-y-6">
 
-            <div
-                class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 md:p-8 sticky top-6 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 animate-fadeInUp delay-300">
-                <div class="flex items-center gap-3 mb-6">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white flex items-center justify-center shadow-lg shadow-indigo-200">
-                        <i data-lucide="calendar-days" class="w-5 h-5"></i>
+                <div
+                    class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 md:p-8 sticky top-6 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 animate-fadeInUp delay-300">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white flex items-center justify-center shadow-lg shadow-indigo-200">
+                            <i data-lucide="calendar-days" class="w-5 h-5"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-slate-800">Event Details</h2>
                     </div>
-                    <h2 class="text-xl font-bold text-slate-800">Event Details</h2>
-                </div>
 
-                <dl class="space-y-4 divide-y divide-slate-100/80">
-                    <div class="flex justify-between items-center pt-3 first:pt-0">
-                        <dt class="text-slate-500 text-sm flex items-center gap-1.5">
-                            <i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i> Date
-                        </dt>
-                        <dd class="font-semibold text-slate-800 text-sm"><?= htmlspecialchars($event->getEventDate()) ?>
-                        </dd>
-                    </div>
-                    <div class="flex justify-between items-center pt-3">
-                        <dt class="text-slate-500 text-sm flex items-center gap-1.5">
-                            <i data-lucide="clock" class="w-4 h-4 text-slate-400"></i> Time
-                        </dt>
-                        <dd class="font-semibold text-slate-800 text-sm">
-                            <?= htmlspecialchars($event->getStartTime()) ?> –
-                            <?= htmlspecialchars($event->getEndTime()) ?>
-                        </dd>
-                    </div>
-                    <div class="flex justify-between items-center pt-3">
-                        <dt class="text-slate-500 text-sm flex items-center gap-1.5">
-                            <i data-lucide="map-pin" class="w-4 h-4 text-slate-400"></i> Venue
-                        </dt>
-                        <dd class="font-semibold text-slate-800 text-sm"><?= htmlspecialchars($event->getVenue()) ?>
-                        </dd>
-                    </div>
-                    <div class="flex justify-between items-center pt-3">
-                        <dt class="text-slate-500 text-sm flex items-center gap-1.5">
-                            <i data-lucide="users" class="w-4 h-4 text-slate-400"></i> Capacity
-                        </dt>
-                        <dd class="font-semibold text-slate-800 text-sm"><?= htmlspecialchars($event->getCapacity()) ?>
-                            seats</dd>
-                    </div>
-                    <div class="flex justify-between items-center pt-3">
-                        <dt class="text-slate-500 text-sm flex items-center gap-1.5">
-                            <i data-lucide="clock-3" class="w-4 h-4 text-slate-400"></i> Deadline
-                        </dt>
-                        <dd class="font-semibold text-slate-800 text-sm">
-                            <?= htmlspecialchars($event->getRegistrationDeadline()) ?></dd>
-                    </div>
-                    <div class="flex justify-between items-center pt-3">
-                        <dt class="text-slate-500 text-sm flex items-center gap-1.5">
-                            <i data-lucide="badge-check" class="w-4 h-4 text-slate-400"></i> Status
-                        </dt>
-                        <dd class="font-semibold text-emerald-600 text-sm flex items-center gap-1.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <?= ucfirst(htmlspecialchars($event->getStatus())) ?>
-                        </dd>
-                    </div>
-                </dl>
+                    <dl class="space-y-4 divide-y divide-slate-100/80">
+                        <div class="flex justify-between items-center pt-3 first:pt-0">
+                            <dt class="text-slate-500 text-sm flex items-center gap-1.5">
+                                <i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i> Date
+                            </dt>
+                            <dd class="font-semibold text-slate-800 text-sm">
+                                <?= htmlspecialchars($event->getEventDate()) ?>
+                            </dd>
+                        </div>
+                        <div class="flex justify-between items-center pt-3">
+                            <dt class="text-slate-500 text-sm flex items-center gap-1.5">
+                                <i data-lucide="clock" class="w-4 h-4 text-slate-400"></i> Time
+                            </dt>
+                            <dd class="font-semibold text-slate-800 text-sm">
+                                <?= htmlspecialchars($event->getStartTime()) ?> –
+                                <?= htmlspecialchars($event->getEndTime()) ?>
+                            </dd>
+                        </div>
+                        <div class="flex justify-between items-center pt-3">
+                            <dt class="text-slate-500 text-sm flex items-center gap-1.5">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-slate-400"></i> Venue
+                            </dt>
+                            <dd class="font-semibold text-slate-800 text-sm"><?= htmlspecialchars($event->getVenue()) ?>
+                            </dd>
+                        </div>
+                        <div class="flex justify-between items-center pt-3">
+                            <dt class="text-slate-500 text-sm flex items-center gap-1.5">
+                                <i data-lucide="users" class="w-4 h-4 text-slate-400"></i> Capacity
+                            </dt>
+                            <dd class="font-semibold text-slate-800 text-sm">
+                                <?= htmlspecialchars($event->getCapacity()) ?>
+                                seats</dd>
+                        </div>
+                        <div class="flex justify-between items-center pt-3">
+                            <dt class="text-slate-500 text-sm flex items-center gap-1.5">
+                                <i data-lucide="clock-3" class="w-4 h-4 text-slate-400"></i> Deadline
+                            </dt>
+                            <dd class="font-semibold text-slate-800 text-sm">
+                                <?= htmlspecialchars($event->getRegistrationDeadline()) ?></dd>
+                        </div>
+                        <div class="flex justify-between items-center pt-3">
+                            <dt class="text-slate-500 text-sm flex items-center gap-1.5">
+                                <i data-lucide="badge-check" class="w-4 h-4 text-slate-400"></i> Status
+                            </dt>
+                            <dd class="font-semibold text-emerald-600 text-sm flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <?= ucfirst(htmlspecialchars($event->getStatus())) ?>
+                            </dd>
+                        </div>
+                    </dl>
 
-                <!-- Registration count (if available) -->
-                <?php if (method_exists($event, 'getRegisteredCount')): ?>
+                    <!-- Registration count (if available) -->
+                    <?php if (method_exists($event, 'getRegisteredCount')): ?>
                     <div class="mt-6 pt-4 border-t border-slate-100/80">
                         <div class="flex items-center justify-between mb-1">
                             <span class="text-sm text-slate-500">Registered</span>
@@ -518,11 +1059,247 @@
                             </div>
                         </div>
                     </div>
-                <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="feedback-form"
+            class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 md:p-8 mt-6">
+
+
+            <!-- Header -->
+            <div class="flex items-center gap-3 mb-6">
+
+
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white flex items-center justify-center shadow-lg">
+
+                    <i data-lucide="message-square" class="w-5 h-5"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2 class="text-xl font-bold text-slate-800">
+                        Event Feedback
+                    </h2>
+
+                    <p class="text-sm text-slate-500">
+                        Share your experience about this event.
+                    </p>
+
+                </div>
+
+
             </div>
 
+
+
+
+
+
+            <form method="POST" action="<?= BASE_URL ?>/events/<?= $event->getId() ?>/feedback" class="space-y-5">
+
+
+                <!-- Rating -->
+
+                <div>
+
+
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+
+                        How was your experience?
+
+                    </label>
+
+
+
+                    <div class="grid grid-cols-5 gap-3">
+
+
+                        <label class="cursor-pointer">
+
+                            <input type="radio" name="rating" value="1" class="hidden peer">
+
+
+                            <div class="text-center py-3 rounded-xl border border-slate-200
+                        peer-checked:bg-red-50
+                        peer-checked:border-red-400
+                        transition">
+
+                                😞
+                                <span class="block text-xs mt-1">
+                                    Bad
+                                </span>
+
+                            </div>
+
+
+                        </label>
+
+
+
+                        <label class="cursor-pointer">
+
+                            <input type="radio" name="rating" value="2" class="hidden peer">
+
+
+                            <div class="text-center py-3 rounded-xl border border-slate-200
+                        peer-checked:bg-orange-50
+                        peer-checked:border-orange-400
+                        transition">
+
+                                🙁
+                                <span class="block text-xs mt-1">
+                                    Poor
+                                </span>
+
+                            </div>
+
+
+                        </label>
+
+
+
+                        <label class="cursor-pointer">
+
+                            <input type="radio" name="rating" value="3" class="hidden peer">
+
+
+                            <div class="text-center py-3 rounded-xl border border-slate-200
+                        peer-checked:bg-yellow-50
+                        peer-checked:border-yellow-400
+                        transition">
+
+                                😐
+                                <span class="block text-xs mt-1">
+                                    Average
+                                </span>
+
+                            </div>
+
+
+                        </label>
+
+
+
+                        <label class="cursor-pointer">
+
+                            <input type="radio" name="rating" value="4" class="hidden peer">
+
+
+                            <div class="text-center py-3 rounded-xl border border-slate-200
+                        peer-checked:bg-blue-50
+                        peer-checked:border-blue-400
+                        transition">
+
+                                🙂
+                                <span class="block text-xs mt-1">
+                                    Good
+                                </span>
+
+                            </div>
+
+
+                        </label>
+
+
+
+                        <label class="cursor-pointer">
+
+                            <input type="radio" name="rating" value="5" class="hidden peer" checked>
+
+
+                            <div class="text-center py-3 rounded-xl border border-slate-200
+                        peer-checked:bg-purple-50
+                        peer-checked:border-purple-500
+                        transition">
+
+                                🤩
+                                <span class="block text-xs mt-1">
+                                    Excellent
+                                </span>
+
+                            </div>
+
+
+                        </label>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- Comment -->
+
+                <div>
+
+
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+
+                        Comment
+
+                    </label>
+
+
+
+                    <textarea name="comment" rows="4" class="w-full rounded-xl border border-slate-200 
+                px-4 py-3 text-sm
+                focus:ring-2 focus:ring-purple-500
+                focus:border-purple-500 outline-none transition"
+                        placeholder="Tell us about your experience..."></textarea>
+
+
+                </div>
+
+
+
+
+
+                <!-- Submit -->
+
+                <div class="flex justify-end">
+
+
+                    <button type="submit" class="inline-flex items-center gap-2
+                px-6 py-3
+                bg-gradient-to-r from-purple-600 to-indigo-600
+                hover:from-purple-700 hover:to-indigo-700
+                text-white rounded-xl
+                font-semibold text-sm
+                shadow-lg shadow-purple-200
+                transition hover:scale-[1.03]">
+
+
+                        <i data-lucide="send" class="w-4 h-4"></i>
+
+                        Submit Feedback
+
+
+                    </button>
+
+
+                </div>
+
+
+
+            </form>
+
+
+
         </div>
+
+
     </div>
+
 
     <!-- ========================================================== -->
     <!-- REGISTRATION MODAL – Premium glass design                 -->
@@ -560,22 +1337,22 @@
                     <div>
                         <label class="block text-[9px] font-bold text-slate-400 uppercase">Name</label>
                         <p class="text-sm font-semibold text-slate-700">
-                            <?= htmlspecialchars($_SESSION['user']['name']) ?></p>
+                            <?= htmlspecialchars($student->getName()) ?></p>
                     </div>
                     <div>
                         <label class="block text-[9px] font-bold text-slate-400 uppercase">Student ID</label>
                         <p class="text-sm font-semibold text-slate-700">
-                            <?= htmlspecialchars($_SESSION['user']['student_id'] ?? '-') ?></p>
+                            <?= htmlspecialchars($student->getStudentId()) ?></p>
                     </div>
                     <div>
                         <label class="block text-[9px] font-bold text-slate-400 uppercase">Email</label>
                         <p class="text-sm font-semibold text-slate-700 truncate">
-                            <?= htmlspecialchars($_SESSION['user']['email'] ?? '-') ?></p>
+                            <?= htmlspecialchars($student->getEmail()) ?></p>
                     </div>
                     <div>
                         <label class="block text-[9px] font-bold text-slate-400 uppercase">Phone</label>
                         <p class="text-sm font-semibold text-slate-700">
-                            <?= htmlspecialchars($_SESSION['user']['phone'] ?? '-') ?></p>
+                            <?= htmlspecialchars($student->getPhone() ?? '-') ?></p>
                     </div>
                 </div>
 
@@ -592,14 +1369,12 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-1">Year</label>
-                        <input type="text" readonly
-                            value="<?= htmlspecialchars($_SESSION['user']['academic_year_name'] ?? '-') ?>"
+                        <input type="text" readonly value="<?= htmlspecialchars($academicYearName) ?>"
                             class="w-full bg-slate-50 text-sm px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700">
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-1">Department</label>
-                        <input type="text" readonly
-                            value="<?= htmlspecialchars($_SESSION['user']['department_name'] ?? '-') ?>"
+                        <input type="text" readonly value="<?= htmlspecialchars($departmentName) ?>"
                             class="w-full bg-slate-50 text-sm px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700">
                     </div>
                 </div>
@@ -628,10 +1403,8 @@
         </div>
     </div>
 
-</div>
-
-<!-- ── Scripts ── -->
-<script>
+    <!-- ── Scripts ── -->
+    <script>
     function openRegisterModal() {
         const modal = document.getElementById('registerModal');
         modal.classList.remove('hidden');
@@ -679,4 +1452,4 @@
             }
         });
     });
-</script>
+    </script>

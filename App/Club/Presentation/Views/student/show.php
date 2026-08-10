@@ -364,7 +364,7 @@
 
         <section class="relative rounded-3xl overflow-hidden h-[480px] shadow-2xl group">
 
-            <!-- Background image / gradient -->
+            </php> <!-- Background image / gradient -->
             <?php if ($club->getBanner()): ?>
             <img src="<?= BASE_URL ?>/uploads/clubs/<?= $club->getBanner() ?>"
                 class="absolute inset-0 w-full h-full object-cover img-zoom">
@@ -427,7 +427,7 @@
                                     <i data-lucide="wallet" class="w-4 h-4 text-blue-300"></i>
                                     <span>
                                         <?= $club->getMembershipFee() > 0
-                                            ? '$' . number_format($club->getMembershipFee(), 2)
+                                            ? 'MMK ' . number_format($club->getMembershipFee(), 2)
                                             : 'Free Membership' ?>
                                     </span>
                                 </div>
@@ -437,44 +437,104 @@
                         <!-- Join button -->
                         <div class="flex-shrink-0 opacity-0 animate-fadeInUp delay-500">
                             <?php if (isset($_SESSION['user'])): ?>
-                            <?php if ($membershipStatus === 'approved'): ?>
-                            <button disabled
-                                class="w-full bg-emerald-100 text-emerald-700 py-3 px-8 rounded-xl font-semibold text-sm shadow-md cursor-not-allowed flex items-center justify-center gap-2">
-                                <i data-lucide="check-circle" class="w-4 h-4"></i> Joined Member
-                            </button>
-                            <?php elseif ($membershipStatus === 'pending'): ?>
-                            <button disabled
-                                class="w-full bg-yellow-100 text-yellow-700 py-3 px-8 rounded-xl font-semibold text-sm shadow-md cursor-not-allowed flex items-center justify-center gap-2">
-                                <i data-lucide="clock" class="w-4 h-4"></i> Waiting Approval
-                            </button>
-                            <?php else: ?>
-                            <form method="POST" action="<?= BASE_URL ?>/clubs/<?= $club->getId() ?>/join"
-                                class="w-full">
-                                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-                                <button type="submit"
-                                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 px-8 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg shadow-blue-600/30 btn-shine">
 
-                                    <div class="flex flex-col items-center">
 
-                                        <span class="flex items-center gap-2">
-                                            <i data-lucide="user-plus" class="w-4 h-4"></i>
-                                            Join Club
-                                        </span>
+                            <?php if ($membershipStatus === 'pending'): ?>
 
-                                        <?php if ($club->getMembershipFee() > 0): ?>
-                                        <span class="text-xs text-blue-100 mt-1">
-                                            Membership Fee:
-                                            $<?= number_format($club->getMembershipFee(), 2) ?>
-                                        </span>
-                                        <?php else: ?>
-                                        <span class="text-xs text-blue-100 mt-1">
-                                            Free Membership
-                                        </span>
-                                        <?php endif; ?>
+                            <!-- Pending Membership Card -->
+                            <div
+                                class="w-72 glass-card-light rounded-2xl p-5 border border-yellow-200 animate-fadeInUp">
+
+                                <div class="flex items-center gap-4">
+
+                                    <div
+                                        class="w-12 h-12 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center">
+
+                                        <i data-lucide="clock" class="w-6 h-6"></i>
 
                                     </div>
 
-                                </button>
+
+                                    <div>
+
+                                        <h3 class="font-bold text-slate-800">
+                                            Request Pending
+                                        </h3>
+
+                                        <p class="text-xs text-slate-500 mt-1">
+                                            Waiting for approval
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <?php elseif ($membershipStatus === 'approved'): ?>
+
+
+                            <!-- Approved Membership Card -->
+                            <div
+                                class="w-72 glass-card-light rounded-2xl p-5 border border-emerald-200 animate-fadeInUp">
+
+                                <div class="flex items-center gap-4">
+
+                                    <div
+                                        class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+
+                                        <i data-lucide="badge-check" class="w-6 h-6"></i>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <h3 class="font-bold text-slate-800">
+                                            You are a Member
+                                        </h3>
+
+
+                                        <p class="text-xs text-slate-500 mt-1">
+                                            You can join club activities
+                                        </p>
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+
+                            <?php else: ?>
+
+                            <button type="button" onclick="openJoinModal()"
+                                class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 px-8 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg shadow-blue-600/30 btn-shine">
+
+                                <div class="flex flex-col items-center">
+
+                                    <span class="flex items-center gap-2">
+                                        <i data-lucide="user-plus" class="w-4 h-4"></i>
+                                        Join Club
+                                    </span>
+
+                                    <?php if ($club->getMembershipFee() > 0): ?>
+                                    <span class="text-xs text-blue-100 mt-1">
+                                        Membership Fee:
+                                        $<?= number_format($club->getMembershipFee(), 2) ?>
+                                    </span>
+                                    <?php else: ?>
+                                    <span class="text-xs text-blue-100 mt-1">
+                                        Free Membership
+                                    </span>
+                                    <?php endif; ?>
+
+                                </div>
+
+                            </button>
                             </form>
                             <?php endif; ?>
                             <?php else: ?>
@@ -545,7 +605,7 @@
 
                         <div class="text-2xl font-bold text-blue-600">
                             <?= $club->getMembershipFee() > 0
-                                ? '$' . number_format($club->getMembershipFee(), 0)
+                                ? 'MMK ' . number_format($club->getMembershipFee(), 0)
                                 : 'Free' ?>
                         </div>
 
@@ -593,7 +653,7 @@
 
                             <span class="font-semibold text-slate-800">
                                 <?= $club->getMembershipFee() > 0
-                                    ? '$' . number_format($club->getMembershipFee(), 2)
+                                    ? 'MMK ' . number_format($club->getMembershipFee(), 2)
                                     : 'Free' ?>
                             </span>
                         </div>
@@ -682,7 +742,7 @@
         <!-- ========================================================== -->
         <!-- LEADERSHIP (Grid with Staggered Animations)                -->
         <!-- ========================================================== -->
-
+        <?php use App\Shared\Core\Auth; ?>
         <section class="mt-12">
 
             <div class="flex items-center justify-between mb-6">
@@ -702,14 +762,40 @@
                     style="animation-delay: <?= $index * 100 + 400 ?>ms;">
 
                     <!-- Avatar -->
-                    <?php if (!empty($leader['profile_image'])): ?>
-                    <img src="<?= BASE_URL ?>/uploads/users/<?= $leader['profile_image'] ?>"
-                        class="w-24 h-24 rounded-full object-cover mx-auto mb-4 ring-2 ring-blue-100 transition group-hover:ring-blue-300">
+                    <?php if (!empty(Auth::profileImage())): ?>
+
+                    <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars(Auth::profileImage()) ?>"
+                        class="w-24 h-24 rounded-full object-cover mx-auto mb-4 ring-2 ring-blue-100 transition group-hover:ring-blue-300"
+                        alt="Profile">
+
                     <?php else: ?>
+
+                    <?php
+                            $name = Auth::user()['name'] ?? 'User';
+
+                            $words = preg_split('/\s+/', trim($name));
+
+                            if (count($words) >= 2) {
+
+                                $initials = strtoupper(
+                                    substr($words[0], 0, 1) .
+                                        substr($words[1], 0, 1)
+                                );
+                            } else {
+
+                                $initials = strtoupper(
+                                    substr($words[0], 0, 1)
+                                );
+                            }
+                            ?>
+
                     <div
                         class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 flex items-center justify-center mx-auto mb-4 text-3xl font-bold ring-2 ring-blue-100 transition group-hover:ring-blue-300">
-                        <?= strtoupper(substr($leader['name'], 0, 1)) ?>
+
+                        <?= htmlspecialchars($initials) ?>
+
                     </div>
+
                     <?php endif; ?>
 
                     <h3 class="font-bold text-slate-800 text-lg">
@@ -842,6 +928,122 @@
 
         </section>
 
+        <form id="joinForm" method="POST" action="<?= BASE_URL ?>/clubs/<?= $club->getId() ?>/join">
+
+
+            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
+
+        </form>
+
+        <div id="joinModal"
+            class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center">
+
+
+            <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md mx-4">
+
+
+                <div class="flex items-center gap-3 mb-5">
+
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+
+                        <i data-lucide="user-plus" class="w-6 h-6"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2 class="text-xl font-bold text-slate-800">
+                            Join Club?
+                        </h2>
+
+                        <p class="text-sm text-slate-500">
+                            Confirm your membership request
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="space-y-3 mb-6">
+
+
+                    <div class="flex justify-between">
+
+                        <span class="text-slate-500">
+                            Club
+                        </span>
+
+                        <span class="font-semibold text-slate-800">
+                            <?= htmlspecialchars($club->getName()) ?>
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="flex justify-between">
+
+                        <span class="text-slate-500">
+                            Fee
+                        </span>
+
+
+                        <span class="font-semibold text-blue-600">
+
+
+                            <?php if ($club->getMembershipFee() > 0): ?>
+
+                            MMK <?= number_format($club->getMembershipFee(), 2) ?>
+
+
+                            <?php else: ?>
+
+                            Free Membership
+
+
+                            <?php endif; ?>
+
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="flex justify-end gap-3">
+
+
+                    <button type="button" onclick="closeJoinModal()"
+                        class="px-5 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50">
+
+                        Cancel
+
+                    </button>
+
+
+
+                    <button type="button" onclick="confirmJoin()"
+                        class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+
+                        Confirm Join
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
     </main>
 
     <!-- ════════════════════════════════════════════════════════════════ -->
@@ -849,6 +1051,36 @@
     <!-- ════════════════════════════════════════════════════════════════ -->
 
     <script>
+    function openJoinModal() {
+        document
+            .getElementById('joinModal')
+            .classList
+            .remove('hidden');
+    }
+
+
+
+    function closeJoinModal() {
+        document
+            .getElementById('joinModal')
+            .classList
+            .add('hidden');
+    }
+
+
+
+    function confirmJoin() {
+
+        const form =
+            document.getElementById('joinForm');
+
+
+        if (form) {
+            form.submit();
+        }
+
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // ── Lucide Icons ──
         lucide.createIcons();

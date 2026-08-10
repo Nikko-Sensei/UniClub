@@ -93,7 +93,6 @@ class Event
         $this->createdAt = $createdAt;
 
         $this->updatedAt = $updatedAt;
-
     }
 
 
@@ -196,5 +195,92 @@ class Event
     public function getUpdatedAt(): ?string
     {
         return $this->updatedAt;
+    }
+
+    /*
+|--------------------------------------------------------------------------
+| Domain Rules
+|--------------------------------------------------------------------------
+*/
+
+
+
+    public function hasStarted(): bool
+    {
+
+        if (
+            !$this->eventDate ||
+            !$this->startTime
+        ) {
+            return false;
+        }
+
+
+
+        $now =
+            new \DateTime();
+
+
+
+        $start =
+            new \DateTime(
+
+                $this->eventDate .
+                    ' ' .
+                    $this->startTime
+
+            );
+
+
+
+        return $now >= $start;
+    }
+
+
+
+
+
+
+    public function isCompleted(): bool
+    {
+
+        if (
+            !$this->eventDate ||
+            !$this->endTime
+        ) {
+            return false;
+        }
+
+
+
+        $now =
+            new \DateTime();
+
+
+
+        $end =
+            new \DateTime(
+
+                $this->eventDate .
+                    ' ' .
+                    $this->endTime
+
+            );
+
+
+
+        return $now > $end;
+    }
+
+
+
+
+    public function canGenerateCertificate(): bool
+    {
+
+        return
+            $this->certificateEnabled
+            &&
+            $this->isCompleted();
     }
 }

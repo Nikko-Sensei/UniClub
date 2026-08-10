@@ -59,7 +59,13 @@ final class AuditAction
 
     public const DELETE_ANNOUNCEMENT = 'DELETE_ANNOUNCEMENT';
 
+    // Payment
 
+    public const PAYMENT_CREATE = 'payment_create';
+
+    public const PAYMENT_VERIFY = 'payment_verify';
+
+    public const PAYMENT_REJECT = 'payment_reject';
 
     // Security
 

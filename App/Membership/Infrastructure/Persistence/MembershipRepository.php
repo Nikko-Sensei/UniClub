@@ -59,11 +59,31 @@ class MembershipRepository extends BaseRepository implements MembershipRepositor
     }
 
 
+    // public function rejoin(
+    //     int $clubId,
+    //     int $userId,
+    //     int $clubRoleId
+    // ): ?int {
+
+    //     $stmt =
+    //         $this->db->prepare(
+    //             "CALL sp_membership_rejoin(?,?,?)"
+    //         );
+
+
+    //     return $stmt->execute([
+    //         $clubId,
+    //         $userId,
+    //         $clubRoleId
+    //     ]);
+    // }
+
     public function rejoin(
         int $clubId,
         int $userId,
         int $clubRoleId
-    ): bool {
+    ): ?int {
+
 
         $stmt =
             $this->db->prepare(
@@ -71,11 +91,28 @@ class MembershipRepository extends BaseRepository implements MembershipRepositor
             );
 
 
-        return $stmt->execute([
+        $stmt->execute([
+
             $clubId,
+
             $userId,
+
             $clubRoleId
+
         ]);
+
+
+        $result =
+            $stmt->fetch(
+                PDO::FETCH_ASSOC
+            );
+
+
+        $stmt->closeCursor();
+
+
+       return $result['membership_id']
+    ?? null;
     }
 
 
@@ -111,38 +148,33 @@ class MembershipRepository extends BaseRepository implements MembershipRepositor
         int $clubId,
         int $userId,
         int $clubRoleId
-    ): bool {
-
+    ): ?int {
 
         $stmt = $this->db->prepare(
 
             "CALL sp_membership_create(
-                :club_id,
-                :user_id,
-                :club_role_id
-            )"
+            :club_id,
+            :user_id,
+            :club_role_id
+        )"
 
         );
-
-
 
         $stmt->execute([
 
             'club_id' => $clubId,
-
             'user_id' => $userId,
-
             'club_role_id' => $clubRoleId
 
         ]);
 
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        $stmt->closeCursor();
 
-        $result =
-            $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-        return (int)$result['affected'] > 0;
+        return $result
+            ? (int)$result['membership_id']
+            : null;
     }
     public function getPendingMembershipCount(
         int $userId

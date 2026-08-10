@@ -8,6 +8,8 @@ use App\Notification\Application\Services\NotificationService;
 use App\User\Application\Services\UserService;
 use App\Shared\Logging\AuditLogger;
 use App\Shared\Logging\AuditAction;
+use App\Payment\Domain\Repository\PaymentRepositoryInterface;
+use App\Club\Application\Services\ClubService;
 
 
 class MembershipService
@@ -18,13 +20,15 @@ class MembershipService
     private UserService $userService;
     private AuditLogger $auditLogger;
 
+    private ClubService $clubService;
 
 
     public function __construct(
         MembershipRepositoryInterface $membershipRepository,
         NotificationService $notificationService,
         UserService $userService,
-        AuditLogger $auditLogger
+        AuditLogger $auditLogger,
+        ClubService $clubService
     ) {
 
         $this->membershipRepository = $membershipRepository;
@@ -34,58 +38,39 @@ class MembershipService
         $this->userService = $userService;
 
         $this->auditLogger = $auditLogger;
+
+        $this->clubService = $clubService;
     }
 
 
-
-    // public function joinClub(
-    //     int $clubId,
-    //     int $userId
-    // ): bool {
-
-
-    //     if (
-    //         $this->membershipRepository
-    //         ->exists(
-    //             $clubId,
-    //             $userId
-    //         )
-    //     ) {
-
-    //         throw new \Exception(
-    //             "You already requested this club"
-    //         );
-    //     }
-
-
-    //     /*
-    //         Default club role:
-    //         4 = Member
-
-    //         Change this if your
-    //         club_roles table uses another ID
-    //     */
-
-    //     $memberRoleId = 4;
-
-
-
-    //     return $this->membershipRepository
-    //         ->create(
-    //             $clubId,
-    //             $userId,
-    //             $memberRoleId
-    //         );
-    // }
     public function joinClub(
         int $clubId,
         int $userId
-    ): bool {
-
+    ): int {
 
         $memberRoleId = 4;
 
 
+        /*
+        Get club
+    */
+        $club =
+            $this->clubService
+            ->getClub($clubId);
+
+
+        if (!$club) {
+
+            throw new \Exception(
+                "Club not found."
+            );
+        }
+
+
+
+        /*
+        Check existing membership
+    */
         $membership =
             $this->membershipRepository
             ->findByUserAndClub(
@@ -94,15 +79,11 @@ class MembershipService
             );
 
 
-        /*
-        Existing membership found
-    */
+
         if ($membership) {
 
 
-            if (
-                $membership['status'] === 'pending'
-            ) {
+            if ($membership['status'] === 'pending') {
 
                 throw new \Exception(
                     "Your request is waiting for approval."
@@ -110,10 +91,7 @@ class MembershipService
             }
 
 
-
-            if (
-                $membership['status'] === 'approved'
-            ) {
+            if ($membership['status'] === 'approved') {
 
                 throw new \Exception(
                     "You are already a member of this club."
@@ -121,13 +99,24 @@ class MembershipService
             }
 
 
+            if ($membership['status'] === 'left') {
 
-            if (
-                $membership['status'] === 'left'
-            ) {
+                return $this->membershipRepository
+                    ->rejoin(
+
+                        $clubId,
+
+                        $userId,
+
+                        $memberRoleId
+
+                    );
+            }
+
+            if ($membership['status'] === 'rejected') {
 
 
-                $rejoined =
+                $membershipId =
                     $this->membershipRepository
                     ->rejoin(
                         $clubId,
@@ -136,40 +125,113 @@ class MembershipService
                     );
 
 
-                if (!$rejoined) {
+                if (!$membershipId) {
 
                     throw new \Exception(
-                        "Could not send join request again."
+                        "Could not rejoin club."
                     );
                 }
 
-
-                /*
-                Notify Admins after rejoin
-            */
-                $this->notifyAdmins(
-                    $clubId,
-                    $userId
-                );
-
-
-                return true;
+                
+                return $membershipId;
             }
         }
 
 
+        /*
+Paid Club
+*/
+        //     if ($club->getMembershipFee() > 0) {
+
+        //         // var_dump("reach here");
+        //         // exit;
+
+        //         /*
+        //     Step 1:
+        //     Create membership request
+        //     Get membership ID
+        // */
+        //         $membershipId =
+        //             $this->membershipRepository
+        //             ->create(
+
+        //                 $clubId,
+
+        //                 $userId,
+
+        //                 $memberRoleId
+
+        //             );
+
+
+        //         if (!$membershipId) {
+
+        //             throw new \Exception(
+        //                 "Could not create membership request."
+        //             );
+        //         }
+
+
+
+
+        //         /*
+        //     Step 2:
+        //     Create payment linked with membership
+        // */
+        //         $paymentCreated =
+        //             $this->paymentRepository
+        //             ->create(
+
+        //                 $userId,
+
+        //                 $clubId,
+
+        //                 $membershipId,
+
+        //                 $club->getMembershipFee(),
+
+        //                 'bank_transfer',
+
+        //                 null,
+
+        //                 null
+
+        //             );
+
+
+
+        //         if (!$paymentCreated) {
+
+        //             throw new \Exception(
+        //                 "Payment creation failed."
+        //             );
+        //         }
+
+
+
+        //         return true;
+        //     }
+
+
+
 
         /*
-        New membership
+        Free Club
     */
-
         $created =
             $this->membershipRepository
             ->create(
+
                 $clubId,
+
                 $userId,
+
                 $memberRoleId
+
             );
+
+        // var_dump($created);
+        // exit;
 
 
 
@@ -177,6 +239,8 @@ class MembershipService
 
             return false;
         }
+
+
 
         $this->auditLogger->log(
 
@@ -189,23 +253,27 @@ class MembershipService
             $clubId,
 
             [
-                'action' => 'Student requested to join club'
+                'action' =>
+                'Student requested to join club'
             ]
 
         );
 
 
+
         /*
-        Notify Admins after new request
-    */
+    Free club -> Notify admins immediately.
+    Paid club -> Notification will be sent after payment submission.
+*/
+        if ($club->getMembershipFee() <= 0) {
 
-        $this->notifyAdmins(
-            $clubId,
-            $userId
-        );
+            $this->notifyAdmins(
+                $clubId,
+                $userId
+            );
+        }
 
-
-        return true;
+        return $created;
     }
 
 
@@ -224,51 +292,6 @@ class MembershipService
 
 
 
-    /**
-     * Get Student Clubs With Pagination
-     */
-    // public function getMyClubs(
-    //     int $userId,
-    //     int $page,
-    //     int $limit
-    // ): array {
-
-
-    //     $clubs =
-    //         $this->membershipRepository
-    //         ->getMyClubs(
-    //             $userId,
-    //             $page,
-    //             $limit
-    //         );
-
-
-
-    //     $total =
-    //         $this->membershipRepository
-    //         ->getMyClubsCount(
-    //             $userId
-    //         );
-
-
-
-    //     $totalPages =
-    //         (int)ceil(
-    //             $total / $limit
-    //         );
-
-
-
-    //     return [
-
-    //         'data' => $clubs,
-
-    //         'current_page' => $page,
-
-    //         'total_pages' => $totalPages
-
-    //     ];
-    // }
 
 
     /**

@@ -9,7 +9,7 @@ use App\Event\Application\Services\EventService;
 use App\Shared\Helpers\Flash;
 use App\Master\Application\Services\MasterService;
 use App\Club\Application\Services\ClubService;
-
+use App\User\Application\Services\UserService;
 
 class EventController extends BaseController
 {
@@ -18,13 +18,14 @@ class EventController extends BaseController
     private EventService $eventService;
     private MasterService $masterService;
     private ClubService $clubService;
-
+    private UserService $userService;
 
 
     public function __construct(
         EventService $eventService,
         ClubService $clubService,
-        MasterService $masterService
+        MasterService $masterService,
+        UserService $userService
     ) {
 
         parent::__construct();
@@ -35,6 +36,8 @@ class EventController extends BaseController
         $this->eventService = $eventService;
 
         $this->clubService = $clubService;
+
+        $this->userService = $userService;
     }
 
 
@@ -67,7 +70,10 @@ class EventController extends BaseController
 
 
             'status' =>
-            $_GET['status'] ?? ''
+            $_GET['status'] ?? '',
+
+            'event_filter' =>
+            $_GET['event_filter'] ?? ''
 
         ];
 
@@ -119,6 +125,62 @@ class EventController extends BaseController
     /**
      * Student Event Details
      */
+    // public function show(
+    //     int $id
+    // ) {
+
+
+    //     $event =
+    //         $this->eventService
+    //         ->getEvent(
+    //             $id
+    //         );
+
+    //     $clubs = $this->clubService->getActiveClubs();
+
+
+    //     $categories = $this->masterService->getEventCategories();
+
+    //     $userId =
+    //         $_SESSION['user']['id'];
+
+
+
+    //     $registrationStatus =
+    //         $this->eventService
+    //         ->getRegistrationStatus(
+
+    //             $id,
+
+    //             $userId
+
+    //         );
+
+
+
+    //     $this->view(
+
+    //         'Event/Presentation/Views/student/show',
+
+    //         [
+
+    //             'title' => $event->getTitle(),
+
+    //             'event' => $event,
+
+    //             'clubs' => $clubs,
+
+    //             'categories' => $categories,
+
+    //             'registrationStatus' => $registrationStatus
+
+    //         ],
+
+    //         'app'
+
+    //     );
+    // }
+
     public function show(
         int $id
     ) {
@@ -130,15 +192,30 @@ class EventController extends BaseController
                 $id
             );
 
-        $clubs = $this->clubService->getActiveClubs();
+
+        $clubs =
+            $this->clubService
+            ->getActiveClubs();
 
 
-        $categories = $this->masterService->getEventCategories();
+
+        $categories =
+            $this->masterService
+            ->getEventCategories();
+
+
 
         $userId =
             $_SESSION['user']['id'];
 
 
+        $profile = $this->userService->getProfileData($userId);
+
+        /*
+    |--------------------------------------------------------------------------
+    | Registration
+    |--------------------------------------------------------------------------
+    */
 
         $registrationStatus =
             $this->eventService
@@ -152,6 +229,45 @@ class EventController extends BaseController
 
 
 
+        /*
+    |--------------------------------------------------------------------------
+    | Attendance
+    |--------------------------------------------------------------------------
+    */
+
+        //     $attendance =
+        //         $this->attendanceService
+        //         ->getAttendanceByUserEvent(
+
+        //             $userId,
+
+        //             $id
+
+        //         );
+
+        $attendance = null;
+
+        $feedbackSubmitted = false;
+
+        //     /*
+        // |--------------------------------------------------------------------------
+        // | Feedback
+        // |--------------------------------------------------------------------------
+        // */
+
+        //     $feedbackSubmitted =
+        //         $this->eventFeedbackService
+        //         ->hasSubmitted(
+
+        //             $userId,
+
+        //             $id
+
+        //         );
+
+
+
+
         $this->view(
 
             'Event/Presentation/Views/student/show',
@@ -160,13 +276,33 @@ class EventController extends BaseController
 
                 'title' => $event->getTitle(),
 
+
                 'event' => $event,
-                
+
+
                 'clubs' => $clubs,
+
 
                 'categories' => $categories,
 
-                'registrationStatus' => $registrationStatus
+
+                'registrationStatus' => $registrationStatus,
+
+
+                'attendance' => $attendance,
+
+
+                'feedbackSubmitted' => $feedbackSubmitted,
+
+                'student' => $profile['user'],
+
+                'departmentName' => $profile['departmentName'],
+
+                'academicYearName' => $profile['academicYearName'],
+
+                'roleName' => $profile['roleName']
+
+
 
             ],
 
@@ -174,7 +310,6 @@ class EventController extends BaseController
 
         );
     }
-
 
 
 

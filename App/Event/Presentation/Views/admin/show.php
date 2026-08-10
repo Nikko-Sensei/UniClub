@@ -1,64 +1,8 @@
 <div class="space-y-8">
 
-    <!-- ========================================================== -->
-    <!-- BACK BUTTON – Glass with slide-in                         -->
-    <!-- ========================================================== -->
-    <div class="animate-slideInLeft">
-        <a href="<?= BASE_URL ?>/admin/events"
-            class="back-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card-light text-slate-700 font-medium text-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:border-blue-200 group">
-            <i data-lucide="arrow-left"
-                class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"></i>
-            <span>Back to Events</span>
-        </a>
-    </div>
-
-    <!-- ========================================================== -->
-    <!-- BANNER – Glass overlay with glow orbs                     -->
-    <!-- ========================================================== -->
-    <div class="group relative rounded-2xl overflow-hidden shadow-xl border border-slate-100/60">
-        <?php if ($event->getBanner()): ?>
-        <img src="<?= BASE_URL ?>/uploads/events/<?= htmlspecialchars($event->getBanner()) ?>"
-            class="w-full h-64 md:h-80 object-cover transition-transform duration-700 group-hover:scale-105"
-            alt="<?= htmlspecialchars($event->getTitle()) ?>">
-        <?php else: ?>
-        <div
-            class="w-full h-64 md:h-80 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center text-blue-400">
-            <i data-lucide="calendar-days" class="w-20 h-20"></i>
-        </div>
-        <?php endif; ?>
-
-        <!-- Overlay with gradient -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/20 to-transparent"></div>
-
-        <!-- Decorative glow orbs -->
-        <div class="absolute top-10 right-10 w-32 h-32 rounded-full bg-blue-500/20 blur-3xl animate-pulseGlow"></div>
-        <div class="absolute bottom-10 left-10 w-48 h-48 rounded-full bg-indigo-500/20 blur-3xl animate-pulseGlow"
-            style="animation-delay: 1.5s;"></div>
-    </div>
-
-    <!-- ========================================================== -->
-    <!-- HEADER – Title + Actions                                  -->
-    <!-- ========================================================== -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-            <h1 class="text-3xl md:text-4xl font-bold text-slate-800">
-                <?= htmlspecialchars($event->getTitle()) ?>
-            </h1>
-            <p class="text-slate-500 mt-1">Event administration and registration management.</p>
-        </div>
-        <div class="flex flex-wrap gap-3">
-            <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/registrations"
-                class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-sm font-semibold transition-all duration-300 shadow-md shadow-blue-200/50 hover:shadow-xl hover:scale-[1.02] btn-shine">
-                <i data-lucide="users" class="w-4 h-4"></i>
-                Registrations
-            </a>
-            <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/edit"
-                class="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-[1.02] border border-amber-200/50">
-                <i data-lucide="square-pen" class="w-4 h-4"></i>
-                Edit Event
-            </a>
-        </div>
-    </div>
+    <?php require BASE_PATH .
+        '/App/Event/Presentation/Views/admin/components/event_header.php';
+    ?>
 
     <!-- ========================================================== -->
     <!-- OVERVIEW + STATUS – Glass cards grid                     -->
@@ -82,12 +26,12 @@
             <p class="text-sm text-slate-500">Event Status</p>
             <p class="mt-2 text-xl font-bold text-blue-600">
                 <?php
-                    $status = $event->getStatus();
-                    $statusColor = match($status) {
-                        'published' => 'text-emerald-600',
-                        'cancelled' => 'text-red-600',
-                        default => 'text-amber-600'
-                    };
+                $status = $event->getStatus();
+                $statusColor = match ($status) {
+                    'published' => 'text-emerald-600',
+                    'cancelled' => 'text-red-600',
+                    default => 'text-amber-600'
+                };
                 ?>
                 <span class="<?= $statusColor ?>"><?= ucfirst(htmlspecialchars($status)) ?></span>
             </p>
@@ -177,14 +121,14 @@
                 </dt>
                 <dd class="mt-1 font-semibold text-slate-800">
                     <?php
-                        $clubName = '-';
-                        foreach ($clubs as $club) {
-                            if ($event->getClubId() == $club->getId()) {
-                                $clubName = $club->getName();
-                                break;
-                            }
+                    $clubName = '-';
+                    foreach ($clubs as $club) {
+                        if ($event->getClubId() == $club->getId()) {
+                            $clubName = $club->getName();
+                            break;
                         }
-                        echo htmlspecialchars($clubName);
+                    }
+                    echo htmlspecialchars($clubName);
                     ?>
                 </dd>
             </div>
@@ -197,14 +141,14 @@
                 </dt>
                 <dd class="mt-1 font-semibold text-slate-800">
                     <?php
-                        $categoryName = '-';
-                        foreach ($categories as $category) {
-                            if ($event->getCategoryId() == $category['id']) {
-                                $categoryName = $category['name'];
-                                break;
-                            }
+                    $categoryName = '-';
+                    foreach ($categories as $category) {
+                        if ($event->getCategoryId() == $category['id']) {
+                            $categoryName = $category['name'];
+                            break;
                         }
-                        echo htmlspecialchars($categoryName);
+                    }
+                    echo htmlspecialchars($categoryName);
                     ?>
                 </dd>
             </div>
@@ -228,9 +172,9 @@
 
 <!-- ── Scripts for Lucide Icons and Animations ── -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
 </script>

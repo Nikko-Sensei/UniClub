@@ -236,7 +236,7 @@
         <!-- ========================================================== -->
         <!-- ACTION BUTTON – Glass with gradient                      -->
         <!-- ========================================================== -->
-        <?php if ($permission->can('settings.general.update')): ?>
+        <?php if ($permissionHelper->can('settings.general.update')): ?>
         <div class="flex justify-end">
             <button type="submit"
                 class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-medium shadow-md shadow-blue-200/50 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] btn-shine">

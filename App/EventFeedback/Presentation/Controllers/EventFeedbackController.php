@@ -58,7 +58,7 @@ class EventFeedbackController extends BaseController
 
             ],
 
-            'student'
+            'app'
 
         );
 
@@ -145,7 +145,7 @@ class EventFeedbackController extends BaseController
 
             return Response::redirect(
 
-                '/events/'.$eventId.'/feedback'
+                '/events/'.$eventId
 
             );
 

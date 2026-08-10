@@ -230,11 +230,7 @@ foreach ($categories as $category) {
                         <!-- Actions -->
                         <td class="px-5 py-3.5">
                             <div class="flex justify-end gap-1">
-                                <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/registrations"
-                                    class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                    title="Registrations">
-                                    <i data-lucide="users" class="w-4 h-4"></i>
-                                </a>
+
                                 <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/show"
                                     class="p-1.5 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors"
                                     title="View">

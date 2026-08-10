@@ -29,8 +29,14 @@ use App\Shared\Middleware\ClubManagerMiddleware;
 use App\Notification\Presentation\Controllers\NotificationController;
 use App\Admin\Settings\Security\Presentation\Controllers\SecuritySettingController;
 use App\Admin\Settings\General\Presentation\Controllers\GeneralSettingController;
-
+use App\Payment\Presentation\Controllers\StudentPaymentController;
+use App\Payment\Presentation\Controllers\AdminPaymentController;
 use App\Shared\Presentation\Controllers\MaintenanceController;
+use App\EventAttendance\Presentation\Controllers\AdminEventAttendanceController;
+use App\EventAttendance\Presentation\Controllers\EventAttendanceController;
+use App\EventCertificate\Presentation\Controllers\EventCertificateController;
+use App\EventCertificate\Presentation\Controllers\AdminEventCertificateController;
+use App\PaymentAccount\Presentation\Controllers\AdminPaymentAccountController;
 
 
 $router->get(
@@ -216,7 +222,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        AdminMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'users.view'
+        ]
     ]
 );
 
@@ -228,7 +237,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        AdminMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'users.update'
+        ]
     ]
 );
 
@@ -240,7 +252,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        AdminMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'users.update'
+        ]
     ]
 );
 
@@ -252,8 +267,290 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        AdminMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'users.delete'
+        ]
     ]
+);
+
+// Payment
+
+
+// Payment Form
+
+$router->get(
+    '/payments/create/{clubId}',
+    [
+        StudentPaymentController::class,
+        'create'
+    ]
+);
+
+
+
+// Submit Payment
+
+$router->post(
+    '/payments/store',
+    [
+        StudentPaymentController::class,
+        'store'
+    ]
+);
+
+
+
+// Payment History
+
+$router->get(
+    '/payments/history',
+    [
+        StudentPaymentController::class,
+        'history'
+    ]
+);
+
+
+
+// Payment Detail
+
+$router->get(
+    '/payments/{id}',
+    [
+        StudentPaymentController::class,
+        'show'
+    ]
+);
+
+
+// Payment Management
+
+$router->get(
+    '/admin/payments',
+    [
+        AdminPaymentController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class,
+        [
+            PermissionMiddleware::class,
+            'payment.view'
+        ]
+    ]
+
+);
+
+
+
+// Payment Detail
+
+$router->get(
+    '/admin/payments/{id}',
+    [
+        AdminPaymentController::class,
+        'show'
+    ]
+);
+
+
+
+// Verify Payment
+
+$router->post(
+    '/admin/payments/{id}/verify',
+    [
+        AdminPaymentController::class,
+        'verify'
+    ]
+);
+
+
+
+// Reject Payment
+
+$router->post(
+    '/admin/payments/{id}/reject',
+    [
+        AdminPaymentController::class,
+        'reject'
+    ]
+);
+
+
+// Payment Account Management
+ 
+
+
+$router->get(
+
+    '/admin/payment-accounts',
+
+    [
+
+        AdminPaymentAccountController::class,
+
+        'index'
+
+    ],
+
+    [
+
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'payment.account.view'
+        ]
+
+    ]
+
+);
+
+
+
+
+
+$router->get(
+
+    '/admin/payment-accounts/create',
+
+    [
+
+        AdminPaymentAccountController::class,
+
+        'create'
+
+    ],
+
+    [
+
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'payment.account.create'
+        ]
+
+    ]
+
+);
+
+
+
+
+
+$router->post(
+
+    '/admin/payment-accounts/store',
+
+    [
+
+        AdminPaymentAccountController::class,
+
+        'store'
+
+    ],
+
+    [
+
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'payment.account.create'
+        ]
+
+    ]
+
+);
+
+
+
+
+
+$router->get(
+
+    '/admin/payment-accounts/{id}/edit',
+
+    [
+
+        AdminPaymentAccountController::class,
+
+        'edit'
+
+    ],
+
+    [
+
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'payment.account.update'
+        ]
+
+    ]
+
+);
+
+
+
+
+
+$router->post(
+
+    '/admin/payment-accounts/{id}/update',
+
+    [
+
+        AdminPaymentAccountController::class,
+
+        'update'
+
+    ],
+
+    [
+
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'payment.account.update'
+        ]
+
+    ]
+
+);
+
+
+
+
+
+$router->post(
+
+    '/admin/payment-accounts/{id}/delete',
+
+    [
+
+        AdminPaymentAccountController::class,
+
+        'delete'
+
+    ],
+
+    [
+
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'payment.account.delete'
+        ]
+
+    ]
+
 );
 
 
@@ -318,7 +615,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        AdminMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'clubs.view'
+        ]
     ]
 );
 
@@ -331,7 +631,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        AdminMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'clubs.update'
+        ]
     ]
 );
 
@@ -367,17 +670,7 @@ $router->post(
     ]
 );
 
-$router->get(
-    '/admin/memberships',
-    [
-        AdminMembershipController::class,
-        'index'
-    ],
-    [
-        AuthMiddleware::class,
-        RoleMiddleware::class
-    ]
-);
+
 
 
 // User Club
@@ -401,6 +694,14 @@ $router->get(
     ],
     [
         AuthMiddleware::class
+    ]
+);
+
+$router->post(
+    '/clubs/{id}/join',
+    [
+        UserClubController::class,
+        'join'
     ]
 );
 
@@ -428,6 +729,22 @@ $router->get(
     ]
 );
 
+
+$router->get(
+    '/admin/memberships',
+    [
+        AdminMembershipController::class,
+        'index'
+    ],
+    [
+        AuthMiddleware::class,
+        [
+            PermissionMiddleware::class,
+            'memberships.view'
+        ]
+    ]
+);
+
 $router->get(
     '/admin/memberships/{id}/edit-role',
     [
@@ -435,7 +752,12 @@ $router->get(
         'editRole'
     ],
     [
-        AdminMiddleware::class
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'memberships.update'
+        ]
     ]
 );
 
@@ -446,7 +768,12 @@ $router->post(
         'remove'
     ],
     [
-        AdminMiddleware::class
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'memberships.delete'
+        ]
     ]
 );
 
@@ -457,7 +784,12 @@ $router->post(
         'updateRole'
     ],
     [
-        AdminMiddleware::class
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'memberships.update'
+        ]
     ]
 );
 
@@ -468,7 +800,12 @@ $router->get(
         'members'
     ],
     [
-        AdminMiddleware::class
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'memberships.view'
+        ]
     ]
 );
 
@@ -492,7 +829,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        AdminMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'memberships.approve'
+        ]
     ]
 );
 
@@ -505,7 +845,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        AdminMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'memberships.reject'
+        ]
     ]
 );
 
@@ -612,7 +955,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        AdminMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'events.update'
+        ]
     ]
 );
 
@@ -641,7 +987,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        AdminMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'events.view'
+        ]
     ]
 );
 
@@ -668,7 +1017,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'events.registration.view'
+        ]
     ]
 );
 
@@ -680,7 +1032,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'events.registration.approve'
+        ]
     ]
 );
 
@@ -693,8 +1048,77 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'events.registration.reject'
+        ]
     ]
+);
+
+// certificate
+
+
+$router->get(
+
+    '/certificates',
+
+    [
+        EventCertificateController::class,
+        'index'
+    ]
+
+);
+
+
+
+$router->get(
+
+    '/certificates/{id}/download',
+
+    [
+        EventCertificateController::class,
+        'download'
+    ]
+
+);
+
+
+$router->get(
+
+    '/admin/events/{id}/certificates',
+
+    [
+        AdminEventCertificateController::class,
+        'index'
+    ]
+
+);
+
+
+
+$router->post(
+
+    '/admin/events/{id}/certificates/generate',
+
+    [
+        AdminEventCertificateController::class,
+        'generate'
+    ]
+
+);
+
+$router->post(
+
+    '/admin/events/{id}/certificates/generate-all',
+
+    [
+
+        AdminEventCertificateController::class,
+
+        'generateAll'
+
+    ]
+
 );
 
 
@@ -758,7 +1182,10 @@ $router->get(
 
         AuthMiddleware::class,
 
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'feedbacks.view'
+        ]
 
     ]
 
@@ -782,7 +1209,78 @@ $router->post(
 
         AuthMiddleware::class,
 
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'feedbacks.delete'
+        ]
+
+    ]
+
+);
+
+// Admin Event Attendance
+
+$router->get(
+
+    '/admin/events/{id}/attendance',
+
+    [
+
+        AdminEventAttendanceController::class,
+
+        'index'
+
+    ]
+
+);
+
+
+
+$router->post(
+
+    '/admin/events/{id}/attendance/store',
+
+    [
+
+        AdminEventAttendanceController::class,
+
+        'store'
+
+    ]
+
+);
+
+
+
+$router->post(
+
+    '/admin/events/{id}/attendance/update',
+
+    [
+
+        AdminEventAttendanceController::class,
+
+        'update'
+
+    ]
+
+);
+/*
+|--------------------------------------------------------------------------
+| Student Attendance
+|--------------------------------------------------------------------------
+*/
+
+
+$router->get(
+
+    '/attendance/history',
+
+    [
+
+        EventAttendanceController::class,
+
+        'history'
 
     ]
 
@@ -849,7 +1347,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'announcements.view'
+        ]
     ]
 );
 
@@ -862,7 +1363,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'announcements.update'
+        ]
     ]
 );
 
@@ -965,6 +1469,14 @@ $router->get(
     [
         AdminContactController::class,
         'index'
+    ],
+    [
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'contacts.view'
+        ]
     ]
 );
 
@@ -973,6 +1485,14 @@ $router->get(
     [
         AdminContactController::class,
         'show'
+    ],
+    [
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'contacts.view'
+        ]
     ]
 );
 
@@ -982,6 +1502,14 @@ $router->post(
     [
         AdminContactController::class,
         'updateStatus'
+    ],
+    [
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'contacts.update'
+        ]
     ]
 );
 
@@ -990,6 +1518,14 @@ $router->post(
     [
         AdminContactController::class,
         'delete'
+    ],
+    [
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'contacts.delete'
+        ]
     ]
 );
 
@@ -1051,7 +1587,10 @@ $router->get(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'rbac.manage'
+        ]
     ]
 );
 
@@ -1065,7 +1604,10 @@ $router->post(
     ],
     [
         AuthMiddleware::class,
-        RoleMiddleware::class
+        [
+            PermissionMiddleware::class,
+            'rbac.manage'
+        ]
     ]
 );
 
@@ -1146,5 +1688,13 @@ $router->get(
     [
         \App\Audit\Presentation\Controllers\AuditController::class,
         'index'
+    ],
+    [
+        AuthMiddleware::class,
+
+        [
+            PermissionMiddleware::class,
+            'audit.view'
+        ]
     ]
 );

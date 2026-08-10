@@ -125,13 +125,38 @@
         </div>
         <div
             class="glass-card-light rounded-xl border border-slate-100/60 shadow-xl p-5 transition-all duration-300 hover:shadow-2xl hover:border-blue-200/50 hover:-translate-y-1">
-            <p class="text-sm text-slate-500">Created Date</p>
+
+            <p class="text-sm text-slate-500">
+                Membership Fee
+            </p>
+
+
             <div class="flex items-end justify-between mt-2">
-                <h3 class="text-base font-bold text-slate-800"><?= $club->getCreatedAt() ?></h3>
-                <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                    <i data-lucide="calendar-plus" class="w-5 h-5"></i>
+
+                <h3 class="text-xl font-bold text-slate-800">
+
+                    <?php if ($club->getMembershipFee() > 0): ?>
+
+                    MMK <?= number_format($club->getMembershipFee()) ?>
+
+                    <?php else: ?>
+
+                    Free
+
+                    <?php endif; ?>
+
+                </h3>
+
+
+                <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+
+                    <i data-lucide="wallet" class="w-5 h-5"></i>
+
                 </div>
+
+
             </div>
+
         </div>
     </div>
 

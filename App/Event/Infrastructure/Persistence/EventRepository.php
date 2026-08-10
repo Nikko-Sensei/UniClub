@@ -306,23 +306,17 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
         array $filters = []
     ) {
 
-        $offset =
-            ($page - 1) * $limit;
+        $offset = ($page - 1) * $limit;
 
+        $search = $filters['search'] ?? '';
 
-        $search =
-            $filters['search'] ?? '';
+        $status = $filters['status'] ?? '';
 
-
-        $status =
-            $filters['status'] ?? '';
-
-
+        $eventFilter = $filters['event_filter'] ?? '';
 
         $stmt = $this->db->prepare(
-            "CALL sp_student_event_find_all(?,?,?,?,?)"
+            "CALL sp_student_event_find_all(?,?,?,?,?,?)"
         );
-
 
         $stmt->execute([
 
@@ -332,32 +326,25 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
 
             $status,
 
+            $eventFilter,
+
             $limit,
 
             $offset
 
         ]);
 
-
-
         $events = [];
-
 
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
 
-
-            $events[] =
-                $this->mapToEvent($row);
+            $events[] = $this->mapToEvent($row);
         }
-
-
 
         while ($stmt->nextRowset()) {
         }
 
-
         $stmt->closeCursor();
-
 
         return $events;
     }
@@ -369,18 +356,19 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
     ): int {
 
 
-        $search =
-            $filters['search'] ?? '';
+        $search = $filters['search'] ?? '';
 
 
-        $status =
-            $filters['status'] ?? '';
+        $status = $filters['status'] ?? '';
+
+
+        $eventFilter = $filters['event_filter'] ?? '';
 
 
 
         $stmt =
             $this->db->prepare(
-                "CALL sp_student_event_count(?,?,?)"
+                "CALL sp_student_event_count(?,?,?,?)"
             );
 
 
@@ -391,7 +379,9 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
 
             $search,
 
-            $status
+            $status,
+
+            $eventFilter
 
         ]);
 
@@ -600,6 +590,59 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
             \PDO::FETCH_ASSOC
         );
     }
+
+    public function getApprovedParticipants(
+        int $eventId
+    ): array {
+
+
+        $stmt = $this->db->prepare(
+
+            "CALL sp_event_get_approved_participants(?)"
+
+        );
+
+        $stmt->execute([
+
+            $eventId
+
+        ]);
+
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $stmt->closeCursor();
+
+        return $rows;
+    }
+
+    public function getRegistrationById(
+    int $id
+) {
+
+    $stmt = $this->db
+        ->prepare(
+            "CALL sp_event_registration_find_by_id(?)"
+        );
+
+
+    $stmt->execute([
+
+        $id
+
+    ]);
+
+
+    $registration =
+        $stmt->fetch(
+            \PDO::FETCH_ASSOC
+        );
+
+
+    $stmt->closeCursor();
+
+
+    return $registration ?: null;
+}
 
 
 

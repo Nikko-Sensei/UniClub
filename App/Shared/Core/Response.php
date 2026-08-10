@@ -14,13 +14,12 @@ class Response
 
         header(
             'Location: ' .
-            BASE_URL .
-            $url
+                BASE_URL .
+                $url
         );
 
 
         exit;
-
     }
 
 
@@ -46,7 +45,6 @@ class Response
 
 
         exit;
-
     }
 
 
@@ -59,12 +57,11 @@ class Response
 
         header(
             'Location: ' .
-            ($_SERVER['HTTP_REFERER'] ?? '/')
+                ($_SERVER['HTTP_REFERER'] ?? '/')
         );
 
 
         exit;
-
     }
 
 
@@ -87,22 +84,63 @@ class Response
 
 
 
-        if(file_exists($view))
-        {
+        if (file_exists($view)) {
 
             require $view;
-
-        }
-        else
-        {
+        } else {
 
             echo "Error {$status}: {$message}";
-
         }
 
 
         exit;
-
     }
 
+    public static function download(
+        string $filePath
+    ): void {
+
+
+        $file =
+            BASE_PATH . '/' . $filePath;
+
+
+
+        if (!file_exists($file)) {
+
+            throw new \Exception(
+                "File not found."
+            );
+        }
+
+
+
+
+        header(
+            'Content-Type: application/pdf'
+        );
+
+
+
+        header(
+            'Content-Disposition: attachment; filename="'
+                . basename($file) .
+                '"'
+        );
+
+
+
+        header(
+            'Content-Length: ' .
+                filesize($file)
+        );
+
+
+
+        readfile($file);
+
+
+
+        exit;
+    }
 }

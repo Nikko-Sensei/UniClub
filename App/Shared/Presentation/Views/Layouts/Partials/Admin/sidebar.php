@@ -14,192 +14,192 @@ function isActive($linkPath)
 ?>
 
 <style>
-/* ── Sidebar Glass & Animations ── */
-.sidebar-glass {
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-        width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.sidebar-glass.collapsed {
-    width: 80px;
-}
-
-.sidebar-glass.collapsed .sidebar-label {
-    display: none;
-}
-
-.sidebar-glass.collapsed .logo-text {
-    display: none;
-}
-
-.sidebar-glass.collapsed .logo-sub {
-    display: none;
-}
-
-.sidebar-glass.collapsed .nav-item {
-    justify-content: center;
-    padding: 0.75rem;
-}
-
-.sidebar-glass.collapsed .nav-item i {
-    margin-right: 0;
-}
-
-.sidebar-glass.collapsed .sidebar-section-title {
-    opacity: 0;
-    height: 0;
-    margin: 0;
-    overflow: hidden;
-}
-
-.sidebar-glass.collapsed .toggle-btn {
-    transform: rotate(180deg);
-}
-
-/* ── Nav Items ── */
-.nav-item {
-    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-    border-radius: 12px;
-    color: rgba(255, 255, 255, 0.6);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.nav-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-    transform: translateX(4px);
-}
-
-.nav-item.active {
-    background: rgba(37, 99, 235, 0.25);
-    color: #60a5fa;
-    box-shadow: inset 3px 0 0 #3b82f6;
-}
-
-.nav-item.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 20%;
-    height: 60%;
-    width: 3px;
-    background: #3b82f6;
-    border-radius: 0 4px 4px 0;
-}
-
-.nav-item i {
-    transition: transform 0.2s;
-}
-
-.nav-item:hover i {
-    transform: scale(1.1);
-}
-
-.sidebar-section-title {
-    color: rgba(255, 255, 255, 0.3);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    transition: opacity 0.2s;
-}
-
-/* ── Scrollbar ── */
-.sidebar-scroll::-webkit-scrollbar {
-    width: 4px;
-}
-
-.sidebar-scroll::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.sidebar-scroll::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 99px;
-}
-
-.sidebar-scroll::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.25);
-}
-
-/* ── Mobile Overlay ── */
-#sidebar-overlay {
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-}
-
-/* ── RESPONSIVE (Tablets & Phones) ── */
-@media (max-width: 1023px) {
+    /* ── Sidebar Glass & Animations ── */
     .sidebar-glass {
-        transform: translateX(-100%);
-        width: 280px !important;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 4px 0 32px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+            width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .sidebar-glass.mobile-open {
-        transform: translateX(0);
-    }
-
-    /* Override collapsed state on mobile – always full width */
     .sidebar-glass.collapsed {
-        width: 280px !important;
+        width: 80px;
     }
 
     .sidebar-glass.collapsed .sidebar-label {
-        display: inline;
+        display: none;
     }
 
     .sidebar-glass.collapsed .logo-text {
-        display: inline;
+        display: none;
     }
 
     .sidebar-glass.collapsed .logo-sub {
-        display: inline;
+        display: none;
     }
 
     .sidebar-glass.collapsed .nav-item {
-        justify-content: flex-start;
-        padding: 0.75rem 1rem;
+        justify-content: center;
+        padding: 0.75rem;
     }
 
     .sidebar-glass.collapsed .nav-item i {
-        margin-right: 0.75rem;
+        margin-right: 0;
     }
 
     .sidebar-glass.collapsed .sidebar-section-title {
-        opacity: 1;
-        height: auto;
-        margin: inherit;
+        opacity: 0;
+        height: 0;
+        margin: 0;
+        overflow: hidden;
     }
 
     .sidebar-glass.collapsed .toggle-btn {
-        transform: rotate(0deg);
+        transform: rotate(180deg);
     }
 
-    /* Show mobile burger, hide desktop toggle */
-    .desktop-toggle {
-        display: none !important;
+    /* ── Nav Items ── */
+    .nav-item {
+        transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        border-radius: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
     }
 
-    .mobile-burger {
-        display: flex !important;
-    }
-}
-
-@media (min-width: 1024px) {
-    .mobile-burger {
-        display: none !important;
+    .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        transform: translateX(4px);
     }
 
+    .nav-item.active {
+        background: rgba(37, 99, 235, 0.25);
+        color: #60a5fa;
+        box-shadow: inset 3px 0 0 #3b82f6;
+    }
+
+    .nav-item.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 20%;
+        height: 60%;
+        width: 3px;
+        background: #3b82f6;
+        border-radius: 0 4px 4px 0;
+    }
+
+    .nav-item i {
+        transition: transform 0.2s;
+    }
+
+    .nav-item:hover i {
+        transform: scale(1.1);
+    }
+
+    .sidebar-section-title {
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        transition: opacity 0.2s;
+    }
+
+    /* ── Scrollbar ── */
+    .sidebar-scroll::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 99px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* ── Mobile Overlay ── */
     #sidebar-overlay {
-        display: none !important;
+        transition: opacity 0.3s ease;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
     }
-}
+
+    /* ── RESPONSIVE (Tablets & Phones) ── */
+    @media (max-width: 1023px) {
+        .sidebar-glass {
+            transform: translateX(-100%);
+            width: 280px !important;
+        }
+
+        .sidebar-glass.mobile-open {
+            transform: translateX(0);
+        }
+
+        /* Override collapsed state on mobile – always full width */
+        .sidebar-glass.collapsed {
+            width: 280px !important;
+        }
+
+        .sidebar-glass.collapsed .sidebar-label {
+            display: inline;
+        }
+
+        .sidebar-glass.collapsed .logo-text {
+            display: inline;
+        }
+
+        .sidebar-glass.collapsed .logo-sub {
+            display: inline;
+        }
+
+        .sidebar-glass.collapsed .nav-item {
+            justify-content: flex-start;
+            padding: 0.75rem 1rem;
+        }
+
+        .sidebar-glass.collapsed .nav-item i {
+            margin-right: 0.75rem;
+        }
+
+        .sidebar-glass.collapsed .sidebar-section-title {
+            opacity: 1;
+            height: auto;
+            margin: inherit;
+        }
+
+        .sidebar-glass.collapsed .toggle-btn {
+            transform: rotate(0deg);
+        }
+
+        /* Show mobile burger, hide desktop toggle */
+        .desktop-toggle {
+            display: none !important;
+        }
+
+        .mobile-burger {
+            display: flex !important;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .mobile-burger {
+            display: none !important;
+        }
+
+        #sidebar-overlay {
+            display: none !important;
+        }
+    }
 </style>
 
 <!-- ===================== MOBILE OVERLAY ===================== -->
@@ -240,12 +240,12 @@ function isActive($linkPath)
 
                 <?php if ($setting->getLogo()): ?>
 
-                <img src="<?= BASE_URL . '/' . $setting->getLogo() ?>"
-                    alt="<?= htmlspecialchars($setting->getSiteName()) ?>" class="w-full h-full object-contain">
+                    <img src="<?= BASE_URL . '/' . $setting->getLogo() ?>"
+                        alt="<?= htmlspecialchars($setting->getSiteName()) ?>" class="w-full h-full object-contain">
 
                 <?php else: ?>
 
-                <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
+                    <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
 
                 <?php endif; ?>
 
@@ -289,53 +289,129 @@ function isActive($linkPath)
             <div class="space-y-0.5">
                 <?php
                 $links = [
-                    'Dashboard'   => ['url' => '/admin/dashboard', 'icon' => 'layout-dashboard'],
-                    'Users'       => ['url' => '/admin/users', 'icon' => 'users'],
-                    'Clubs'       => ['url' => '/admin/clubs', 'icon' => 'building-2'],
-                    'Events'      => ['url' => '/admin/events', 'icon' => 'calendar-days'],
-                    'Announcements' => ['url' => '/admin/announcements', 'icon' => 'megaphone'],
-                    'Feedbacks'   => ['url' => '/admin/feedbacks', 'icon' => 'message-square'],
-                    'Contact'     => ['url' => '/admin/contacts', 'icon' => 'mail'],
+
+                    'Dashboard' => [
+                        'url' => '/admin/dashboard',
+                        'icon' => 'layout-dashboard',
+                        'permission' => 'admin.dashboard'
+                    ],
+
+                    'Users' => [
+                        'url' => '/admin/users',
+                        'icon' => 'users',
+                        'permission' => 'users.view'
+                    ],
+
+                    'Clubs' => [
+                        'url' => '/admin/clubs',
+                        'icon' => 'building-2',
+                        'permission' => 'clubs.view'
+                    ],
+
+                    'Events' => [
+                        'url' => '/admin/events',
+                        'icon' => 'calendar-days',
+                        'permission' => 'events.view'
+                    ],
+
+                    'Announcements' => [
+                        'url' => '/admin/announcements',
+                        'icon' => 'megaphone',
+                        'permission' => 'announcements.view'
+                    ],
+
+                    'Payments' => [
+                        'url' => '/admin/payments',
+                        'icon' => 'message-square',
+                        'permission' => 'payment.view'
+                    ],
+
+                    'Contact' => [
+                        'url' => '/admin/contacts',
+                        'icon' => 'mail',
+                        'permission' => 'contacts.view'
+                    ],
+
                 ];
                 foreach ($links as $label => $data):
+
+                    if (
+                        $data['permission'] &&
+                        !$permissionHelper->can($data['permission'])
+                    ) {
+
+                        continue;
+                    }
+
                     $fullUrl = BASE_URL . $data['url'];
                     $active = isActive($fullUrl) ? 'active' : '';
                 ?>
-                <a href="<?= $fullUrl ?>"
-                    class="nav-item <?= $active ?> flex items-center gap-3 px-4 py-2.5 text-sm font-medium">
-                    <i data-lucide="<?= $data['icon'] ?>" class="w-5 h-5"></i>
-                    <span class="sidebar-label"><?= $label ?></span>
-                </a>
+                    <a href="<?= $fullUrl ?>"
+                        class="nav-item <?= $active ?> flex items-center gap-3 px-4 py-2.5 text-sm font-medium">
+                        <i data-lucide="<?= $data['icon'] ?>" class="w-5 h-5"></i>
+                        <span class="sidebar-label"><?= $label ?></span>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </div>
 
         <!-- SETTINGS -->
-        <?php if (Auth::roleId() === 1): ?>
-        <div>
-            <p
-                class="sidebar-section-title px-3 mb-3 text-[11px] font-semibold uppercase tracking-widest text-white/30">
-                Settings
-            </p>
-            <div class="space-y-0.5">
-                <?php
+        <?php if (
+            $permissionHelper->can('rbac.manage') ||
+            $permissionHelper->can('settings.general.view') ||
+            $permissionHelper->can('settings.security.view')
+        ): ?>
+            <div>
+                <p
+                    class="sidebar-section-title px-3 mb-3 text-[11px] font-semibold uppercase tracking-widest text-white/30">
+                    Settings
+                </p>
+                <div class="space-y-0.5">
+                    <?php
                     $settingsLinks = [
-                        'General'             => ['url' => '/admin/settings/general', 'icon' => 'settings'],
-                        'Roles & Permissions' => ['url' => '/admin/settings/roles', 'icon' => 'shield-check'],
-                        'Security'            => ['url' => '/admin/settings/security', 'icon' => 'lock-keyhole'],
+
+                        'General' => [
+                            'url' => '/admin/settings/general',
+                            'icon' => 'settings',
+                            'permission' => 'settings.general.view'
+                        ],
+
+
+                        'Roles & Permissions' => [
+                            'url' => '/admin/settings/roles',
+                            'icon' => 'shield-check',
+                            'permission' => 'rbac.manage'
+                        ],
+
+
+                        'Security' => [
+                            'url' => '/admin/settings/security',
+                            'icon' => 'lock-keyhole',
+                            'permission' => 'settings.security.view'
+                        ]
+
                     ];
                     foreach ($settingsLinks as $label => $data):
+
+                        if (
+                            !$permissionHelper->can(
+                                $data['permission']
+                            )
+                        ) {
+
+                            continue;
+                        }
                         $fullUrl = BASE_URL . $data['url'];
                         $active = isActive($fullUrl) ? 'active' : '';
                     ?>
-                <a href="<?= $fullUrl ?>"
-                    class="nav-item <?= $active ?> flex items-center gap-3 px-4 py-2.5 text-sm font-medium">
-                    <i data-lucide="<?= $data['icon'] ?>" class="w-5 h-5"></i>
-                    <span class="sidebar-label"><?= $label ?></span>
-                </a>
-                <?php endforeach; ?>
+                        <a href="<?= $fullUrl ?>"
+                            class="nav-item <?= $active ?> flex items-center gap-3 px-4 py-2.5 text-sm font-medium">
+                            <i data-lucide="<?= $data['icon'] ?>" class="w-5 h-5"></i>
+                            <span class="sidebar-label"><?= $label ?></span>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
 
 
@@ -345,57 +421,57 @@ function isActive($linkPath)
 
 <!-- ===================== JAVASCRIPT ===================== -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    const toggleBtn = document.getElementById('sidebarToggle');
-    const mobileClose = document.getElementById('mobileCloseBtn');
-    const mobileOpen = document.getElementById('mobileMenuBtn');
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const mobileClose = document.getElementById('mobileCloseBtn');
+        const mobileOpen = document.getElementById('mobileMenuBtn');
 
-    // ── Desktop collapse ──
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-        });
-    }
+        // ── Desktop collapse ──
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+            });
+        }
 
-    // ── Mobile open ──
-    if (mobileOpen) {
-        mobileOpen.addEventListener('click', function() {
-            sidebar.classList.add('mobile-open');
-            overlay.classList.remove('hidden');
-        });
-    }
+        // ── Mobile open ──
+        if (mobileOpen) {
+            mobileOpen.addEventListener('click', function() {
+                sidebar.classList.add('mobile-open');
+                overlay.classList.remove('hidden');
+            });
+        }
 
-    // ── Mobile close (X button) ──
-    if (mobileClose) {
-        mobileClose.addEventListener('click', function() {
-            sidebar.classList.remove('mobile-open');
-            overlay.classList.add('hidden');
-        });
-    }
-
-    // ── Mobile close (click overlay) ──
-    if (overlay) {
-        overlay.addEventListener('click', function() {
-            sidebar.classList.remove('mobile-open');
-            overlay.classList.add('hidden');
-        });
-    }
-
-    // ── Re-init Lucide icons ──
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-
-    // ── (Optional) Close mobile menu on link click ──
-    document.querySelectorAll('.nav-item').forEach(link => {
-        link.addEventListener('click', function(e) {
-            if (window.innerWidth < 1024) {
+        // ── Mobile close (X button) ──
+        if (mobileClose) {
+            mobileClose.addEventListener('click', function() {
                 sidebar.classList.remove('mobile-open');
                 overlay.classList.add('hidden');
-            }
+            });
+        }
+
+        // ── Mobile close (click overlay) ──
+        if (overlay) {
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.add('hidden');
+            });
+        }
+
+        // ── Re-init Lucide icons ──
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        // ── (Optional) Close mobile menu on link click ──
+        document.querySelectorAll('.nav-item').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth < 1024) {
+                    sidebar.classList.remove('mobile-open');
+                    overlay.classList.add('hidden');
+                }
+            });
         });
     });
-});
 </script>

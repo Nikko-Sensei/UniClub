@@ -287,7 +287,7 @@
                     Cancel
                 </a>
 
-                <?php if($permission->can('events.create')): ?>
+                <?php if($permissionHelper->can('events.create')): ?>
                 <button type="submit"
                     class="px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-md shadow-blue-200/50 hover:shadow-xl hover:scale-[1.02] flex items-center gap-2 btn-shine">
                     <i data-lucide="plus" class="w-4 h-4"></i>

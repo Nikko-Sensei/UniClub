@@ -1,5 +1,17 @@
 <div class="space-y-6">
 
+    <!-- ========================================================== -->
+    <!-- BACK BUTTON – Glass with slide-in                         -->
+    <!-- ========================================================== -->
+    <div class="animate-slideInLeft">
+        <a href="<?= BASE_URL ?>/admin/clubs/<?= $clubId ?>"
+            class="back-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card-light text-slate-700 font-medium text-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:border-blue-200 group">
+            <i data-lucide="arrow-left"
+                class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"></i>
+            <span>Back to Events</span>
+        </a>
+    </div>
+
 
     <!-- HEADER -->
 
@@ -18,17 +30,6 @@
             </p>
 
         </div>
-
-
-
-        <a href="<?= BASE_URL ?>/admin/clubs/<?= $clubId ?>"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition">
-
-            <i data-lucide="arrow-left" class="w-4 h-4"></i>
-
-            Back to Club
-
-        </a>
 
 
     </div>
@@ -83,18 +84,18 @@
                 <?php foreach ($roles as $role): ?>
 
 
-                <option value="<?= $role['id'] ?>" <?= ($filters['role_id'] ?? '') == $role['id']
+                    <option value="<?= $role['id'] ?>" <?= ($filters['role_id'] ?? '') == $role['id']
                                                             ? 'selected'
                                                             : ''
                                                         ?>>
 
 
-                    <?= htmlspecialchars(
+                        <?= htmlspecialchars(
                             $role['name']
                         ) ?>
 
 
-                </option>
+                    </option>
 
 
                 <?php endforeach; ?>
@@ -214,19 +215,19 @@
                     <?php if (empty($members)): ?>
 
 
-                    <tr>
+                        <tr>
 
 
-                        <td colspan="5" class="px-6 py-12 text-center text-slate-500">
+                            <td colspan="5" class="px-6 py-12 text-center text-slate-500">
 
 
-                            No members found.
+                                No members found.
 
 
-                        </td>
+                            </td>
 
 
-                    </tr>
+                        </tr>
 
 
                     <?php endif; ?>
@@ -238,24 +239,24 @@
                     <?php foreach ($members as $member): ?>
 
 
-                    <tr class="hover:bg-slate-50">
+                        <tr class="hover:bg-slate-50">
 
 
 
-                        <!-- MEMBER -->
+                            <!-- MEMBER -->
 
 
-                        <td class="px-6 py-4">
+                            <td class="px-6 py-4">
 
 
-                            <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-3">
 
 
-                                <div
-                                    class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
 
 
-                                    <?= strtoupper(
+                                        <?= strtoupper(
                                             substr(
                                                 $member['name'],
                                                 0,
@@ -264,78 +265,78 @@
                                         ) ?>
 
 
-                                </div>
+                                    </div>
 
 
 
-                                <div>
+                                    <div>
 
 
-                                    <p class="font-semibold text-slate-800">
+                                        <p class="font-semibold text-slate-800">
 
 
-                                        <?= htmlspecialchars(
+                                            <?= htmlspecialchars(
                                                 $member['name']
                                             ) ?>
 
 
-                                    </p>
+                                        </p>
 
 
 
-                                    <p class="text-xs text-slate-500">
+                                        <p class="text-xs text-slate-500">
 
 
-                                        <?= htmlspecialchars(
+                                            <?= htmlspecialchars(
                                                 $member['email']
                                             ) ?>
 
 
-                                    </p>
+                                        </p>
+
+
+                                    </div>
 
 
                                 </div>
 
 
-                            </div>
-
-
-                        </td>
+                            </td>
 
 
 
 
 
-                        <!-- ROLE -->
+                            <!-- ROLE -->
 
 
-                        <td class="px-6 py-4">
+                            <td class="px-6 py-4">
 
 
-                            <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold">
+                                <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold">
 
 
-                                <?= htmlspecialchars(
+                                    <?= htmlspecialchars(
                                         $member['role']
                                     ) ?>
 
 
-                            </span>
+                                </span>
 
 
-                        </td>
+                            </td>
 
 
 
 
 
-                        <!-- STATUS -->
+                            <!-- STATUS -->
 
 
-                        <td class="px-6 py-4">
+                            <td class="px-6 py-4">
 
 
-                            <span class="px-3 py-1 rounded-full 
+                                <span class="px-3 py-1 rounded-full 
                                 <?= $member['status'] == 'approved'
                                     ? 'bg-green-50 text-green-600'
                                     : 'bg-yellow-50 text-yellow-600'
@@ -343,27 +344,27 @@
                                 text-xs font-semibold">
 
 
-                                <?= ucfirst(
+                                    <?= ucfirst(
                                         $member['status']
                                     ) ?>
 
 
-                            </span>
+                                </span>
 
 
-                        </td>
+                            </td>
 
 
 
 
 
-                        <!-- JOIN DATE -->
+                            <!-- JOIN DATE -->
 
 
-                        <td class="px-6 py-4 text-slate-500">
+                            <td class="px-6 py-4 text-slate-500">
 
 
-                            <?= date(
+                                <?= date(
                                     'M d, Y',
                                     strtotime(
                                         $member['joined_at']
@@ -371,60 +372,60 @@
                                 ) ?>
 
 
-                        </td>
+                            </td>
 
 
 
 
 
-                        <!-- ACTION -->
+                            <!-- ACTION -->
 
 
-                        <td class="px-6 py-4">
+                            <td class="px-6 py-4">
 
 
-                            <div class="flex gap-2">
+                                <div class="flex gap-2">
 
 
-                                <a href="<?= BASE_URL ?>/admin/memberships/<?= $member['id'] ?>/edit-role"
-                                    class="px-3 py-2 rounded-lg bg-blue-600 text-white text-xs">
+                                    <a href="<?= BASE_URL ?>/admin/memberships/<?= $member['id'] ?>/edit-role"
+                                        class="px-3 py-2 rounded-lg bg-blue-600 text-white text-xs">
 
 
-                                    Change Role
+                                        Change Role
 
 
-                                </a>
-
-
-
-                                <form method="POST"
-                                    action="<?= BASE_URL ?>/admin/memberships/<?= $member['id'] ?>/remove">
-
-
-                                    <input type="hidden" name="club_id" value="<?= $clubId ?>">
+                                    </a>
 
 
 
-                                    <button class="px-3 py-2 rounded-lg bg-red-50 text-red-600 text-xs">
+                                    <form method="POST"
+                                        action="<?= BASE_URL ?>/admin/memberships/<?= $member['id'] ?>/remove">
 
 
-                                        Remove
-
-
-                                    </button>
-
-
-                                </form>
-
-
-                            </div>
-
-
-                        </td>
+                                        <input type="hidden" name="club_id" value="<?= $clubId ?>">
 
 
 
-                    </tr>
+                                        <button class="px-3 py-2 rounded-lg bg-red-50 text-red-600 text-xs">
+
+
+                                            Remove
+
+
+                                        </button>
+
+
+                                    </form>
+
+
+                                </div>
+
+
+                            </td>
+
+
+
+                        </tr>
 
 
                     <?php endforeach; ?>
@@ -448,248 +449,248 @@
     <!-- PAGINATION -->
 
     <?php if (
-    isset($pagination)
-    && $pagination['total_pages'] > 1
-): ?>
+        isset($pagination)
+        && $pagination['total_pages'] > 1
+    ): ?>
 
 
-    <div class="flex justify-center mt-6">
+        <div class="flex justify-center mt-6">
 
 
-        <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2">
 
 
-            <?php
+                <?php
 
-        $totalPages =
-            $pagination['total_pages'];
+                $totalPages =
+                    $pagination['total_pages'];
 
-        $current =
-            $pagination['current_page'];
+                $current =
+                    $pagination['current_page'];
 
-        $range = 2;
-
-
-        $start =
-            max(
-                1,
-                $current - $range
-            );
+                $range = 2;
 
 
-        $end =
-            min(
-                $totalPages,
-                $current + $range
-            );
-
-        ?>
+                $start =
+                    max(
+                        1,
+                        $current - $range
+                    );
 
 
+                $end =
+                    min(
+                        $totalPages,
+                        $current + $range
+                    );
 
-            <!-- PREVIOUS -->
-
-            <?php if ($current > 1): ?>
+                ?>
 
 
-            <a href="<?= buildMemberPaginationUrl(
-            $current - 1,
-            $_GET,
-            $clubId
-        ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg
+
+                <!-- PREVIOUS -->
+
+                <?php if ($current > 1): ?>
+
+
+                    <a href="<?= buildMemberPaginationUrl(
+                                    $current - 1,
+                                    $_GET,
+                                    $clubId
+                                ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg
             hover:bg-slate-100 transition-colors
             flex items-center justify-center">
 
 
-                <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                        <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
 
 
-            </a>
+                    </a>
 
 
-            <?php else: ?>
+                <?php else: ?>
 
 
-            <span class="w-8 h-8 border border-slate-200 rounded-lg
+                    <span class="w-8 h-8 border border-slate-200 rounded-lg
             opacity-50 pointer-events-none
             flex items-center justify-center">
 
 
-                <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                        <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
 
 
-            </span>
+                    </span>
 
 
-            <?php endif; ?>
+                <?php endif; ?>
 
 
 
 
 
-            <!-- FIRST PAGE -->
+                <!-- FIRST PAGE -->
 
-            <?php if ($start > 1): ?>
+                <?php if ($start > 1): ?>
 
 
-            <a href="<?= buildMemberPaginationUrl(
-            1,
-            $_GET,
-            $clubId
-        ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg
+                    <a href="<?= buildMemberPaginationUrl(
+                                    1,
+                                    $_GET,
+                                    $clubId
+                                ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg
             hover:bg-slate-100 transition-colors
             flex items-center justify-center">
 
-                1
+                        1
 
-            </a>
-
-
-            <?php if ($start > 2): ?>
+                    </a>
 
 
-            <span class="px-1">
-                ...
-            </span>
+                    <?php if ($start > 2): ?>
 
 
-            <?php endif; ?>
+                        <span class="px-1">
+                            ...
+                        </span>
 
 
-            <?php endif; ?>
+                    <?php endif; ?>
 
 
+                <?php endif; ?>
 
 
 
 
-            <!-- PAGE NUMBERS -->
-
-            <?php for (
-            $i = $start;
-            $i <= $end;
-            $i++
-        ): ?>
 
 
-            <?php if ($i == $current): ?>
+                <!-- PAGE NUMBERS -->
+
+                <?php for (
+                    $i = $start;
+                    $i <= $end;
+                    $i++
+                ): ?>
 
 
-            <span class="w-8 h-8 bg-blue-600 text-white rounded-lg
+                    <?php if ($i == $current): ?>
+
+
+                        <span class="w-8 h-8 bg-blue-600 text-white rounded-lg
                 text-xs font-medium
                 flex items-center justify-center">
 
-                <?= $i ?>
+                            <?= $i ?>
 
-            </span>
-
-
-            <?php else: ?>
+                        </span>
 
 
-            <a href="<?= buildMemberPaginationUrl(
-                $i,
-                $_GET,
-                $clubId
-            ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg
+                    <?php else: ?>
+
+
+                        <a href="<?= buildMemberPaginationUrl(
+                                        $i,
+                                        $_GET,
+                                        $clubId
+                                    ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg
                 hover:bg-slate-100 transition-colors
                 flex items-center justify-center">
 
-                <?= $i ?>
+                            <?= $i ?>
 
-            </a>
-
-
-            <?php endif; ?>
+                        </a>
 
 
-            <?php endfor; ?>
+                    <?php endif; ?>
 
 
+                <?php endfor; ?>
 
 
 
 
 
-            <!-- LAST PAGE -->
 
 
-            <?php if ($end < $totalPages): ?>
+                <!-- LAST PAGE -->
 
 
-            <?php if ($end < $totalPages - 1): ?>
-
-            <span class="px-1">
-                ...
-            </span>
-
-            <?php endif; ?>
+                <?php if ($end < $totalPages): ?>
 
 
+                    <?php if ($end < $totalPages - 1): ?>
 
-            <a href="<?= buildMemberPaginationUrl(
-                $totalPages,
-                $_GET,
-                $clubId
-            ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg
+                        <span class="px-1">
+                            ...
+                        </span>
+
+                    <?php endif; ?>
+
+
+
+                    <a href="<?= buildMemberPaginationUrl(
+                                    $totalPages,
+                                    $_GET,
+                                    $clubId
+                                ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg
                 hover:bg-slate-100 transition-colors
                 flex items-center justify-center">
 
-                <?= $totalPages ?>
+                        <?= $totalPages ?>
 
-            </a>
-
-
-            <?php endif; ?>
+                    </a>
 
 
+                <?php endif; ?>
 
 
 
 
 
 
-            <!-- NEXT -->
-
-            <?php if ($current < $totalPages): ?>
 
 
-            <a href="<?= buildMemberPaginationUrl(
-            $current + 1,
-            $_GET,
-            $clubId
-        ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg
+                <!-- NEXT -->
+
+                <?php if ($current < $totalPages): ?>
+
+
+                    <a href="<?= buildMemberPaginationUrl(
+                                    $current + 1,
+                                    $_GET,
+                                    $clubId
+                                ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg
             hover:bg-slate-100 transition-colors
             flex items-center justify-center">
 
 
-                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
 
 
-            </a>
+                    </a>
 
 
-            <?php else: ?>
+                <?php else: ?>
 
 
-            <span class="w-8 h-8 border border-slate-200 rounded-lg
+                    <span class="w-8 h-8 border border-slate-200 rounded-lg
             opacity-50 pointer-events-none
             flex items-center justify-center">
 
 
-                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
 
 
-            </span>
+                    </span>
 
 
-            <?php endif; ?>
+                <?php endif; ?>
+
+
+            </div>
 
 
         </div>
-
-
-    </div>
 
 
     <?php endif; ?>
@@ -700,47 +701,45 @@
 
     <?php
 
-/**
- * Build member pagination URL
- * Preserve:
- * - search
- * - role_id
- * - status
- * - page
- */
+    /**
+     * Build member pagination URL
+     * Preserve:
+     * - search
+     * - role_id
+     * - status
+     * - page
+     */
 
-function buildMemberPaginationUrl(
-    int $page,
-    array $query,
-    int $clubId
-): string {
-
-
-    $query['page'] = $page;
+    function buildMemberPaginationUrl(
+        int $page,
+        array $query,
+        int $clubId
+    ): string {
 
 
-
-    $query = array_filter(
-        $query,
-        function ($value) {
-
-            return $value !== ''
-                && $value !== null;
-
-        }
-    );
+        $query['page'] = $page;
 
 
 
-    return BASE_URL
-        . '/admin/clubs/'
-        . $clubId
-        . '/members?'
-        . http_build_query($query);
+        $query = array_filter(
+            $query,
+            function ($value) {
 
-}
+                return $value !== ''
+                    && $value !== null;
+            }
+        );
 
-?>
+
+
+        return BASE_URL
+            . '/admin/clubs/'
+            . $clubId
+            . '/members?'
+            . http_build_query($query);
+    }
+
+    ?>
 
 
 

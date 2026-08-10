@@ -10,7 +10,7 @@ use App\Event\Application\Services\EventService;
 use App\Master\Application\Services\MasterService;
 use App\Shared\Application\Services\ImageUploadService;
 use App\Club\Application\Services\ClubService;
-
+use App\EventAttendance\Application\Services\EventAttendanceService;
 use App\Shared\Helpers\Flash;
 
 
@@ -18,7 +18,7 @@ use App\Shared\Helpers\Flash;
 class AdminEventController extends BaseController
 {
 
-
+    private EventAttendanceService $attendanceService;
     private EventService $eventService;
     private MasterService $masterService;
     private ClubService $clubService;
@@ -27,7 +27,8 @@ class AdminEventController extends BaseController
     public function __construct(
         EventService $eventService,
         ClubService $clubService,
-        MasterService $masterService
+        MasterService $masterService,
+        EventAttendanceService $attendanceService
 
     ) {
 
@@ -38,6 +39,8 @@ class AdminEventController extends BaseController
         $this->eventService = $eventService;
 
         $this->clubService = $clubService;
+
+        $this->attendanceService = $attendanceService;
     }
 
 
@@ -83,7 +86,7 @@ class AdminEventController extends BaseController
                 $filters
             );
 
-$statistics = $this->eventService->getStatistics();
+        $statistics = $this->eventService->getStatistics();
 
 
 
@@ -257,128 +260,6 @@ $statistics = $this->eventService->getStatistics();
 
 
 
-
-    /**
-     * Store Event
-     */
-//     public function store()
-//     {
-// var_dump($_FILES);
-// exit;
-//         $files = $_FILES;
-
-//         $data = [
-
-
-//             'club_id'
-//             =>
-//             $_POST['club_id'],
-
-
-//             'category_id'
-//             =>
-//             $_POST['category_id'],
-
-
-//             'title'
-//             =>
-//             $_POST['title'],
-
-
-//             'description'
-//             =>
-//             $_POST['description'],
-
-
-//             'venue'
-//             =>
-//             $_POST['venue'],
-
-
-//             'event_date'
-//             =>
-//             $_POST['event_date'],
-
-
-//             'start_time'
-//             =>
-//             $_POST['start_time'],
-
-
-//             'end_time'
-//             =>
-//             $_POST['end_time'],
-
-
-//             'capacity'
-//             =>
-//             $_POST['capacity'],
-
-
-//             'registration_deadline'
-//             =>
-//             $_POST['registration_deadline'],
-
-
-//             'created_by'
-//             =>
-//             $_SESSION['user']['id']
-
-//         ];
-
-
-
-//         try {
-
-
-//             $this->eventService
-//                 ->create(
-//                     $data,
-//                     $files
-//                 );
-
-
-
-//             Flash::set(
-
-//                 'success',
-
-//                 'Event created successfully'
-
-//             );
-
-
-
-//             return Response::redirect(
-
-//                 '/admin/events'
-
-//             );
-//         } catch (\Exception $e) {
-
-
-//             Flash::set(
-
-//                 'error',
-
-//                 $e->getMessage()
-
-//             );
-
-
-
-//             return Response::redirect(
-
-//                 '/admin/events'
-
-//             );
-//         }
-//     }
-
-
-
-
-
     /**
      * Event Details
      */
@@ -409,9 +290,10 @@ $statistics = $this->eventService->getStatistics();
                 'title' => 'Event Details',
 
                 'event' => $event,
-                
+
                 'clubs' => $clubs,
 
+                'activeTab' => 'overview',
 
                 'categories' => $categories
 
@@ -647,6 +529,8 @@ $statistics = $this->eventService->getStatistics();
     ) {
 
 
+        $event = $this->eventService->findById($id);
+
         $registrations =
             $this->eventService
             ->getRegistrations(
@@ -663,7 +547,11 @@ $statistics = $this->eventService->getStatistics();
 
                 'title' => 'Event Registrations',
 
-                'registrations' => $registrations
+                'registrations' => $registrations,
+
+                'event' => $event,
+
+                'activeTab' => 'registrations'
 
             ],
 
@@ -676,28 +564,129 @@ $statistics = $this->eventService->getStatistics();
 
 
 
-    /**
-     * Approve Registration
-     */
+    // /**
+    //  * Approve Registration
+    //  */
+    // public function approveRegistration(
+    //     int $id
+    // ) {
+
+
+    //     $adminId =
+    //         $_SESSION['user']['id'];
+
+
+
+    //     try {
+
+
+    //         // $this->eventService
+    //         //     ->approveRegistration(
+
+    //         //         $id,
+
+    //         //         $adminId
+
+    //         //     );
+
+    //         $registration =
+    //             $this->eventService
+    //             ->approveRegistration(
+    //                 $id,
+    //                 $adminId
+    //             );
+
+
+    //         $this->attendanceService
+    //             ->createAttendance(
+
+    //                 $registration->getEventId(),
+
+    //                 $registration->getUserId()
+
+    //             );
+
+
+
+    //         Flash::set(
+
+    //             'success',
+
+    //             'Registration approved'
+
+    //         );
+    //     } catch (\Exception $e) {
+
+
+    //         Flash::set(
+
+    //             'error',
+
+    //             $e->getMessage()
+
+    //         );
+    //     }
+
+
+
+    //     return Response::redirect(
+
+    //         '/admin/events/' . $id . '/registrations'
+
+    //     );
+    // }
+
+
     public function approveRegistration(
         int $id
     ) {
 
-
         $adminId =
             $_SESSION['user']['id'];
 
-
-
+        
         try {
 
 
-            $this->eventService
+            /*
+            Get registration before approval
+        */
+            $registration =
+                $this->eventService
+                ->getRegistrationById($id);
+
+
+            
+            /*
+            Approve registration
+        */
+            $result =
+                $this->eventService
                 ->approveRegistration(
-
                     $id,
-
                     $adminId
+                );
+
+
+
+            if (!$result) {
+
+                throw new \Exception(
+                    "Unable to approve registration."
+                );
+            }
+
+
+
+            /*
+            Create attendance record
+        */
+            $this->attendanceService
+                ->createAttendance(
+
+                    $registration['event_id'],
+
+                    $registration['user_id']
 
                 );
 
@@ -726,11 +715,11 @@ $statistics = $this->eventService->getStatistics();
 
         return Response::redirect(
 
-            $_SERVER['HTTP_REFERER']
-
+            '/admin/events/' .
+                $registration['event_id'] .
+                '/registrations'
         );
     }
-
 
 
 

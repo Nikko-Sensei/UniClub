@@ -27,7 +27,7 @@ class View
         global $container;
 
 
-        $permission =
+        $permissionHelper =
             $container->resolve(
                 PermissionHelper::class
             );

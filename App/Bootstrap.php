@@ -49,6 +49,22 @@ use App\Club\Presentation\Controllers\AdminClubController;
 use App\Shared\Application\Services\ImageUploadService;
 use App\Club\Presentation\Controllers\UserClubController;
 
+// Payment
+use App\Payment\Domain\Repository\PaymentRepositoryInterface;
+use App\Payment\Infrastructure\Persistence\PaymentRepository;
+use App\Payment\Application\Services\PaymentService;
+use App\Payment\Application\Validators\PaymentValidator;
+use App\Payment\Presentation\Controllers\StudentPaymentController;
+use App\Payment\Presentation\Controllers\AdminPaymentController;
+
+// PaymentAccount
+
+use App\PaymentAccount\Domain\Repository\PaymentAccountRepositoryInterface;
+use App\PaymentAccount\Infrastructure\Persistence\PaymentAccountRepository;
+use App\PaymentAccount\Application\Services\PaymentAccountService;
+use App\PaymentAccount\Application\Validators\PaymentAccountValidator;
+use App\PaymentAccount\Presentation\Controllers\AdminPaymentAccountController;
+
 // Club Membership
 use App\Membership\Domain\Repository\MembershipRepositoryInterface;
 use App\Membership\Infrastructure\Persistence\MembershipRepository;
@@ -70,6 +86,23 @@ use App\EventFeedback\Infrastructure\Persistence\EventFeedbackRepository;
 use App\EventFeedback\Application\Services\EventFeedbackService;
 use App\EventFeedback\Presentation\Controllers\EventFeedbackController;
 use App\EventFeedback\Presentation\Controllers\AdminEventFeedbackController;
+
+// EventAttendance
+
+use App\EventAttendance\Domain\Repository\EventAttendanceRepositoryInterface;
+use App\EventAttendance\Infrastructure\Persistence\EventAttendanceRepository;
+use App\EventAttendance\Application\Services\EventAttendanceService;
+use App\EventAttendance\Presentation\Controllers\AdminEventAttendanceController;
+use App\EventAttendance\Presentation\Controllers\EventAttendanceController;
+
+// EventCertificate
+
+use App\EventCertificate\Domain\Repository\EventCertificateRepositoryInterface;
+use App\EventCertificate\Infrastructure\Persistence\EventCertificateRepository;
+use App\EventCertificate\Application\Services\EventCertificateService;
+use App\EventCertificate\Application\Services\CertificatePdfService;
+use App\EventCertificate\Presentation\Controllers\EventCertificateController;
+use App\EventCertificate\Presentation\Controllers\AdminEventCertificateController;
 
 // Anouncement
 
@@ -605,11 +638,217 @@ class Bootstrap
                     ),
                     $container->resolve(
                         MasterService::class
+                    ),
+                    $container->resolve(
+                        PaymentService::class
                     )
 
                 );
             }
         );
+
+        // Payment
+
+
+        // Payment Repository
+
+        $container->bind(
+            PaymentRepositoryInterface::class,
+            function () {
+
+                return new PaymentRepository();
+            }
+        );
+
+
+        // Payment Validator
+
+        $container->bind(
+            PaymentValidator::class,
+            function () {
+
+                return new PaymentValidator();
+            }
+        );
+
+
+        // Payment Service
+
+        $container->bind(
+            PaymentService::class,
+            function ($container) {
+
+                return new PaymentService(
+
+                    $container->resolve(
+                        PaymentRepositoryInterface::class
+                    ),
+
+                    $container->resolve(
+                        PaymentValidator::class
+                    ),
+                    $container->resolve(
+                        NotificationService::class
+                    ),
+
+                    $container->resolve(
+                        UserService::class
+                    ),
+
+                    $container->resolve(
+                        AuditLogger::class
+                    )
+
+
+                );
+            }
+        );
+
+
+        // Student Payment Controller
+
+        $container->bind(
+            StudentPaymentController::class,
+            function ($container) {
+
+                return new StudentPaymentController(
+
+                    $container->resolve(
+                        PaymentService::class
+                    ),
+                    $container->resolve(
+                        MembershipService::class
+                    ),
+                    $container->resolve(
+                        ClubService::class
+                    ),
+                    $container->resolve(
+                        PaymentAccountService::class
+                    )
+
+                );
+            }
+        );
+
+
+        // Admin Payment Controller
+
+        $container->bind(
+            AdminPaymentController::class,
+            function ($container) {
+
+                return new AdminPaymentController(
+
+                    $container->resolve(
+                        PaymentService::class
+                    )
+
+                );
+            }
+        );
+
+
+        // payment account
+
+        /**
+         * Payment Account Repository
+         */
+        $container->bind(
+
+            PaymentAccountRepositoryInterface::class,
+
+            function ($container) {
+
+                return new PaymentAccountRepository();
+            }
+
+        );
+
+
+
+
+
+        /**
+         * Payment Account Validator
+         */
+        $container->bind(
+
+            PaymentAccountValidator::class,
+
+            function ($container) {
+
+                return new PaymentAccountValidator();
+            }
+
+        );
+
+
+
+
+
+        /**
+         * Payment Account Service
+         */
+        $container->bind(
+
+            PaymentAccountService::class,
+
+            function ($container) {
+
+
+                return new PaymentAccountService(
+
+
+                    $container->resolve(
+
+                        PaymentAccountRepositoryInterface::class
+
+                    ),
+
+
+
+                    $container->resolve(
+
+                        PaymentAccountValidator::class
+
+                    )
+
+
+                );
+            }
+
+        );
+
+
+
+
+
+        /**
+         * Admin Payment Account Controller
+         */
+        $container->bind(
+
+            AdminPaymentAccountController::class,
+
+            function ($container) {
+
+
+                return new AdminPaymentAccountController(
+
+
+                    $container->resolve(
+
+                        PaymentAccountService::class
+
+                    )
+
+
+                );
+            }
+
+        );
+
+
 
         // Club Membership
         $container->bind(
@@ -639,6 +878,9 @@ class Bootstrap
                     ),
                     $container->resolve(
                         AuditLogger::class
+                    ),
+                    $container->resolve(
+                        ClubService::class
                     )
 
                 );
@@ -721,7 +963,8 @@ class Bootstrap
                     ),
                     $container->resolve(
                         MasterService::class
-                    )
+                    ),
+                    $container->resolve(UserService::class)
 
                 );
             }
@@ -741,7 +984,8 @@ class Bootstrap
                     ),
                     $container->resolve(
                         MasterService::class
-                    )
+                    ),
+                    $container->resolve(EventAttendanceService::class)
 
                 );
             }
@@ -829,6 +1073,172 @@ class Bootstrap
 
                     )
 
+
+                );
+            }
+
+        );
+
+        // EventAttendance
+
+        $container->bind(
+
+            EventAttendanceRepositoryInterface::class,
+
+            function () {
+
+                return new EventAttendanceRepository();
+            }
+
+        );
+
+        $container->bind(
+
+            EventAttendanceService::class,
+
+            function ($container) {
+
+                return new EventAttendanceService(
+
+
+                    $container->resolve(
+                        EventAttendanceRepositoryInterface::class
+                    ),
+
+
+                    $container->resolve(
+                        EventService::class
+                    )
+
+
+                );
+            }
+
+        );
+
+        $container->bind(
+
+            AdminEventAttendanceController::class,
+
+            function ($container) {
+
+                return new AdminEventAttendanceController(
+
+                    $container->resolve(
+                        EventAttendanceService::class
+                    ),
+                    $container->resolve(
+                        EventService::class
+                    )
+
+                );
+            }
+
+        );
+
+        $container->bind(
+
+            EventAttendanceController::class,
+
+            function ($container) {
+
+                return new EventAttendanceController(
+
+                    $container->resolve(
+                        EventAttendanceService::class
+                    )
+
+                );
+            }
+
+        );
+
+        // EventCertificate
+
+        $container->bind(
+
+            EventCertificateRepositoryInterface::class,
+
+            function () {
+
+                return new EventCertificateRepository();
+            }
+
+        );
+
+        $container->bind(
+
+            CertificatePdfService::class,
+
+            function ($container) {
+
+                return new CertificatePdfService();
+            }
+
+        );
+
+        $container->bind(
+
+            EventCertificateService::class,
+
+            function ($container) {
+
+                return new EventCertificateService(
+
+
+                    $container->resolve(
+                        EventCertificateRepositoryInterface::class
+                    ),
+
+                    $container->resolve(
+                        EventService::class
+                    ),
+
+                    $container->resolve(
+                        EventAttendanceService::class
+                    ),
+
+                    $container->resolve(
+                        UserService::class
+                    )
+
+
+                );
+            }
+
+        );
+
+        $container->bind(
+
+            EventCertificateController::class,
+
+            function ($container) {
+
+                return new EventCertificateController(
+
+                    $container->resolve(
+                        EventCertificateService::class
+                    )
+
+                );
+            }
+
+        );
+
+        $container->bind(
+
+            AdminEventCertificateController::class,
+
+            function ($container) {
+
+                return new AdminEventCertificateController(
+
+                    $container->resolve(
+                        EventCertificateService::class
+                    ),
+                    $container->resolve(
+                        EventService::class
+                    )
 
                 );
             }

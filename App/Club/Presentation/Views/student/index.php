@@ -236,6 +236,27 @@
                                 </div>
                             </div>
 
+                            <div
+                                class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 hover:bg-white/20 transition-all duration-300 hover:scale-105">
+
+                                <i data-lucide="wallet" class="w-4 h-4 text-blue-400"></i>
+
+                                <span class="text-sm font-semibold text-white">
+
+                                    <?php if ($featuredClub->getMembershipFee() > 0): ?>
+
+                                    MMK <?= number_format($featuredClub->getMembershipFee()) ?>
+
+                                    <?php else: ?>
+
+                                    Free Membership
+
+                                    <?php endif; ?>
+
+                                </span>
+
+                            </div>
+
                             <!-- CTA with gradient and shine -->
                             <a href="<?= BASE_URL ?>/clubs/<?= $featuredClub->getId() ?>"
                                 class="group/btn inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-semibold transition-all duration-300 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:shadow-2xl hover:shadow-blue-600/30 hover:scale-105 shadow-lg shadow-blue-600/20 btn-shine">
@@ -370,6 +391,27 @@
                     <p class="text-sm text-slate-500 line-clamp-2 mb-5">
                         <?= htmlspecialchars($club->getDescription()) ?>
                     </p>
+
+                    <div class="flex items-center gap-2 text-sm text-slate-600 mb-5">
+
+                        <i data-lucide="wallet" class="w-4 h-4 text-blue-500"></i>
+
+
+                        <span class="font-medium">
+
+                            <?php if ($club->getMembershipFee() > 0): ?>
+
+                            MMK <?= number_format($club->getMembershipFee()) ?>
+
+                            <?php else: ?>
+
+                            Free Membership
+
+                            <?php endif; ?>
+
+                        </span>
+
+                    </div>
 
                     <a href="<?= BASE_URL ?>/clubs/<?= $club->getId() ?>"
                         class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 shadow-sm shadow-blue-200/50 hover:shadow-lg hover:scale-[1.02]">

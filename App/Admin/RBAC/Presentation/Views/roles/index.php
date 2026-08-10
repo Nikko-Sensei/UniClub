@@ -19,7 +19,7 @@
             </div>
         </div>
         <!-- Optional: Add Create Role button if permission allows -->
-        <?php if ($permission->can('rbac.manage')): ?>
+        <?php if ($permissionHelper->can('rbac.manage')): ?>
         <a href="<?= BASE_URL ?>/admin/settings/roles/create"
             class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl transition-all duration-300 shadow-md shadow-blue-200/50 hover:shadow-xl hover:scale-[1.02] btn-shine">
             <i data-lucide="plus" class="w-4 h-4"></i>
@@ -60,7 +60,7 @@
 
             <!-- ACTION BUTTON -->
             <div class="mt-6">
-                <?php if ($permission->can('rbac.manage')): ?>
+                <?php if ($permissionHelper->can('rbac.manage')): ?>
                 <a href="<?= BASE_URL ?>/admin/settings/roles/<?= $role->getId() ?>/permissions"
                     class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl transition-all duration-300 shadow-sm shadow-blue-200/50 hover:shadow-md hover:scale-[1.02] btn-shine">
                     <i data-lucide="settings" class="w-4 h-4"></i>

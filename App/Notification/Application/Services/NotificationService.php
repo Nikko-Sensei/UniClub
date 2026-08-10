@@ -241,6 +241,11 @@ class NotificationService
 
             '/admin/memberships',
 
+            'payment_request' =>
+
+            '/admin/payments/' .
+                $notification->getReferenceId(),
+
 
             'membership_approved',
 

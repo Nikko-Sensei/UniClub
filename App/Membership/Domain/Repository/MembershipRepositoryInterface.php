@@ -22,14 +22,14 @@ interface MembershipRepositoryInterface
         int $clubId,
         int $userId,
         int $clubRoleId
-    ): bool;
+    ): ?int;
 
 
     public function create(
         int $clubId,
         int $userId,
         int $clubRoleId
-    ): bool;
+    ): ?int;
 
 
 

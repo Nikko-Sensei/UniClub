@@ -24,8 +24,7 @@ class AnnouncementController extends BaseController
         parent::__construct();
 
 
-        $this->announcementService =
-            $announcementService;
+        $this->announcementService = $announcementService;
     }
 
 

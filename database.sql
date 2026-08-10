@@ -390,6 +390,7 @@ CREATE TABLE event_attendances
 
     event_id BIGINT NOT NULL,
 
+
     user_id BIGINT NOT NULL,
 
 
@@ -400,7 +401,18 @@ CREATE TABLE event_attendances
     DEFAULT 'absent',
 
 
+    checked_by BIGINT NULL,
+
+
     checked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+
+
+    CONSTRAINT uq_event_attendance
+    UNIQUE(event_id,user_id),
 
 
     FOREIGN KEY(event_id)
@@ -410,7 +422,12 @@ CREATE TABLE event_attendances
 
     FOREIGN KEY(user_id)
     REFERENCES users(id)
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+
+
+    FOREIGN KEY(checked_by)
+    REFERENCES users(id)
+    ON DELETE SET NULL
 );
 
 
@@ -451,27 +468,76 @@ CREATE TABLE certificates
 (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-
     event_id BIGINT NOT NULL,
 
     user_id BIGINT NOT NULL,
 
+    certificate_number VARCHAR(100) NOT NULL UNIQUE,
 
-    certificate_number VARCHAR(100) UNIQUE,
+    file_path VARCHAR(255) NULL,
 
-
-    file_path VARCHAR(255),
-
+    issued_by BIGINT NULL,
 
     issued_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY(event_id)
-    REFERENCES events(id),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_certificate_event
+        FOREIGN KEY (event_id)
+        REFERENCES events(id),
+
+    CONSTRAINT fk_certificate_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(id),
+
+    CONSTRAINT fk_certificate_issued_by
+        FOREIGN KEY (issued_by)
+        REFERENCES users(id),
+
+    UNIQUE(event_id, user_id)
+);
 
 
-    FOREIGN KEY(user_id)
+CREATE TABLE payment_accounts (
+
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    club_id BIGINT NULL,
+
+    payment_method VARCHAR(50) NOT NULL,
+
+    account_name VARCHAR(100) NOT NULL,
+
+    account_number VARCHAR(100) NULL,
+
+    qr_image VARCHAR(255) NULL,
+
+    description TEXT NULL,
+
+    status ENUM(
+        'active',
+        'inactive'
+    ) DEFAULT 'active',
+
+    created_by BIGINT NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+
+    FOREIGN KEY (club_id)
+    REFERENCES clubs(id)
+    ON DELETE CASCADE,
+
+
+    FOREIGN KEY (created_by)
     REFERENCES users(id)
+
 );
 
 

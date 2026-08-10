@@ -139,7 +139,7 @@ class EventFeedbackService
 
             throw new \Exception(
 
-                "You can only submit feedback for attended events."
+                "Only registered participants can submit feedback."
 
             );
 

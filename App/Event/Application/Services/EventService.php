@@ -127,41 +127,6 @@ class EventService
         return $event;
     }
 
-
-
-    // public function update(
-    //     int $id,
-    //     array $data,
-    //     array $files
-    // ) {
-
-    //     $event =
-    //         $this->eventRepository
-    //         ->findById($id);
-
-
-    //     if (!$event) {
-
-    //         throw new EventNotFoundException();
-    //     }
-
-    //     $data['banner'] =
-    //         $event->getBanner();
-
-    //     $this->handleImages(
-    //         $files,
-    //         $data
-    //     );
-
-
-
-    //     return $this->eventRepository
-    //         ->update(
-    //             $id,
-    //             $data
-    //         );
-    // }
-
     public function update(
         int $id,
         array $data,
@@ -320,6 +285,15 @@ class EventService
     }
 
 
+    public function findById(
+        int $id
+    ) {
+
+        return $this->eventRepository
+            ->findById($id);
+    }
+
+
 
     public function getEvents(
         int $page,
@@ -384,14 +358,6 @@ class EventService
         return $this->eventRepository
             ->statistics();
     }
-
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Student Registration
-    |--------------------------------------------------------------------------
-    */
 
 
     /**
@@ -538,6 +504,54 @@ class EventService
     }
 
 
+    /**
+     * Check Approved Registration
+     */
+    public function isRegistrationApproved(
+
+        int $eventId,
+
+        int $userId
+
+    ): bool {
+
+
+        $status =
+            $this->eventRepository
+            ->getRegistrationStatus(
+                $eventId,
+                $userId
+            );
+
+
+
+        return $status === 'approved';
+    }
+
+    /**
+     * Check Event Completed
+     */
+    public function isCompleted(
+        int $eventId
+    ): bool {
+
+
+        $event =
+            $this->eventRepository
+            ->findById($eventId);
+
+
+
+        if (!$event) {
+            return false;
+        }
+
+
+
+        return $event->isCompleted();
+    }
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -581,6 +595,21 @@ class EventService
             ->rejectRegistration(
                 $registrationId,
                 $adminId
+            );
+    }
+
+
+    /**
+     * Get approved event participants
+     */
+    public function getApprovedParticipants(
+        int $eventId
+    ): array {
+
+
+        return $this->eventRepository
+            ->getApprovedParticipants(
+                $eventId
             );
     }
 
@@ -640,7 +669,13 @@ class EventService
         ];
     }
 
+    public function getRegistrationById(
+        int $id
+    ) {
 
+        return $this->eventRepository
+            ->getRegistrationById($id);
+    }
 
     private function handleImages(
         array $files,
