@@ -10,6 +10,8 @@ use App\Shared\Helpers\Flash;
 use App\Master\Application\Services\MasterService;
 use App\Club\Application\Services\ClubService;
 use App\User\Application\Services\UserService;
+use App\EventAttendance\Application\Services\EventAttendanceService;
+use App\EventCertificate\Application\Services\EventCertificateService;
 
 class EventController extends BaseController
 {
@@ -19,13 +21,17 @@ class EventController extends BaseController
     private MasterService $masterService;
     private ClubService $clubService;
     private UserService $userService;
+    private EventAttendanceService $attendanceService;
+    private EventCertificateService $eventCertificateService;
 
 
     public function __construct(
         EventService $eventService,
         ClubService $clubService,
         MasterService $masterService,
-        UserService $userService
+        UserService $userService,
+        EventAttendanceService $attendanceService,
+        EventCertificateService $eventCertificateService
     ) {
 
         parent::__construct();
@@ -38,6 +44,10 @@ class EventController extends BaseController
         $this->clubService = $clubService;
 
         $this->userService = $userService;
+
+        $this->attendanceService = $attendanceService;
+
+        $this->eventCertificateService = $eventCertificateService;
     }
 
 
@@ -192,6 +202,10 @@ class EventController extends BaseController
                 $id
             );
 
+        $capacity =
+            $this->eventService
+            ->getEventCapacity($id);
+
 
         $clubs =
             $this->clubService
@@ -227,25 +241,9 @@ class EventController extends BaseController
 
             );
 
+        $attendance = $this->attendanceService->getAttendanceByUserEvent($id, $userId);
 
-
-        /*
-    |--------------------------------------------------------------------------
-    | Attendance
-    |--------------------------------------------------------------------------
-    */
-
-        //     $attendance =
-        //         $this->attendanceService
-        //         ->getAttendanceByUserEvent(
-
-        //             $userId,
-
-        //             $id
-
-        //         );
-
-        $attendance = null;
+        $certificate = $this->eventCertificateService->getCertificate($id, $userId);
 
         $feedbackSubmitted = false;
 
@@ -291,6 +289,7 @@ class EventController extends BaseController
 
                 'attendance' => $attendance,
 
+                'certificate' => $certificate,
 
                 'feedbackSubmitted' => $feedbackSubmitted,
 
@@ -300,9 +299,9 @@ class EventController extends BaseController
 
                 'academicYearName' => $profile['academicYearName'],
 
-                'roleName' => $profile['roleName']
+                'roleName' => $profile['roleName'],
 
-
+                'capacity' => $capacity
 
             ],
 

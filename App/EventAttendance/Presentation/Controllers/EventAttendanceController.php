@@ -30,18 +30,9 @@ class EventAttendanceController extends BaseController
         parent::__construct();
 
 
-        $this->attendanceService =
-            $attendanceService;
+        $this->attendanceService = $attendanceService;
 
     }
-
-
-
-
-
-
-
-
 
     /**
      * Student Attendance History

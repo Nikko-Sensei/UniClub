@@ -104,4 +104,8 @@ interface EventRepositoryInterface
     public function getRegistrationById(
         int $id
     );
+
+    public function getEventCapacity(
+        int $eventId
+    ): array;
 }

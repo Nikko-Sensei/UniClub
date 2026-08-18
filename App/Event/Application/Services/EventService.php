@@ -613,6 +613,14 @@ class EventService
             );
     }
 
+    public function getEventCapacity(
+        int $eventId
+    ): array {
+
+        return $this->eventRepository
+            ->getEventCapacity($eventId);
+    }
+
 
 
     public function getStudentEvents(

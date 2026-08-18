@@ -155,23 +155,23 @@
                     <?php if (empty($certificates)): ?>
 
 
-                        <tr>
+                    <tr>
 
 
-                            <td colspan="5" class="px-5 py-10 text-center text-slate-400">
+                        <td colspan="5" class="px-5 py-10 text-center text-slate-400">
 
 
-                                <i data-lucide="award" class="w-8 h-8 mx-auto mb-2 text-slate-300">
-                                </i>
+                            <i data-lucide="award" class="w-8 h-8 mx-auto mb-2 text-slate-300">
+                            </i>
 
 
-                                No certificates issued yet.
+                            No certificates issued yet.
 
 
-                            </td>
+                        </td>
 
 
-                        </tr>
+                    </tr>
 
 
 
@@ -180,77 +180,74 @@
                     <?php else: ?>
 
 
+                    <?php foreach ($certificates as $certificate): ?>
 
 
 
-                        <?php foreach ($certificates as $certificate): ?>
-
-
-
-                            <tr class="border-b border-slate-100/60 hover:bg-slate-50/40 transition-colors">
+                    <tr class="border-b border-slate-100/60 hover:bg-slate-50/40 transition-colors">
 
 
 
 
 
-                                <!-- Certificate Number -->
+                        <!-- Certificate Number -->
 
-                                <td class="px-5 py-3.5 font-medium text-slate-700">
+                        <td class="px-5 py-3.5 font-medium text-slate-700">
 
 
-                                    <?= htmlspecialchars(
+                            <?= htmlspecialchars(
                                         $certificate->getCertificateNumber()
                                     ); ?>
 
 
-                                </td>
+                        </td>
 
 
 
 
 
 
-                                <!-- Student -->
+                        <!-- Student -->
 
-                                <td class="px-5 py-3.5 text-slate-600">
-
-
-                                    <?= $certificate->getUserId(); ?>
+                        <td class="px-5 py-3.5 text-slate-600">
 
 
-                                </td>
+                            <?= $certificate->getStudentName(); ?>
 
 
-
-
-
-
-                                <!-- Event -->
-
-                                <td class="px-5 py-3.5 text-slate-600">
-
-
-                                    Event #<?= $certificate->getEventId(); ?>
-
-
-                                </td>
+                        </td>
 
 
 
 
 
 
-                                <!-- Date -->
+                        <!-- Event -->
 
-                                <td class="px-5 py-3.5 text-slate-600">
+                        <td class="px-5 py-3.5 text-slate-600">
+
+                            <?= htmlspecialchars(
+                                        $event->getTitle()
+                                    ); ?>
+
+                        </td>
 
 
-                                    <?= htmlspecialchars(
+
+
+
+
+                        <!-- Date -->
+
+                        <td class="px-5 py-3.5 text-slate-600">
+
+
+                            <?= htmlspecialchars(
                                         $certificate->getIssuedAt()
                                     ); ?>
 
 
-                                </td>
+                        </td>
 
 
 
@@ -258,40 +255,28 @@
 
 
 
-                                <!-- Action -->
+                        <!-- Action -->
 
-                                <td class="px-5 py-3.5 text-right">
+                        <td class="px-5 py-3.5 text-right">
 
+                            <a href="<?= BASE_URL ?>/admin/certificates/<?= $certificate->getId() ?>/download" class="inline-flex items-center gap-2 px-3 py-2
+                                        bg-blue-600 text-white rounded-lg
+                                        hover:bg-blue-700 transition text-sm">
 
-                                    <a href="<?= BASE_URL ?>/certificates/<?= $certificate->getEventId() ?>/download" class="inline-flex items-center gap-2 px-3 py-2
-                                bg-blue-600 text-white rounded-lg
-                                hover:bg-blue-700 transition text-sm">
+                                <i data-lucide="download" class="w-4 h-4"></i>
 
+                                Download
 
-                                        <i data-lucide="download" class="w-4 h-4">
-                                        </i>
+                            </a>
 
-
-                                        Download
-
-
-                                    </a>
-
-
-
-                                </td>
+                        </td>
+                    </tr>
 
 
 
 
 
-                            </tr>
-
-
-
-
-
-                        <?php endforeach; ?>
+                    <?php endforeach; ?>
 
 
 
@@ -331,14 +316,14 @@
 
 
 <script>
-    document.addEventListener(
-        'DOMContentLoaded',
-        function() {
+document.addEventListener(
+    'DOMContentLoaded',
+    function() {
 
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
         }
-    );
+
+    }
+);
 </script>

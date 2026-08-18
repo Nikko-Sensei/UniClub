@@ -28,8 +28,7 @@ class EventFeedbackController extends BaseController
         parent::__construct();
 
 
-        $this->feedbackService =
-            $feedbackService;
+        $this->feedbackService = $feedbackService;
 
     }
 

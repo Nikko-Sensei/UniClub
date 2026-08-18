@@ -437,6 +437,9 @@ class EventCertificateRepository extends BaseRepository implements EventCertific
 
 
             $row['user_id'],
+            
+
+            $row['student_name'] ?? null,
 
 
             $row['certificate_number'],

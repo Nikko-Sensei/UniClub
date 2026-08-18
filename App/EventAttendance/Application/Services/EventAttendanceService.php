@@ -79,6 +79,18 @@ class EventAttendanceService
             ]);
     }
 
+    public function getAttendanceByUserEvent(
+        int $eventId,
+        int $userId
+    ): ?EventAttendance {
+
+        return $this->attendanceRepository
+            ->findByEventIdAndUserId(
+                $eventId,
+                $userId
+            );
+    }
+
     /**
      * Mark Student Attendance
      */
@@ -100,7 +112,7 @@ class EventAttendanceService
             throw new EventNotFoundException();
         }
 
-       
+
 
 
 
@@ -165,7 +177,7 @@ class EventAttendanceService
                 $data['user_id']
 
             );
-       
+
 
 
         if ($exists) {

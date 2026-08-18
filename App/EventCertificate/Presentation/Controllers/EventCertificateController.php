@@ -32,18 +32,8 @@ class EventCertificateController extends BaseController
         parent::__construct();
 
 
-        $this->certificateService =
-            $certificateService;
+        $this->certificateService = $certificateService;
     }
-
-
-
-
-
-
-
-
-
 
     /**
      * My Certificates

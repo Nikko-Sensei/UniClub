@@ -270,6 +270,56 @@
         </a>
     </div>
 
+    <?php
+    $eventDateTime = new DateTime(
+        $event->getEventDate() . ' ' . $event->getStartTime()
+    );
+
+    $eventDate = new DateTime(
+        $event->getEventDate()
+    );
+
+    $today = new DateTime('today');
+    $tomorrow = new DateTime('tomorrow');
+
+    $dayDifference = (int) $today->diff($eventDate)->format('%r%a');
+
+    if ($dayDifference === 0) {
+
+        $dateLabel = 'Today';
+    } elseif ($dayDifference === 1) {
+
+        $dateLabel = 'Tomorrow';
+    } elseif ($dayDifference === -1) {
+
+        $dateLabel = 'Yesterday';
+    } elseif ($dayDifference > 1 && $dayDifference < 7) {
+
+        $dateLabel = 'In ' . $dayDifference . ' days';
+    } else {
+
+        $dateLabel = $eventDate->format('D, M j, Y');
+    }
+
+
+    /*
+|--------------------------------------------------------------------------
+| Format Time
+|--------------------------------------------------------------------------
+*/
+
+    $startTime = new DateTime(
+        $event->getEventDate() . ' ' . $event->getStartTime()
+    );
+
+    $endTime = new DateTime(
+        $event->getEventDate() . ' ' . $event->getEndTime()
+    );
+
+    $formattedStartTime = $startTime->format('g:i A');
+    $formattedEndTime = $endTime->format('g:i A');
+    ?>
+
     <!-- ========================================================== -->
     <!-- HERO BANNER – Immersive with glass overlay               -->
     <!-- ========================================================== -->
@@ -303,11 +353,64 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
                         <?= ucfirst(htmlspecialchars($event->getStatus())) ?>
                     </span>
-                    <span
-                        class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white/90 text-xs font-medium px-3 py-1 rounded-full border border-white/20">
+                    <?php
+                    $totalCapacity  = $capacity['capacity'] ?? null;
+                    $availableSeats = $capacity['available_seats'] ?? null;
+
+                    // Check whether the event has finished
+                    $eventEnd = strtotime(
+                        $event->getEventDate() . ' ' . $event->getEndTime()
+                    );
+
+                    $isFinished = $eventEnd < time();
+                    ?>
+
+                    <?php if (!$isFinished && $totalCapacity !== null && $availableSeats !== null): ?>
+
+                    <?php if ($availableSeats <= 0): ?>
+
+                    <!-- Fully Booked -->
+                    <span class="inline-flex items-center gap-1.5
+            bg-red-500/90 backdrop-blur-sm
+            text-white text-xs font-semibold
+            px-3 py-1 rounded-full shadow-lg">
+
                         <i data-lucide="users" class="w-3 h-3"></i>
-                        <?= $event->getCapacity() ?? 0 ?> seats
+
+                        Fully Registered
                     </span>
+
+                    <?php elseif ($availableSeats <= 5): ?>
+
+                    <!-- Almost Full -->
+                    <span class="inline-flex items-center gap-1.5
+            bg-orange-500/90 backdrop-blur-sm
+            text-white text-xs font-semibold
+            px-3 py-1 rounded-full shadow-lg">
+
+                        <i data-lucide="users" class="w-3 h-3"></i>
+
+                        <?= htmlspecialchars($availableSeats) ?>
+                        <?= $availableSeats == 1 ? 'seat' : 'seats' ?> left
+                    </span>
+
+                    <?php else: ?>
+
+                    <!-- Available Seats -->
+                    <span class="inline-flex items-center gap-1.5
+            bg-white/20 backdrop-blur-sm
+            text-white/90 text-xs font-medium
+            px-3 py-1 rounded-full
+            border border-white/20">
+
+                        <i data-lucide="users" class="w-3 h-3"></i>
+
+                        <?= htmlspecialchars($availableSeats) ?> seats available
+                    </span>
+
+                    <?php endif; ?>
+
+                    <?php endif; ?>
                 </div>
 
                 <h1 class="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white drop-shadow-lg">
@@ -317,12 +420,20 @@
                 <div class="flex flex-wrap items-center gap-4 md:gap-6 mt-3 text-sm text-white/80">
                     <div class="flex items-center gap-1.5">
                         <i data-lucide="calendar" class="w-4 h-4 text-blue-300"></i>
-                        <span><?= htmlspecialchars($event->getEventDate()) ?></span>
+
+                        <span>
+                            <?= htmlspecialchars($dateLabel) ?>
+                        </span>
                     </div>
+
                     <div class="flex items-center gap-1.5">
                         <i data-lucide="clock" class="w-4 h-4 text-blue-300"></i>
-                        <span><?= htmlspecialchars($event->getStartTime()) ?> –
-                            <?= htmlspecialchars($event->getEndTime()) ?></span>
+
+                        <span>
+                            <?= htmlspecialchars($formattedStartTime) ?>
+                            –
+                            <?= htmlspecialchars($formattedEndTime) ?>
+                        </span>
                     </div>
                     <div class="flex items-center gap-1.5">
                         <i data-lucide="map-pin" class="w-4 h-4 text-blue-300"></i>
@@ -372,24 +483,79 @@
         <div class="flex-shrink-0">
 
             <?php
-            $eventDate = strtotime($event->getEventDate());
-            $today = strtotime(date('Y-m-d'));
+            /*
+    |--------------------------------------------------------------------------
+    | Event Status
+    |--------------------------------------------------------------------------
+    */
 
-            $isCompleted = $eventDate < $today;
+            $eventEnd = strtotime(
+                $event->getEventDate() . ' ' . $event->getEndTime()
+            );
+
+            $isCompleted = $eventEnd < time();
+
+
+            /*
+    |--------------------------------------------------------------------------
+    | Available Seats
+    |--------------------------------------------------------------------------
+    */
+
+            $availableSeats = (int) ($capacity['available_seats'] ?? 0);
+
+            $isFullyBooked = $availableSeats <= 0;
             ?>
 
 
-            <?php if (!$isCompleted): ?>
+            <?php if ($isCompleted): ?>
+
+            <!-- ==========================================================
+             EVENT FINISHED
+             ========================================================== -->
+
+            <div class="flex items-center gap-2
+            bg-slate-100 text-slate-600
+            px-5 py-3 rounded-xl font-medium
+            border border-slate-200">
+
+                <i data-lucide="calendar-check" class="w-5 h-5"></i>
+
+                Event Finished
+
+            </div>
 
 
-            <?php if ($registrationStatus === null): ?>
+            <?php elseif ($isFullyBooked): ?>
 
-            <button type="button" onclick="openRegisterModal()" class="inline-flex items-center gap-2 px-6 py-3 
-                bg-gradient-to-r from-blue-600 to-indigo-600 
-                hover:from-blue-700 hover:to-indigo-700 
-                text-white rounded-xl font-semibold text-sm 
-                transition-all duration-300 shadow-xl 
-                hover:scale-[1.04] btn-shine">
+            <!-- ==========================================================
+             FULLY BOOKED
+             ========================================================== -->
+
+            <div class="flex items-center gap-2
+            bg-red-50 text-red-600
+            px-5 py-3 rounded-xl font-semibold
+            border border-red-200">
+
+                <i data-lucide="users" class="w-5 h-5"></i>
+
+                Fully Registered
+
+            </div>
+
+
+            <?php elseif ($registrationStatus === null): ?>
+
+            <!-- ==========================================================
+             REGISTER NOW
+             ========================================================== -->
+
+            <button type="button" onclick="openRegisterModal()" class="inline-flex items-center gap-2 px-6 py-3
+            bg-gradient-to-r from-blue-600 to-indigo-600
+            hover:from-blue-700 hover:to-indigo-700
+            text-white rounded-xl font-semibold text-sm
+            transition-all duration-300 shadow-xl
+            hover:scale-[1.04] btn-shine">
 
                 <i data-lucide="user-plus" class="w-4 h-4"></i>
 
@@ -400,11 +566,14 @@
 
             <?php elseif ($registrationStatus === 'pending'): ?>
 
+            <!-- ==========================================================
+             PENDING APPROVAL
+             ========================================================== -->
 
-            <div class="flex items-center gap-2 
-                bg-yellow-50 text-yellow-700 
-                px-5 py-3 rounded-xl font-medium 
-                border border-yellow-200">
+            <div class="flex items-center gap-2
+            bg-yellow-50 text-yellow-700
+            px-5 py-3 rounded-xl font-medium
+            border border-yellow-200">
 
                 <i data-lucide="clock" class="w-5 h-5"></i>
 
@@ -415,11 +584,14 @@
 
             <?php elseif ($registrationStatus === 'approved'): ?>
 
+            <!-- ==========================================================
+             ALREADY REGISTERED
+             ========================================================== -->
 
-            <div class="flex items-center gap-2 
-                bg-emerald-50 text-emerald-700 
-                px-5 py-3 rounded-xl font-medium 
-                border border-emerald-200">
+            <div class="flex items-center gap-2
+            bg-emerald-50 text-emerald-700
+            px-5 py-3 rounded-xl font-medium
+            border border-emerald-200">
 
                 <i data-lucide="check-circle" class="w-5 h-5"></i>
 
@@ -427,29 +599,7 @@
 
             </div>
 
-
             <?php endif; ?>
-
-
-            <?php else: ?>
-
-
-            <!-- Event Completed -->
-            <div class="flex items-center gap-2 
-            bg-slate-100 text-slate-600 
-            px-5 py-3 rounded-xl font-medium 
-            border border-slate-200">
-
-
-                <i data-lucide="calendar-check" class="w-5 h-5"></i>
-
-                Event Finished
-
-            </div>
-
-
-            <?php endif; ?>
-
 
         </div>
     </div>
@@ -696,92 +846,80 @@
 
 
             <!-- Certificate -->
-
             <div class="glass-card-light rounded-2xl border border-slate-100 shadow-xl p-5 hover:shadow-2xl transition">
 
-
                 <div class="flex items-center gap-4">
-
 
                     <div
                         class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 text-white flex items-center justify-center">
 
-
                         <i data-lucide="award"></i>
 
-
                     </div>
-
-
 
                     <div>
 
-
                         <p class="text-xs uppercase text-slate-400 font-semibold">
-
                             Certificate
-
                         </p>
 
-
-                        <?php if (
-                            $attendance &&
-                            $attendance->isPresent() &&
-                            $event->isCertificateEnabled()
-                        ): ?>
-
+                        <?php if ($certificate): ?>
 
                         <p class="text-lg font-bold text-blue-600">
-
                             Available
-
                         </p>
 
+                        <?php elseif ($attendance && $attendance->isPresent()): ?>
+
+                        <p class="text-lg font-bold text-yellow-600">
+                            Processing
+                        </p>
 
                         <?php else: ?>
 
-
                         <p class="text-lg font-bold text-slate-400">
-
                             Locked
-
                         </p>
-
 
                         <?php endif; ?>
 
-
                     </div>
-
 
                 </div>
 
 
+                <?php if ($certificate): ?>
 
-
-
-                <?php if (
-                    $attendance &&
-                    $attendance->isPresent()
-                ): ?>
-
-
-                <a href="<?= BASE_URL ?>/certificates/event/<?= $event->getId() ?>"
-                    class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-600">
-
+                <a href="<?= BASE_URL ?>/certificates/<?= $certificate->getEventId() ?>/download"
+                    class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition">
 
                     <i data-lucide="download" class="w-4 h-4"></i>
 
-
                     Download Certificate
-
 
                 </a>
 
+                <?php elseif ($attendance && $attendance->isPresent()): ?>
+
+                <div class="mt-4 flex items-center gap-2 text-sm text-yellow-600">
+
+                    <i data-lucide="clock" class="w-4 h-4"></i>
+
+                    Certificate is being prepared
+
+                </div>
+
+                <?php else: ?>
+
+                <div class="mt-4 flex items-center gap-2 text-sm text-slate-400">
+
+                    <i data-lucide="lock" class="w-4 h-4"></i>
+
+                    Attend the event to receive a certificate
+
+                </div>
 
                 <?php endif; ?>
-
-
 
             </div>
 

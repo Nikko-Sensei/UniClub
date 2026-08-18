@@ -964,7 +964,16 @@ class Bootstrap
                     $container->resolve(
                         MasterService::class
                     ),
-                    $container->resolve(UserService::class)
+                    $container->resolve(UserService::class),
+
+                    $container->resolve(
+                        EventAttendanceService::class
+                    ),
+
+                    $container->resolve(
+                        EventCertificateService::class
+                    )
+
 
                 );
             }
@@ -1070,6 +1079,11 @@ class Bootstrap
                     $container->resolve(
 
                         EventFeedbackService::class
+
+                    ),
+                    $container->resolve(
+
+                        EventService::class
 
                     )
 

@@ -21,15 +21,13 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
         parent::__construct(
             Database::getConnection()
         );
-
     }
 
 
 
     public function create(
         array $data
-    )
-    {
+    ) {
 
 
         $stmt = $this->db->prepare(
@@ -63,7 +61,6 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
 
 
         return $result;
-
     }
 
 
@@ -74,8 +71,7 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
         int $page,
         int $limit,
         array $filters = []
-    )
-    {
+    ) {
 
 
         $offset =
@@ -125,13 +121,11 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
 
             $feedbacks[] =
                 $this->mapToFeedback($row);
-
         }
 
 
 
         return $feedbacks;
-
     }
 
 
@@ -141,8 +135,7 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
 
     public function count(
         array $filters = []
-    )
-    {
+    ) {
 
 
         $stmt = $this->db->prepare(
@@ -179,7 +172,6 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
 
 
         return (int)$result['total'];
-
     }
 
 
@@ -190,8 +182,7 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
     public function exists(
         int $eventId,
         int $userId
-    )
-    {
+    ) {
 
 
         $stmt = $this->db->prepare(
@@ -222,7 +213,6 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
 
 
         return $result['total'] > 0;
-
     }
 
 
@@ -232,8 +222,7 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
 
     public function findByEvent(
         int $eventId
-    )
-    {
+    ) {
 
 
         $stmt = $this->db->prepare(
@@ -270,16 +259,72 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
 
             $feedbacks[] =
                 $this->mapToFeedback($row);
-
         }
 
 
 
         return $feedbacks;
+    }
 
+    public function findByEventPaginated(
+        int $eventId,
+        int $page,
+        int $limit
+    ): array {
+
+        $offset = ($page - 1) * $limit;
+
+        $stmt = $this->db->prepare(
+            "CALL sp_event_feedback_find_by_event_paginated(?,?,?)"
+        );
+
+        $stmt->execute([
+            $eventId,
+            $limit,
+            $offset
+        ]);
+
+        $rows = $stmt->fetchAll(
+            \PDO::FETCH_ASSOC
+        );
+
+        $stmt->closeCursor();
+
+        $feedbacks = [];
+
+        foreach ($rows as $row) {
+
+            $feedbacks[] =
+                $this->mapToFeedback($row);
+        }
+
+        return $feedbacks;
     }
 
 
+    public function countByEvent(
+        int $eventId
+    ): int {
+
+        $stmt = $this->db->prepare(
+            "CALL sp_event_feedback_count_by_event(?)"
+        );
+
+        $stmt->execute([
+            $eventId
+        ]);
+
+        $result =
+            $stmt->fetch(
+                \PDO::FETCH_ASSOC
+            );
+
+        $stmt->closeCursor();
+
+        return (int)(
+            $result['total'] ?? 0
+        );
+    }
 
 
 
@@ -287,8 +332,7 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
 
     public function delete(
         int $id
-    )
-    {
+    ) {
 
 
         $stmt = $this->db->prepare(
@@ -304,7 +348,6 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
             $id
 
         ]);
-
     }
 
 
@@ -313,32 +356,28 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
 
 
     private function mapToFeedback(
-    array $row
-): EventFeedback
-{
+        array $row
+    ): EventFeedback {
 
-    return new EventFeedback(
+        return new EventFeedback(
 
-        $row['id'],
+            $row['id'],
 
-        $row['event_id'],
+            $row['event_id'],
 
-        $row['user_id'],
+            $row['user_id'],
 
-        $row['rating'],
+            $row['rating'],
 
-        $row['comment'],
+            $row['comment'],
 
-        $row['created_at'],
+            $row['created_at'],
 
-       $row['user_name'] ?? null,
+            $row['user_name'] ?? null,
 
-        $row['event_title'] ?? null
-        
-
-    );
-
-}
+            $row['event_title'] ?? null
 
 
+        );
+    }
 }

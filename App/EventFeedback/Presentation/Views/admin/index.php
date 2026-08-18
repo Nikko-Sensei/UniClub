@@ -1,5 +1,9 @@
 <div class="space-y-6">
 
+
+    <?php require BASE_PATH .
+        '/App/Event/Presentation/Views/admin/components/event_header.php';
+    ?>
     <!-- ========================================================== -->
     <!-- HEADER                                                     -->
     <!-- ========================================================== -->
@@ -35,9 +39,9 @@
                         class="w-full h-11 pl-4 pr-10 border border-slate-200/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition text-sm bg-white/50 backdrop-blur-sm hover:border-blue-200 appearance-none">
                         <option value="">All Ratings</option>
                         <?php for ($i = 5; $i >= 1; $i--): ?>
-                        <option value="<?= $i ?>" <?= (($filters['rating'] ?? '') == $i) ? 'selected' : '' ?>>
-                            <?= $i ?> Star<?= $i > 1 ? 's' : '' ?>
-                        </option>
+                            <option value="<?= $i ?>" <?= (($filters['rating'] ?? '') == $i) ? 'selected' : '' ?>>
+                                <?= $i ?> Star<?= $i > 1 ? 's' : '' ?>
+                            </option>
                         <?php endfor; ?>
                     </select>
                     <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
@@ -62,51 +66,51 @@
                 </thead>
                 <tbody>
                     <?php if (empty($feedbacks)): ?>
-                    <tr>
-                        <td colspan="5" class="px-5 py-10 text-center text-slate-400">
-                            <i data-lucide="message-square" class="w-8 h-8 block mx-auto mb-2 text-slate-300"></i>
-                            No feedback found.
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="5" class="px-5 py-10 text-center text-slate-400">
+                                <i data-lucide="message-square" class="w-8 h-8 block mx-auto mb-2 text-slate-300"></i>
+                                No feedback found.
+                            </td>
+                        </tr>
                     <?php else: ?>
-                    <?php foreach ($feedbacks as $feedback): ?>
-                    <tr class="border-b border-slate-100/60 hover:bg-slate-50/40 transition-colors">
-                        <!-- Student -->
-                        <td class="px-5 py-3.5 font-medium text-slate-700">
-                            <?= htmlspecialchars($feedback->getUserName()) ?>
-                        </td>
-                        <!-- Event -->
-                        <td class="px-5 py-3.5 text-slate-600">
-                            <?= htmlspecialchars($feedback->getEventTitle()) ?>
-                        </td>
-                        <!-- Rating -->
-                        <td class="px-5 py-3.5">
-                            <div class="text-amber-500 text-lg flex items-center gap-0.5">
-                                <?php for ($i = 1; $i <= 5; $i++): ?>
-                                <span class="<?= $i <= $feedback->getRating() ? 'text-amber-500' : 'text-slate-300' ?>">
-                                    ★
-                                </span>
-                                <?php endfor; ?>
-                            </div>
-                        </td>
-                        <!-- Comment -->
-                        <td class="px-5 py-3.5 text-slate-600 max-w-md truncate">
-                            <?= htmlspecialchars($feedback->getComment()) ?>
-                        </td>
-                        <!-- Action -->
-                        <td class="px-5 py-3.5 text-right">
-                            <form method="POST"
-                                action="<?= BASE_URL ?>/admin/event-feedback/<?= $feedback->getId() ?>/delete"
-                                onsubmit="return confirm('Delete this feedback?')" class="inline">
-                                <button type="submit"
-                                    class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                    title="Delete">
-                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
+                        <?php foreach ($feedbacks as $feedback): ?>
+                            <tr class="border-b border-slate-100/60 hover:bg-slate-50/40 transition-colors">
+                                <!-- Student -->
+                                <td class="px-5 py-3.5 font-medium text-slate-700">
+                                    <?= htmlspecialchars($feedback->getUserName()) ?>
+                                </td>
+                                <!-- Event -->
+                                <td class="px-5 py-3.5 text-slate-600">
+                                    <?= htmlspecialchars($feedback->getEventTitle()) ?>
+                                </td>
+                                <!-- Rating -->
+                                <td class="px-5 py-3.5">
+                                    <div class="text-amber-500 text-lg flex items-center gap-0.5">
+                                        <?php for ($i = 1; $i <= 5; $i++): ?>
+                                            <span class="<?= $i <= $feedback->getRating() ? 'text-amber-500' : 'text-slate-300' ?>">
+                                                ★
+                                            </span>
+                                        <?php endfor; ?>
+                                    </div>
+                                </td>
+                                <!-- Comment -->
+                                <td class="px-5 py-3.5 text-slate-600 max-w-md truncate">
+                                    <?= htmlspecialchars($feedback->getComment()) ?>
+                                </td>
+                                <!-- Action -->
+                                <td class="px-5 py-3.5 text-right">
+                                    <form method="POST"
+                                        action="<?= BASE_URL ?>/admin/feedbacks/<?= $feedback->getId() ?>/delete"
+                                        onsubmit="return confirm('Delete this feedback?')" class="inline">
+                                        <button type="submit"
+                                            class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                            title="Delete">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -114,80 +118,80 @@
             <!-- Pagination -->
             <?php if ($pagination): ?>
 
-            <div class="px-5 py-3.5 border-t border-slate-200/60 bg-slate-50/20 
+                <div class="px-5 py-3.5 border-t border-slate-200/60 bg-slate-50/20 
     flex flex-col sm:flex-row sm:items-center sm:justify-between 
     gap-3 text-xs text-slate-500">
 
 
-                <!-- Showing -->
-                <span>
+                    <!-- Showing -->
+                    <span>
 
-                    Showing
+                        Showing
 
-                    <span class="font-medium text-slate-700">
+                        <span class="font-medium text-slate-700">
 
-                        <?= (($pagination['current_page'] - 1) * $pagination['per_page']) + 1 ?>
+                            <?= (($pagination['current_page'] - 1) * $pagination['per_page']) + 1 ?>
 
-                        -
+                            -
 
-                        <?= min(
+                            <?= min(
                                 $pagination['current_page'] * $pagination['per_page'],
                                 $pagination['total']
                             ) ?>
 
+                        </span>
+
+                        of
+
+                        <span class="font-medium text-slate-700">
+
+                            <?= $pagination['total'] ?>
+
+                        </span>
+
+                        feedbacks.
+
                     </span>
 
-                    of
-
-                    <span class="font-medium text-slate-700">
-
-                        <?= $pagination['total'] ?>
-
-                    </span>
-
-                    feedbacks.
-
-                </span>
 
 
 
+                    <!-- Pagination Buttons -->
+                    <div class="flex items-center gap-2">
 
-                <!-- Pagination Buttons -->
-                <div class="flex items-center gap-2">
 
+                        <!-- Previous -->
+                        <?php if ($pagination['current_page'] > 1): ?>
 
-                    <!-- Previous -->
-                    <?php if ($pagination['current_page'] > 1): ?>
-
-                    <a href="<?= buildPaginationUrl(
+                            <a href="<?= buildPaginationUrl(
                                             $pagination['current_page'] - 1,
                                             $_GET
                                         ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg 
             hover:bg-slate-100 transition flex items-center justify-center">
 
-                        <i data-lucide="chevron-left" class="w-3.5 h-3.5">
-                        </i>
+                                <i data-lucide="chevron-left" class="w-3.5 h-3.5">
+                                </i>
 
-                    </a>
+                            </a>
 
-                    <?php else: ?>
+                        <?php else: ?>
 
-                    <span class="w-8 h-8 border border-slate-200 rounded-lg 
+                            <span class="w-8 h-8 border border-slate-200 rounded-lg 
             opacity-50 flex items-center justify-center">
 
-                        <i data-lucide="chevron-left" class="w-3.5 h-3.5">
-                        </i>
+                                <i data-lucide="chevron-left" class="w-3.5 h-3.5">
+                                </i>
 
-                    </span>
+                            </span>
 
-                    <?php endif; ?>
-
-
+                        <?php endif; ?>
 
 
-                    <!-- Page Numbers -->
 
-                    <?php
+
+                        <!-- Page Numbers -->
+
+                        <?php
 
                         $current = $pagination['current_page'];
 
@@ -209,80 +213,80 @@
 
 
 
-                    <?php for ($i = $start; $i <= $end; $i++): ?>
+                        <?php for ($i = $start; $i <= $end; $i++): ?>
 
 
-                    <?php if ($i == $current): ?>
+                            <?php if ($i == $current): ?>
 
-                    <span class="w-8 h-8 bg-blue-600 text-white rounded-lg 
+                                <span class="w-8 h-8 bg-blue-600 text-white rounded-lg 
                     flex items-center justify-center font-medium">
 
-                        <?= $i ?>
+                                    <?= $i ?>
 
-                    </span>
+                                </span>
 
 
-                    <?php else: ?>
+                            <?php else: ?>
 
-                    <a href="<?= buildPaginationUrl(
+                                <a href="<?= buildPaginationUrl(
                                                 $i,
                                                 $_GET
                                             ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg 
                     hover:bg-slate-100 transition flex items-center justify-center">
 
-                        <?= $i ?>
+                                    <?= $i ?>
 
-                    </a>
-
-
-                    <?php endif; ?>
+                                </a>
 
 
-                    <?php endfor; ?>
+                            <?php endif; ?>
 
 
+                        <?php endfor; ?>
 
 
 
-                    <!-- Next -->
-                    <?php if ($pagination['current_page'] < $totalPages): ?>
 
 
-                    <a href="<?= buildPaginationUrl(
+                        <!-- Next -->
+                        <?php if ($pagination['current_page'] < $totalPages): ?>
+
+
+                            <a href="<?= buildPaginationUrl(
                                             $pagination['current_page'] + 1,
                                             $_GET
                                         ) ?>" class="w-8 h-8 border border-slate-200 rounded-lg 
             hover:bg-slate-100 transition flex items-center justify-center">
 
 
-                        <i data-lucide="chevron-right" class="w-3.5 h-3.5">
-                        </i>
+                                <i data-lucide="chevron-right" class="w-3.5 h-3.5">
+                                </i>
 
 
-                    </a>
+                            </a>
 
 
-                    <?php else: ?>
+                        <?php else: ?>
 
 
-                    <span class="w-8 h-8 border border-slate-200 rounded-lg 
+                            <span class="w-8 h-8 border border-slate-200 rounded-lg 
             opacity-50 flex items-center justify-center">
 
 
-                        <i data-lucide="chevron-right" class="w-3.5 h-3.5">
-                        </i>
+                                <i data-lucide="chevron-right" class="w-3.5 h-3.5">
+                                </i>
 
 
-                    </span>
+                            </span>
 
 
-                    <?php endif; ?>
+                        <?php endif; ?>
+
+
+                    </div>
 
 
                 </div>
-
-
-            </div>
 
             <?php endif; ?>
         </div>
@@ -305,9 +309,9 @@
 
         <!-- ── Scripts for Lucide Icons ── -->
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        });
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            });
         </script>

@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Certificate of Participation</title>
+
+    <style>
+      /* =========================================================
+           A4 LANDSCAPE
+        ========================================================= */
+
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
+      html,
+      body {
+        margin: 0;
+
+        padding: 0;
+
+        width: 297mm;
+
+        height: 210mm;
+      }
+
+      body {
+        font-family:
+          DejaVu Sans,
+          sans-serif;
+
+        background: #ffffff;
+
+        color: #1f2937;
+      }
+
+      /* =========================================================
+           MAIN PAGE
+        ========================================================= */
+
+      .certificate {
+        position: relative;
+
+        width: 297mm;
+
+        height: 210mm;
+
+        box-sizing: border-box;
+
+        overflow: hidden;
+
+        background: #ffffff;
+
+        page-break-after: avoid;
+      }
+
+      /* =========================================================
+           BORDER SYSTEM
+        ========================================================= */
+
+      .outer-border {
+        position: absolute;
+
+        top: 6mm;
+
+        left: 6mm;
+
+        right: 6mm;
+
+        bottom: 6mm;
+
+        border: 2px solid #173b68;
+
+        box-sizing: border-box;
+      }
+
+      .gold-border {
+        position: absolute;
+
+        top: 9mm;
+
+        left: 9mm;
+
+        right: 9mm;
+
+        bottom: 9mm;
+
+        border: 1px solid #c9a227;
+
+        box-sizing: border-box;
+      }
+
+      .inner-border {
+        position: absolute;
+
+        top: 12mm;
+
+        left: 12mm;
+
+        right: 12mm;
+
+        bottom: 12mm;
+
+        border: 1px solid #d7dee7;
+
+        box-sizing: border-box;
+      }
+
+      /* =========================================================
+           CORNERS
+        ========================================================= */
+
+      .corner {
+        position: absolute;
+
+        width: 13mm;
+
+        height: 13mm;
+
+        z-index: 5;
+      }
+
+      .corner-tl {
+        top: 11mm;
+
+        left: 11mm;
+
+        border-top: 2px solid #c9a227;
+
+        border-left: 2px solid #c9a227;
+      }
+
+      .corner-tr {
+        top: 11mm;
+
+        right: 11mm;
+
+        border-top: 2px solid #c9a227;
+
+        border-right: 2px solid #c9a227;
+      }
+
+      .corner-bl {
+        bottom: 11mm;
+
+        left: 11mm;
+
+        border-bottom: 2px solid #c9a227;
+
+        border-left: 2px solid #c9a227;
+      }
+
+      .corner-br {
+        bottom: 11mm;
+
+        right: 11mm;
+
+        border-bottom: 2px solid #c9a227;
+
+        border-right: 2px solid #c9a227;
+      }
+
+      /* =========================================================
+           SUBTLE WATERMARK
+        ========================================================= */
+
+      .watermark {
+        position: absolute;
+
+        top: 50%;
+
+        left: 50%;
+
+        width: 95mm;
+
+        height: 95mm;
+
+        margin-left: -47.5mm;
+
+        margin-top: -47.5mm;
+
+        border: 2px solid #173b6808;
+
+        border-radius: 50%;
+
+        z-index: 0;
+      }
+
+      .watermark-inner {
+        position: absolute;
+
+        top: 7mm;
+
+        left: 7mm;
+
+        right: 7mm;
+
+        bottom: 7mm;
+
+        border: 1px solid #c9a22708;
+
+        border-radius: 50%;
+      }
+
+      /* =========================================================
+           CONTENT
+        ========================================================= */
+
+      .content {
+        position: absolute;
+
+        top: 17mm;
+
+        left: 22mm;
+
+        right: 22mm;
+
+        bottom: 17mm;
+
+        text-align: center;
+
+        z-index: 2;
+      }
+
+      /* =========================================================
+           CREST
+        ========================================================= */
+
+      .crest {
+        width: 22mm;
+
+        height: 22mm;
+
+        margin: 0 auto 3mm;
+
+        border: 2px solid #c9a227;
+
+        border-radius: 50%;
+
+        box-sizing: border-box;
+
+        position: relative;
+      }
+
+      .crest-inner {
+        position: absolute;
+
+        top: 2.5mm;
+
+        left: 2.5mm;
+
+        width: 17mm;
+
+        height: 17mm;
+
+        border: 1px solid #173b68;
+
+        border-radius: 50%;
+
+        box-sizing: border-box;
+      }
+
+      .crest-text {
+        position: absolute;
+
+        top: 7.5mm;
+
+        left: 0;
+
+        width: 100%;
+
+        font-size: 8px;
+
+        font-weight: bold;
+
+        color: #173b68;
+
+        letter-spacing: 1px;
+      }
+
+      /* =========================================================
+           UNIVERSITY
+        ========================================================= */
+
+      .university-name {
+        font-size: 23px;
+
+        font-weight: bold;
+
+        color: #173b68;
+
+        letter-spacing: 1px;
+
+        line-height: 1.2;
+      }
+
+      .organization {
+        margin-top: 1.5mm;
+
+        font-size: 9px;
+
+        color: #64748b;
+
+        letter-spacing: 3px;
+      }
+
+      /* =========================================================
+           DIVIDER
+        ========================================================= */
+
+      .divider {
+        margin: 4mm auto 4mm;
+
+        width: 55mm;
+
+        text-align: center;
+
+        height: 4mm;
+      }
+
+      .divider-line {
+        display: inline-block;
+
+        width: 22mm;
+
+        border-top: 1px solid #c9a227;
+
+        vertical-align: middle;
+      }
+
+      .divider-diamond {
+        display: inline-block;
+
+        width: 6px;
+
+        height: 6px;
+
+        margin: 0 3mm;
+
+        background: #c9a227;
+
+        transform: rotate(45deg);
+
+        vertical-align: middle;
+      }
+
+      /* =========================================================
+           TITLE
+        ========================================================= */
+
+      .title {
+        font-size: 37px;
+
+        font-weight: bold;
+
+        color: #162f52;
+
+        letter-spacing: 6px;
+
+        line-height: 1.05;
+      }
+
+      .subtitle {
+        margin-top: 2mm;
+
+        font-size: 14px;
+
+        color: #a27e22;
+
+        letter-spacing: 4px;
+
+        font-weight: 500;
+      }
+
+      /* =========================================================
+           PRESENTED
+        ========================================================= */
+
+      .presented {
+        margin-top: 6mm;
+
+        font-size: 13px;
+
+        color: #526173;
+      }
+
+      /* =========================================================
+           STUDENT
+        ========================================================= */
+
+      .student-name {
+        margin-top: 3mm;
+
+        font-size: 33px;
+
+        font-weight: bold;
+
+        color: #173b68;
+
+        line-height: 1.15;
+      }
+
+      .name-line {
+        width: 105mm;
+
+        margin: 2.5mm auto 0;
+
+        border-bottom: 1px solid #c9a227;
+      }
+
+      /* =========================================================
+           RECOGNITION
+        ========================================================= */
+
+      .recognition {
+        margin-top: 5mm;
+
+        font-size: 12.5px;
+
+        color: #526173;
+      }
+
+      /* =========================================================
+           EVENT
+        ========================================================= */
+
+      .event-title {
+        margin-top: 2mm;
+
+        font-size: 21px;
+
+        font-weight: bold;
+
+        color: #172033;
+
+        line-height: 1.25;
+      }
+
+      .event-date {
+        margin-top: 2mm;
+
+        font-size: 12px;
+
+        color: #64748b;
+      }
+
+      /* =========================================================
+           SIGNATURE
+        ========================================================= */
+
+      .signature-section {
+        margin-top: 7mm;
+        text-align: center;
+      }
+
+      .signature-space {
+        height: 14mm;
+        width: 65mm;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .signature-image {
+        width: 45mm;
+        height: 13mm;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+      }
+
+      .signature-line {
+        width: 60mm;
+        margin: 0 auto;
+        border-top: 1px solid #374151;
+      }
+
+      .signature-title {
+        margin-top: 2mm;
+        font-size: 11px;
+        font-weight: bold;
+        color: #1f2937;
+      }
+
+      .signature-subtitle {
+        margin-top: 1mm;
+        font-size: 8.5px;
+        color: #64748b;
+      }
+
+      /* =========================================================
+           CERTIFICATE NUMBER
+        ========================================================= */
+
+      .certificate-number {
+        margin-top: 5mm;
+
+        font-size: 9px;
+
+        color: #64748b;
+      }
+
+      .certificate-number strong {
+        color: #374151;
+      }
+
+      /* =========================================================
+           FOOTER
+        ========================================================= */
+
+      .footer {
+        margin-top: 2mm;
+
+        font-size: 7.5px;
+
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="certificate">
+      <!-- =========================================================
+         BORDERS
+    ========================================================== -->
+
+      <div class="outer-border"></div>
+
+      <div class="gold-border"></div>
+
+      <div class="inner-border"></div>
+
+      <!-- =========================================================
+         CORNERS
+    ========================================================== -->
+
+      <div class="corner corner-tl"></div>
+
+      <div class="corner corner-tr"></div>
+
+      <div class="corner corner-bl"></div>
+
+      <div class="corner corner-br"></div>
+
+      <!-- =========================================================
+         WATERMARK
+    ========================================================== -->
+
+      <div class="watermark">
+        <div class="watermark-inner"></div>
+      </div>
+
+      <!-- =========================================================
+         CONTENT
+    ========================================================== -->
+
+      <div class="content">
+        <!-- CREST -->
+
+        <div class="crest">
+          <div class="crest-inner"></div>
+
+          <div class="crest-text">UNI</div>
+        </div>
+
+        <!-- UNIVERSITY -->
+
+        <div class="university-name">UNIVERSITY NAME</div>
+
+        <div class="organization">UNIVERSITY CLUB MANAGEMENT</div>
+
+        <!-- DIVIDER -->
+
+        <div class="divider">
+          <div class="divider-line"></div>
+
+          <div class="divider-diamond"></div>
+
+          <div class="divider-line"></div>
+        </div>
+
+        <!-- TITLE -->
+
+        <div class="title">CERTIFICATE</div>
+
+        <div class="subtitle">OF PARTICIPATION</div>
+
+        <!-- PRESENTED -->
+
+        <div class="presented">This certificate is proudly presented to</div>
+
+        <!-- STUDENT -->
+
+        <div class="student-name">
+          <?= htmlspecialchars( $studentName ?? '', ENT_QUOTES, 'UTF-8' ) ?>
+        </div>
+
+        <div class="name-line"></div>
+
+        <!-- RECOGNITION -->
+
+        <div class="recognition">
+          In recognition of their participation and contribution to
+        </div>
+
+        <!-- EVENT -->
+
+        <div class="event-title">
+          <?= htmlspecialchars( $eventTitle ?? '', ENT_QUOTES, 'UTF-8' ) ?>
+        </div>
+
+        <!-- DATE -->
+
+        <div class="event-date">
+          Held on <?= htmlspecialchars( $eventDate ?? '', ENT_QUOTES, 'UTF-8' )
+          ?>
+        </div>
+
+        <!-- =====================================================
+             SINGLE SIGNATURE
+        ====================================================== -->
+
+        <div class="signature-section">
+          <div class="signature-space">
+            <img
+              src="Storage/certificates/signatures/university-representative.png"
+              class="signature-image"
+              alt="Authorized Signature" style="mix-blend-mode: multiply; filter: contrast(150%);"
+            />niversity Representative</div>
+
+          <div class="signature-subtitle">Authorized Representative</div>
+        </div>
+
+        <!-- CERTIFICATE NUMBER -->
+
+        <div class="certificate-number">
+          Certificate No:
+
+          <strong>
+            <?= htmlspecialchars( $certificateNumber ?? '', ENT_QUOTES, 'UTF-8'
+            ) ?>
+          </strong>
+        </div>
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+          Officially issued by the University Club Management System
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -10,6 +10,8 @@ use App\EventFeedback\Application\Services\EventFeedbackService;
 
 use App\Shared\Helpers\Flash;
 
+use App\Event\Application\Services\EventService;
+
 
 
 class AdminEventFeedbackController extends BaseController
@@ -18,17 +20,19 @@ class AdminEventFeedbackController extends BaseController
 
     private EventFeedbackService $feedbackService;
 
-
+    private EventService $eventService;
 
     public function __construct(
-        EventFeedbackService $feedbackService
+        EventFeedbackService $feedbackService,
+        EventService $eventService
     ) {
 
         parent::__construct();
 
 
-        $this->feedbackService =
-            $feedbackService;
+        $this->feedbackService = $feedbackService;
+
+        $this->eventService = $eventService;
     }
 
 
@@ -122,8 +126,94 @@ class AdminEventFeedbackController extends BaseController
     }
 
 
+    public function eventFeedback(
+        int $eventId
+    ) {
+
+        /*
+    |--------------------------------------------------------------------------
+    | Pagination
+    |--------------------------------------------------------------------------
+    */
+
+        $page =
+            max(
+                1,
+                (int)(
+                    $_GET['page'] ?? 1
+                )
+            );
+
+        $limit = 10;
 
 
+        /*
+    |--------------------------------------------------------------------------
+    | Get Event
+    |--------------------------------------------------------------------------
+    */
+
+        $event =
+            $this->eventService
+            ->getEvent(
+                $eventId
+            );
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Get Paginated Feedback
+    |--------------------------------------------------------------------------
+    */
+
+        $result =
+            $this->feedbackService
+            ->getEventFeedbacks(
+                $eventId,
+                $page,
+                $limit
+            );
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | View
+    |--------------------------------------------------------------------------
+    */
+
+        $this->view(
+
+            'EventFeedback/Presentation/Views/admin/index',
+
+            [
+
+                'title' =>
+                'Event Feedback',
+
+                'eventId' =>
+                $eventId,
+
+                'event' =>
+                $event,
+
+                'feedbacks' =>
+                $result['feedbacks'],
+
+                'pagination' =>
+                $result['pagination'],
+
+                'activeTab' =>
+                'feedbacks',
+
+                'eventDetailMode' =>
+                true
+
+            ],
+
+            'admin'
+
+        );
+    }
 
     /**
      * Delete Feedback

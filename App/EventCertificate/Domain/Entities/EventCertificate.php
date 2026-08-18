@@ -11,6 +11,8 @@ class EventCertificate
 
     private int $userId;
 
+    private ?string $studentName;
+
     private string $certificateNumber;
 
     private ?string $filePath;
@@ -33,6 +35,8 @@ class EventCertificate
 
         int $userId,
 
+        ?string $studentName = null,
+
         string $certificateNumber,
 
         ?string $filePath,
@@ -53,6 +57,8 @@ class EventCertificate
 
         $this->userId = $userId;
 
+        $this->studentName = $studentName;
+
         $this->certificateNumber = $certificateNumber;
 
         $this->filePath = $filePath;
@@ -64,7 +70,6 @@ class EventCertificate
         $this->createdAt = $createdAt;
 
         $this->updatedAt = $updatedAt;
-
     }
 
 
@@ -88,7 +93,10 @@ class EventCertificate
         return $this->userId;
     }
 
-
+    public function getStudentName(): ?string
+    {
+        return $this->studentName;
+    }
 
     public function getCertificateNumber(): string
     {
@@ -129,5 +137,4 @@ class EventCertificate
     {
         return $this->updatedAt;
     }
-
 }

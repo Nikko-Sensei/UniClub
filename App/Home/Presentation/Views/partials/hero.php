@@ -4,8 +4,8 @@
     <!-- BACKGROUND IMAGE + DARK OVERLAY                           -->
     <!-- ========================================================== -->
     <div class="absolute inset-0 z-0">
-        <img src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-            alt="University Campus" class="w-full h-full object-cover" loading="lazy" />
+        <img src="\UniClub\Public\Assets\images\ucsmtla.jpg" alt="University Campus" class="w-full h-full object-cover"
+            loading="lazy" />
         <div class="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/60 to-slate-800/40"></div>
     </div>
 

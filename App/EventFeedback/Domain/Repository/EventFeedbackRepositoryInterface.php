@@ -26,7 +26,7 @@ interface EventFeedbackRepositoryInterface
         int $eventId
     );
 
-   
+
     /**
      * Get feedback by user
     //  */
@@ -66,7 +66,15 @@ interface EventFeedbackRepositoryInterface
     );
 
 
+    public function findByEventPaginated(
+        int $eventId,
+        int $page,
+        int $limit
+    ): array;
 
+    public function countByEvent(
+        int $eventId
+    ): int;
 
 
     /**

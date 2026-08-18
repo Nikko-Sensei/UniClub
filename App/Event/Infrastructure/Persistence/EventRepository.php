@@ -616,33 +616,58 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
     }
 
     public function getRegistrationById(
-    int $id
-) {
+        int $id
+    ) {
 
-    $stmt = $this->db
-        ->prepare(
-            "CALL sp_event_registration_find_by_id(?)"
+        $stmt = $this->db
+            ->prepare(
+                "CALL sp_event_registration_find_by_id(?)"
+            );
+
+
+        $stmt->execute([
+
+            $id
+
+        ]);
+
+
+        $registration =
+            $stmt->fetch(
+                \PDO::FETCH_ASSOC
+            );
+
+
+        $stmt->closeCursor();
+
+
+        return $registration ?: null;
+    }
+
+    public function getEventCapacity(
+        int $eventId
+    ): array {
+
+        $stmt = $this->db->prepare(
+            "CALL sp_event_get_capacity(?)"
         );
 
+        $stmt->execute([
+            $eventId
+        ]);
 
-    $stmt->execute([
-
-        $id
-
-    ]);
-
-
-    $registration =
-        $stmt->fetch(
+        $result = $stmt->fetch(
             \PDO::FETCH_ASSOC
         );
 
+        $stmt->closeCursor();
 
-    $stmt->closeCursor();
-
-
-    return $registration ?: null;
-}
+        return $result ?: [
+            'capacity' => 0,
+            'registered_count' => 0,
+            'available_seats' => 0
+        ];
+    }
 
 
 

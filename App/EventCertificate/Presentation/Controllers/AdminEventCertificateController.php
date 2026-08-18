@@ -22,6 +22,8 @@ class AdminEventCertificateController extends BaseController
 
     private EventService $eventService;
 
+    
+
 
     public function __construct(
 
@@ -37,6 +39,7 @@ class AdminEventCertificateController extends BaseController
         $this->certificateService = $certificateService;
 
         $this->eventService = $eventService;
+
     }
 
 
@@ -102,78 +105,78 @@ class AdminEventCertificateController extends BaseController
     /**
      * Issue Certificate
      */
-    public function store(
+    // public function store(
 
-        int $eventId
+    //     int $eventId
 
-    ) {
-
-
-        $data = [
+    // ) {
 
 
-            'event_id' =>
-            $eventId,
+    //     $data = [
 
 
-            'user_id' =>
-            $_POST['user_id'],
+    //         'event_id' =>
+    //         $eventId,
 
 
-            'file_path' =>
-            $_POST['file_path'] ?? null,
+    //         'user_id' =>
+    //         $_POST['user_id'],
 
 
-            'issued_by' =>
-            $_SESSION['user']['id']
+    //         'file_path' =>
+    //         $_POST['file_path'] ?? null,
 
 
-        ];
+    //         'issued_by' =>
+    //         $_SESSION['user']['id']
 
 
-
-
-        try {
-
-
-            $this->certificateService
-                ->issue(
-
-                    $data
-
-                );
-
-
-
-            Flash::set(
-
-                'success',
-
-                'Certificate issued successfully.'
-
-            );
-        } catch (\Exception $e) {
-
-
-            Flash::set(
-
-                'error',
-
-                $e->getMessage()
-
-            );
-        }
+    //     ];
 
 
 
 
+    //     try {
 
-        return Response::redirect(
 
-            '/admin/events/' . $eventId . '/certificates'
+    //         $this->certificateService
+    //             ->issue(
 
-        );
-    }
+    //                 $data
+
+    //             );
+
+
+
+    //         Flash::set(
+
+    //             'success',
+
+    //             'Certificate issued successfully.'
+
+    //         );
+    //     } catch (\Exception $e) {
+
+
+    //         Flash::set(
+
+    //             'error',
+
+    //             $e->getMessage()
+
+    //         );
+    //     }
+
+
+
+
+
+    //     return Response::redirect(
+
+    //         '/admin/events/' . $eventId . '/certificates'
+
+    //     );
+    // }
 
     public function generate(
 
@@ -298,5 +301,48 @@ class AdminEventCertificateController extends BaseController
                 '/certificates'
 
         );
+    }
+
+    public function download(
+        int $id
+    ) {
+
+        try {
+
+            $certificate =
+                $this->certificateService
+                ->getCertificateById($id);
+
+            if (!$certificate) {
+
+                throw new \Exception(
+                    'Certificate not found.'
+                );
+            }
+
+            $filePath =
+                $certificate->getFilePath();
+
+            if (!$filePath) {
+
+                throw new \Exception(
+                    'Certificate file path is empty.'
+                );
+            }
+
+            return Response::download(
+                $filePath
+            );
+        } catch (\Exception $e) {
+
+            Flash::set(
+                'error',
+                $e->getMessage()
+            );
+
+            return Response::redirect(
+                '/admin/certificates'
+            );
+        }
     }
 }

@@ -380,7 +380,7 @@ $router->post(
 
 
 // Payment Account Management
- 
+
 
 
 $router->get(
@@ -1121,6 +1121,14 @@ $router->post(
 
 );
 
+$router->get(
+    '/admin/certificates/{id}/download',
+    [
+        AdminEventCertificateController::class,
+        'download'
+    ]
+);
+
 
 // feedback
 
@@ -1185,6 +1193,34 @@ $router->get(
         [
             PermissionMiddleware::class,
             'feedbacks.view'
+        ]
+
+    ]
+
+);
+
+$router->get(
+
+    '/admin/events/{id}/feedbacks',
+
+    [
+
+        AdminEventFeedbackController::class,
+
+        'eventFeedback'
+
+    ],
+
+    [
+
+        AuthMiddleware::class,
+
+        [
+
+            PermissionMiddleware::class,
+
+            'feedbacks.view'
+
         ]
 
     ]

@@ -21,23 +21,23 @@
         <?php if ($event->getBanner()): ?>
 
 
-            <img src="<?= BASE_URL ?>/uploads/events/<?= htmlspecialchars($event->getBanner()) ?>"
-                class="w-full h-64 md:h-80 object-cover transition-transform duration-700 group-hover:scale-105"
-                alt="<?= htmlspecialchars($event->getTitle()) ?>">
+        <img src="<?= BASE_URL ?>/uploads/events/<?= htmlspecialchars($event->getBanner()) ?>"
+            class="w-full h-64 md:h-80 object-cover transition-transform duration-700 group-hover:scale-105"
+            alt="<?= htmlspecialchars($event->getTitle()) ?>">
 
 
 
         <?php else: ?>
 
 
-            <div
-                class="w-full h-64 md:h-80 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center text-blue-400">
+        <div
+            class="w-full h-64 md:h-80 bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center text-blue-400">
 
 
-                <i data-lucide="calendar-days" class="w-20 h-20"></i>
+            <i data-lucide="calendar-days" class="w-20 h-20"></i>
 
 
-            </div>
+        </div>
 
 
         <?php endif; ?>
@@ -180,7 +180,7 @@
 
                     'icon' => 'message-square',
 
-                    'url' => 'feedback'
+                    'url' => 'feedbacks'
 
                 ]
 
@@ -200,7 +200,7 @@
 
 
 
-                <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/<?= $tab['url'] ?>" class="px-5 py-3 rounded-t-lg flex items-center gap-2 transition
+            <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/<?= $tab['url'] ?>" class="px-5 py-3 rounded-t-lg flex items-center gap-2 transition
 
         <?= $active
 
@@ -217,13 +217,13 @@
         ">
 
 
-                    <i data-lucide="<?= $tab['icon'] ?>" class="w-4 h-4"></i>
+                <i data-lucide="<?= $tab['icon'] ?>" class="w-4 h-4"></i>
 
 
-                    <?= $tab['label'] ?>
+                <?= $tab['label'] ?>
 
 
-                </a>
+            </a>
 
 
 

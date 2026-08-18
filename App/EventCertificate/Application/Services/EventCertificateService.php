@@ -21,13 +21,11 @@ class EventCertificateService
 
 
     private EventCertificateRepositoryInterface $certificateRepository;
-
-
     private EventService $eventService;
     private string $certificatePath;
     private EventAttendanceService $attendanceService;
     private UserService $userService;
-
+    private string $signaturePath;
 
 
     public function __construct(
@@ -53,6 +51,9 @@ class EventCertificateService
 
         $this->certificatePath =
             BASE_PATH . '/Storage/certificates/';
+
+        $this->signaturePath =
+            BASE_PATH . '/Storage/certificates/signatures/university-representative.png';
     }
 
     /**
@@ -256,14 +257,6 @@ class EventCertificateService
             );
     }
 
-
-
-
-
-
-
-
-
     /**
      * Download Certificate
      */
@@ -287,12 +280,12 @@ class EventCertificateService
     }
 
 
-
-
-
-
-
-
+    public function getCertificateById(
+        int $id
+    ) {
+        return $this->certificateRepository
+            ->findById($id);
+    }
 
     /**
      * Generate Unique Number
@@ -316,65 +309,242 @@ class EventCertificateService
     /**
      * Generate Certificate PDF
      */
+    // private function generateCertificateFile(
+
+    //     array $data
+
+    // ): string {
+
+    //     if (!is_dir($this->certificatePath)) {
+
+    //         mkdir(
+
+    //             $this->certificatePath,
+
+    //             0777,
+
+    //             true
+
+    //         );
+    //     }
+
+
+
+    //     /*
+    //     File Name
+    // */
+
+    //     $fileName =
+
+    //         $data['certificate_number']
+    //         .
+    //         '.pdf';
+
+
+
+    //     $fullPath =
+
+    //         $this->certificatePath
+    //         .
+    //         $fileName;
+
+
+
+    //     /*
+    //     Get Event Information
+    // */
+
+    //     $event =
+    //         $this->eventService
+    //         ->getEvent(
+
+    //             $data['event_id']
+
+    //         );
+
+
+    //     $user =
+    //         $this->userService
+    //         ->findById(
+    //             $data['user_id']
+    //         );
+
+    //     if (!$user) {
+    //         throw new \Exception(
+    //             "Student not found."
+    //         );
+    //     }
+
+    //     $studentName =
+    //         $user->getName();
+
+
+
+    //     $eventTitle =
+    //         $event->getTitle();
+
+
+
+    //     $eventDate =
+    //         $event->getEventDate();
+
+
+
+    //     $certificateNumber =
+    //         $data['certificate_number'];
+
+    //     $signaturePath =
+    //         $this->getSignatureDataUri();
+
+    //     /*
+    //     Load HTML Template
+    // */
+
+    //     ob_start();
+
+    //     require BASE_PATH .
+    //         '/App/EventCertificate/Presentation/Views/pdf/certificate.php';
+
+    //     $html =
+    //         ob_get_clean();
+
+
+
+    //     /*
+    //     Dompdf
+    // */
+
+    //     $options =
+    //         new Options();
+
+    //     $options->set(
+
+    //         'isRemoteEnabled',
+
+    //         true
+
+    //     );
+
+
+
+
+    //     $dompdf = new Dompdf($options);
+
+    //     $dompdf->loadHtml(
+
+    //         $html
+
+    //     );
+
+
+
+    //     $dompdf->setPaper(
+
+    //         'A4',
+
+    //         'landscape'
+
+    //     );
+
+
+
+    //     $dompdf->render();
+
+
+
+    //     /*
+    //     Save PDF
+    // */
+
+    //     file_put_contents(
+
+    //         $fullPath,
+
+    //         $dompdf->output()
+
+    //     );
+
+
+
+    //     /*
+    //     Save relative path
+    // */
+
+    //     return
+
+    //         'Storage/certificates/'
+    //         .
+    //         $fileName;
+    // }
+
+
+    /**
+     * Generate Certificate PDF
+     */
     private function generateCertificateFile(
-
         array $data
-
     ): string {
+
+        /*
+    |--------------------------------------------------------------------------
+    | Create Certificate Directory
+    |--------------------------------------------------------------------------
+    */
 
         if (!is_dir($this->certificatePath)) {
 
-            mkdir(
-
+            if (!mkdir(
                 $this->certificatePath,
-
                 0777,
-
                 true
+            )) {
 
-            );
+                throw new \Exception(
+                    'Unable to create certificate directory.'
+                );
+            }
         }
 
 
-
         /*
-        File Name
+    |--------------------------------------------------------------------------
+    | Certificate File Name
+    |--------------------------------------------------------------------------
     */
 
         $fileName =
-
-            $data['certificate_number']
-            .
-            '.pdf';
-
+            $data['certificate_number'] . '.pdf';
 
 
         $fullPath =
-
-            $this->certificatePath
-            .
-            $fileName;
-
+            $this->certificatePath . $fileName;
 
 
         /*
-        Get Event Information
+    |--------------------------------------------------------------------------
+    | Get Event
+    |--------------------------------------------------------------------------
     */
 
         $event =
             $this->eventService
             ->getEvent(
-
                 $data['event_id']
-
             );
 
 
+        if (!$event) {
+
+            throw new \Exception(
+                'Event not found.'
+            );
+        }
+
 
         /*
-        Temporary values
-
-        Later replace with UserService
+    |--------------------------------------------------------------------------
+    | Get Student
+    |--------------------------------------------------------------------------
     */
 
         $user =
@@ -383,34 +553,37 @@ class EventCertificateService
                 $data['user_id']
             );
 
+
         if (!$user) {
+
             throw new \Exception(
-                "Student not found."
+                'Student not found.'
             );
         }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Certificate Data
+    |--------------------------------------------------------------------------
+    */
 
         $studentName =
             $user->getName();
 
-
-
         $eventTitle =
             $event->getTitle();
-
-
 
         $eventDate =
             $event->getEventDate();
 
-
-
         $certificateNumber =
             $data['certificate_number'];
 
-
-
         /*
-        Load HTML Template
+    |--------------------------------------------------------------------------
+    | Load Certificate HTML
+    |--------------------------------------------------------------------------
     */
 
         ob_start();
@@ -422,77 +595,100 @@ class EventCertificateService
             ob_get_clean();
 
 
-
         /*
-        Dompdf
+    |--------------------------------------------------------------------------
+    | Dompdf Configuration
+    |--------------------------------------------------------------------------
     */
 
         $options =
             new Options();
 
         $options->set(
-
             'isRemoteEnabled',
-
             true
-
         );
+
 
 
 
         $dompdf =
-            new Dompdf(
-
-                $options
-
-            );
+            new Dompdf($options);
 
 
+        /*
+    |--------------------------------------------------------------------------
+    | Load HTML
+    |--------------------------------------------------------------------------
+    */
 
         $dompdf->loadHtml(
-
             $html
-
         );
 
 
+        /*
+    |--------------------------------------------------------------------------
+    | A4 Landscape
+    |--------------------------------------------------------------------------
+    */
 
         $dompdf->setPaper(
-
             'A4',
-
             'landscape'
-
         );
 
 
+        /*
+    |--------------------------------------------------------------------------
+    | Render
+    |--------------------------------------------------------------------------
+    */
 
         $dompdf->render();
 
 
-
         /*
-        Save PDF
+    |--------------------------------------------------------------------------
+    | Save PDF
+    |--------------------------------------------------------------------------
     */
 
-        file_put_contents(
+        $pdfOutput =
+            $dompdf->output();
 
-            $fullPath,
 
-            $dompdf->output()
+        if ($pdfOutput === '') {
 
-        );
+            throw new \Exception(
+                'Unable to generate certificate PDF.'
+            );
+        }
 
+
+        $result =
+            file_put_contents(
+                $fullPath,
+                $pdfOutput
+            );
+
+
+        if ($result === false) {
+
+            throw new \Exception(
+                'Unable to save certificate PDF.'
+            );
+        }
 
 
         /*
-        Save relative path
+    |--------------------------------------------------------------------------
+    | Return Relative Path
+    |--------------------------------------------------------------------------
     */
 
         return
-
-            'Storage/certificates/'
-            .
+            'Storage/certificates/' .
             $fileName;
     }
 
@@ -543,5 +739,47 @@ class EventCertificateService
         }
 
         return $count;
+    }
+
+    private function getSignatureDataUri(): string
+    {
+        if (!file_exists($this->signaturePath)) {
+            throw new \Exception(
+                'Signature image not found.'
+            );
+        }
+
+        $extension = strtolower(
+            pathinfo(
+                $this->signaturePath,
+                PATHINFO_EXTENSION
+            )
+        );
+
+        $mimeType = match ($extension) {
+            'png' => 'image/png',
+            'jpg',
+            'jpeg' => 'image/jpeg',
+
+            default => throw new \Exception(
+                'Unsupported signature image format.'
+            ),
+        };
+
+        $imageData = file_get_contents(
+            $this->signaturePath
+        );
+
+        if ($imageData === false) {
+            throw new \Exception(
+                'Unable to read signature image.'
+            );
+        }
+
+        return
+            'data:' .
+            $mimeType .
+            ';base64,' .
+            base64_encode($imageData);
     }
 }

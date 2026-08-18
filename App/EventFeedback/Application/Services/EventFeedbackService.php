@@ -33,7 +33,6 @@ class EventFeedbackService
         $this->feedbackRepository = $feedbackRepository;
 
         $this->eventRepository = $eventRepository;
-
     }
 
 
@@ -45,8 +44,7 @@ class EventFeedbackService
      */
     public function create(
         array $data
-    )
-    {
+    ) {
 
 
         /*
@@ -72,7 +70,6 @@ class EventFeedbackService
                 "Event not found."
 
             );
-
         }
 
 
@@ -89,10 +86,10 @@ class EventFeedbackService
         $eventEnd = strtotime(
 
             $event->getEventDate()
-            .
-            ' '
-            .
-            $event->getEndTime()
+                .
+                ' '
+                .
+                $event->getEndTime()
 
         );
 
@@ -106,7 +103,6 @@ class EventFeedbackService
                 "Feedback is only available after event completion."
 
             );
-
         }
 
 
@@ -142,7 +138,6 @@ class EventFeedbackService
                 "Only registered participants can submit feedback."
 
             );
-
         }
 
 
@@ -178,7 +173,6 @@ class EventFeedbackService
                 "You already submitted feedback."
 
             );
-
         }
 
 
@@ -201,7 +195,6 @@ class EventFeedbackService
                 $data
 
             );
-
     }
 
 
@@ -217,8 +210,7 @@ class EventFeedbackService
      */
     public function getEventFeedback(
         int $eventId
-    )
-    {
+    ) {
 
 
         return $this->feedbackRepository
@@ -227,7 +219,6 @@ class EventFeedbackService
                 $eventId
 
             );
-
     }
 
 
@@ -259,8 +250,7 @@ class EventFeedbackService
 
         array $filters = []
 
-    ): array
-    {
+    ): array {
 
 
         $page =
@@ -310,34 +300,85 @@ class EventFeedbackService
 
 
                 'current_page' =>
-                    $page,
+                $page,
 
 
                 'per_page' =>
-                    $limit,
+                $limit,
 
 
                 'total' =>
-                    $total,
+                $total,
 
 
                 'total_pages' =>
-                    (int) ceil(
+                (int) ceil(
 
-                        $total / $limit
+                    $total / $limit
 
-                    )
+                )
 
 
             ]
 
         ];
-
     }
 
 
 
+    /**
+     * Get paginated feedback for an event
+     */
+    public function getEventFeedbacks(
+        int $eventId,
+        int $page,
+        int $limit
+    ): array {
 
+        $page = max(
+            1,
+            $page
+        );
+
+        $feedbacks =
+            $this->feedbackRepository
+            ->findByEventPaginated(
+                $eventId,
+                $page,
+                $limit
+            );
+
+        $total =
+            $this->feedbackRepository
+            ->countByEvent(
+                $eventId
+            );
+
+        return [
+
+            'feedbacks' =>
+            $feedbacks,
+
+            'pagination' => [
+
+                'current_page' =>
+                $page,
+
+                'per_page' =>
+                $limit,
+
+                'total' =>
+                $total,
+
+                'total_pages' =>
+                (int) ceil(
+                    $total / $limit
+                )
+
+            ]
+
+        ];
+    }
 
 
 
@@ -348,8 +389,7 @@ class EventFeedbackService
      */
     public function delete(
         int $id
-    )
-    {
+    ) {
 
 
         // $feedback =
@@ -377,14 +417,5 @@ class EventFeedbackService
                 $id
 
             );
-
     }
-
-
-
-
 }
-
-
-
- 
