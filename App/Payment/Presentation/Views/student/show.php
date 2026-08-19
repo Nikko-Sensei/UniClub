@@ -1,19 +1,18 @@
 <div class="max-w-5xl mx-auto px-6 py-10">
 
-
+    <div class="animate-slideInLeft mb-4">
+        <a href="<?= BASE_URL ?>/payments/history"
+            class="back-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card-light text-slate-700 font-medium text-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:border-blue-200 group">
+            <i data-lucide="arrow-left"
+                class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"></i>
+            <span>Back to Payment History</span>
+        </a>
+    </div>
     <!-- Header -->
     <div class="mb-8">
 
 
         <div class="flex items-center gap-3">
-
-
-            <a href="<?= BASE_URL ?>/payments/history"
-                class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition">
-
-                <i data-lucide="arrow-left" class="w-5 h-5 text-slate-600"></i>
-
-            </a>
 
 
 
@@ -118,8 +117,8 @@
                     <h2 class="text-xl font-bold text-slate-800">
 
                         <?= htmlspecialchars(
-                            $payment['club_name']
-                        ) ?>
+                                $payment['club_name']
+                            ) ?>
 
                     </h2>
 
@@ -226,10 +225,10 @@
                 <h3 class="text-2xl font-bold text-blue-600 mt-2">
 
 
-                    $<?= number_format(
-                        $payment['amount'],
-                        2
-                    ) ?>
+                    <p class="text-xl font-bold text-blue-600">
+                        <?= number_format((float) $payment['amount']) ?>
+                        <span class="ml-1 text-sm font-semibold text-slate-500">MMK</span>
+                    </p>
 
 
                 </h3>
@@ -258,8 +257,8 @@
 
 
                     <?= htmlspecialchars(
-                        $payment['payment_method']
-                    ) ?>
+                            $payment['payment_method']
+                        ) ?>
 
 
                 </h3>
@@ -288,11 +287,11 @@
 
 
                     <?= $payment['transaction_number']
-                        ? htmlspecialchars(
-                            $payment['transaction_number']
-                        )
-                        : 'N/A'
-                    ?>
+                            ? htmlspecialchars(
+                                $payment['transaction_number']
+                            )
+                            : 'N/A'
+                        ?>
 
 
                 </h3>
@@ -321,11 +320,11 @@
 
 
                     <?= date(
-                        'M d, Y H:i',
-                        strtotime(
-                            $payment['created_at']
-                        )
-                    ) ?>
+                            'M d, Y H:i',
+                            strtotime(
+                                $payment['created_at']
+                            )
+                        ) ?>
 
 
                 </h3>
@@ -416,14 +415,14 @@
 
 
                         <?= $payment['verified_at']
-                            ? date(
-                                'M d, Y H:i',
-                                strtotime(
-                                    $payment['verified_at']
-                                )
-                            )
-                            : 'N/A'
-                        ?>
+                                    ? date(
+                                        'M d, Y H:i',
+                                        strtotime(
+                                            $payment['verified_at']
+                                        )
+                                    )
+                                    : 'N/A'
+                                ?>
 
 
                     </span>

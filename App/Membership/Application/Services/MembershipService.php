@@ -132,7 +132,7 @@ class MembershipService
                     );
                 }
 
-                
+
                 return $membershipId;
             }
         }
@@ -493,11 +493,71 @@ Paid Club
     }
 
 
+    // public function rejectMembership(
+    //     int $membershipId,
+    //     int $adminId
+    // ): void {
+
+    //     $rejected =
+    //         $this->membershipRepository
+    //         ->rejectMembership(
+    //             $membershipId,
+    //             $adminId
+    //         );
+
+
+    //     if (!$rejected) {
+
+    //         throw new \Exception(
+    //             'Membership request could not be rejected'
+    //         );
+    //     }
+
+    //     $this->auditLogger->log(
+
+    //         AuditAction::REJECT_MEMBERSHIP,
+
+    //         $adminId,
+
+    //         'Membership',
+
+    //         $membershipId,
+
+    //         [
+    //             'action' => 'Membership rejected'
+    //         ]
+
+    //     );
+    // }
+
+
     public function rejectMembership(
         int $membershipId,
         int $adminId
     ): void {
 
+        /*
+     * Get membership before rejection
+     * so we know who to notify.
+     */
+        $membership =
+            $this->membershipRepository
+            ->getById(
+                $membershipId
+            );
+
+
+        if (!$membership) {
+
+            throw new \Exception(
+                'Membership not found'
+            );
+        }
+
+
+        /*
+     * Reject membership
+     */
         $rejected =
             $this->membershipRepository
             ->rejectMembership(
@@ -513,6 +573,24 @@ Paid Club
             );
         }
 
+
+        /*
+     * Notify student
+     */
+        $this->notificationService
+            ->create(
+                $membership['user_id'],
+                'Membership Rejected',
+                "Your request to join {$membership['club_name']} has been rejected.",
+                'membership_rejected',
+                'club',
+                $membership['club_id']
+            );
+
+
+        /*
+     * Audit log
+     */
         $this->auditLogger->log(
 
             AuditAction::REJECT_MEMBERSHIP,
@@ -524,12 +602,13 @@ Paid Club
             $membershipId,
 
             [
+                'user_id' => $membership['user_id'],
+                'club_id' => $membership['club_id'],
                 'action' => 'Membership rejected'
             ]
 
         );
     }
-
     public function getStatistics(): array
     {
         return

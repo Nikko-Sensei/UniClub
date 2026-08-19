@@ -242,16 +242,14 @@
                 </p>
 
                 <p class="
-                    text-xl
-                    font-bold
-                    text-slate-800
-                    mt-0.5
-                    whitespace-nowrap
-                ">
-                    MMK <?= number_format(
-                            $statistics['verified_amount'],
-                            2
-                        ) ?>
+    text-xl
+    font-bold
+    text-slate-800
+    mt-0.5
+    whitespace-nowrap
+">
+                    <?= number_format($statistics['verified_amount'], 0) ?>
+                    <span class="text-sm font-semibold text-slate-500 ml-1">MMK</span>
                 </p>
 
                 <p class="text-[11px] text-slate-400 mt-0.5">
@@ -579,8 +577,9 @@
                                                 <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars(
                                                                                                 $payment['profile_image']
                                                                                             ) ?>" alt="<?= htmlspecialchars(
-                                                                    $payment['user_name'] ?? 'Student'
-                                                                ) ?>" class="w-full h-full object-cover">
+                                                                                                            $payment['user_name'] ?? 'Student'
+                                                                                                        ) ?>"
+                                                    class="w-full h-full object-cover">
 
                                             <?php else: ?>
 
@@ -690,17 +689,10 @@
                                 <!-- Amount -->
                                 <td class="px-5 py-3.5">
 
-                                    <p class="
-                                        font-semibold
-                                        text-blue-600
-                                        whitespace-nowrap
-                                    ">
-                                        MMK <?= number_format(
-                                                $payment['amount'],
-                                                2
-                                            ) ?>
-                                    </p>
-
+                                    <span class="font-semibold text-blue-600 whitespace-nowrap">
+                                        <?= number_format($payment['amount'], 0) ?>
+                                        <span class="text-xs text-slate-400 ml-1">MMK</span>
+                                    </span>
                                 </td>
 
 

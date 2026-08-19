@@ -1,5 +1,13 @@
 <div class="max-w-7xl mx-auto px-6 py-10">
 
+    <div class="animate-slideInLeft mb-4">
+        <a href="<?= BASE_URL ?>/clubs"
+            class="back-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card-light text-slate-700 font-medium text-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:border-blue-200 group">
+            <i data-lucide="arrow-left"
+                class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"></i>
+            <span>Back to Clubs</span>
+        </a>
+    </div>
 
     <!-- Header -->
     <div class="mb-8">
@@ -103,8 +111,8 @@
                         <h3 class="text-lg font-bold text-slate-800">
 
                             <?= htmlspecialchars(
-                                $payment['club_name']
-                            ) ?>
+                                        $payment['club_name']
+                                    ) ?>
 
                         </h3>
 
@@ -115,8 +123,8 @@
                             Payment Method:
 
                             <?= htmlspecialchars(
-                                $payment['payment_method']
-                            ) ?>
+                                        $payment['payment_method']
+                                    ) ?>
 
                         </p>
 
@@ -125,11 +133,11 @@
                         <p class="text-sm text-slate-500">
 
                             <?= date(
-                                'M d, Y',
-                                strtotime(
-                                    $payment['created_at']
-                                )
-                            ) ?>
+                                        'M d, Y',
+                                        strtotime(
+                                            $payment['created_at']
+                                        )
+                                    ) ?>
 
                         </p>
 
@@ -152,14 +160,8 @@
 
 
                     <p class="text-xl font-bold text-blue-600">
-
-
-                        $<?= number_format(
-                            $payment['amount'],
-                            2
-                        ) ?>
-
-
+                        <?= number_format((float) $payment['amount']) ?>
+                        <span class="ml-1 text-sm font-semibold text-slate-500">MMK</span>
                     </p>
 
 

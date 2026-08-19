@@ -195,6 +195,7 @@ use App\Notification\Application\Services\NotificationService;
 use App\Notification\Presentation\Controllers\NotificationController;
 
 use App\Shared\Presentation\Controllers\MaintenanceController;
+use App\FAQ\Presentation\Controllers\FaqController;
 
 class Bootstrap
 {
@@ -202,7 +203,15 @@ class Bootstrap
     {
         $container = new Container();
 
+        // FAQ
 
+        $container->bind(
+            FaqController::class,
+            function () {
+                return new FaqController();
+            }
+        );
+        
         // Maintenance
 
         $container->bind(

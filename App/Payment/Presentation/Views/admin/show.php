@@ -1,5 +1,13 @@
 <div class="space-y-6">
 
+    <div class="animate-slideInLeft mb-4">
+        <a href="<?= BASE_URL ?>/admin/payments"
+            class="back-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card-light text-slate-700 font-medium text-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:border-blue-200 group">
+            <i data-lucide="arrow-left"
+                class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"></i>
+            <span>Back to Payments</span>
+        </a>
+    </div>
     <!-- Header -->
     <div class="
         flex
@@ -11,22 +19,6 @@
     ">
 
         <div class="flex items-center gap-3">
-
-            <!-- Back Button -->
-            <a href="<?= BASE_URL ?>/admin/payments" class="
-                    w-10
-                    h-10
-                    rounded-lg
-                    bg-slate-100
-                    hover:bg-slate-200
-                    text-slate-600
-                    flex
-                    items-center
-                    justify-center
-                    transition
-                ">
-                <i data-lucide="arrow-left" class="w-5 h-5"></i>
-            </a>
 
 
             <div>
@@ -311,15 +303,16 @@
 
 
                     <p class="
-                            text-xl
-                            font-bold
-                            text-blue-600
-                            mt-2
-                        ">
-                        MMK <?= number_format(
-                                $payment['amount'],
-                                2
-                            ) ?>
+        text-xl
+        font-bold
+        text-blue-600
+        mt-2
+        whitespace-nowrap
+    ">
+                        <?= number_format($payment['amount'], 0) ?>
+                        <span class="text-sm font-semibold text-slate-500 ml-1">
+                            MMK
+                        </span>
                     </p>
 
                 </div>

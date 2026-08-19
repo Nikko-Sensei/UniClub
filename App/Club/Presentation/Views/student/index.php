@@ -241,19 +241,25 @@
 
                                 <i data-lucide="wallet" class="w-4 h-4 text-blue-400"></i>
 
+                                <?php if ($featuredClub->getMembershipFee() > 0): ?>
+
+                                <div class="flex items-baseline gap-1.5">
+                                    <span class="text-sm font-extrabold tracking-tight text-white">
+                                        <?= number_format($featuredClub->getMembershipFee(), 0) ?>
+                                    </span>
+
+                                    <span class="text-[10px] font-bold uppercase tracking-wide text-blue-300">
+                                        MMK
+                                    </span>
+                                </div>
+
+                                <?php else: ?>
+
                                 <span class="text-sm font-semibold text-white">
-
-                                    <?php if ($featuredClub->getMembershipFee() > 0): ?>
-
-                                    MMK <?= number_format($featuredClub->getMembershipFee()) ?>
-
-                                    <?php else: ?>
-
                                     Free Membership
-
-                                    <?php endif; ?>
-
                                 </span>
+
+                                <?php endif; ?>
 
                             </div>
 
@@ -392,24 +398,34 @@
                         <?= htmlspecialchars($club->getDescription()) ?>
                     </p>
 
-                    <div class="flex items-center gap-2 text-sm text-slate-600 mb-5">
+                    <div class="flex items-center justify-between mb-5">
 
-                        <i data-lucide="wallet" class="w-4 h-4 text-blue-500"></i>
+                        <div class="flex items-center gap-2 text-sm text-slate-500">
+                            <i data-lucide="wallet" class="w-4 h-4 text-blue-500"></i>
+                            <span>Membership Fee</span>
+                        </div>
 
+                        <?php if ($club->getMembershipFee() > 0): ?>
 
-                        <span class="font-medium">
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="text-base font-extrabold tracking-tight text-slate-800">
+                                <?= number_format($club->getMembershipFee(), 0) ?>
+                            </span>
 
-                            <?php if ($club->getMembershipFee() > 0): ?>
+                            <span class="text-[11px] font-bold uppercase tracking-wide text-blue-600">
+                                MMK
+                            </span>
+                        </div>
 
-                            MMK <?= number_format($club->getMembershipFee()) ?>
+                        <?php else: ?>
 
-                            <?php else: ?>
-
-                            Free Membership
-
-                            <?php endif; ?>
-
+                        <span
+                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold">
+                            <i data-lucide="badge-check" class="w-3.5 h-3.5"></i>
+                            Free
                         </span>
+
+                        <?php endif; ?>
 
                     </div>
 

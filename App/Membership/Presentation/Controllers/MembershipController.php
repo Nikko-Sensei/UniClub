@@ -24,8 +24,7 @@ class MembershipController extends BaseController
         parent::__construct();
 
 
-        $this->membershipService =
-            $membershipService;
+        $this->membershipService = $membershipService;
     }
 
 

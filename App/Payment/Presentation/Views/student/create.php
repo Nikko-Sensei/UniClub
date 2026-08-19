@@ -52,15 +52,28 @@
 
             <div class="mb-5">
 
-
                 <label class="block text-sm font-semibold text-slate-700 mb-2">
                     Amount
                 </label>
 
-                <input type="number" name="amount" value="<?= $club->getMembershipFee() ?>" readonly
-                    class="w-full rounded-xl border border-slate-300 px-4 py-3 bg-slate-100">
+                <div class="relative">
+                    <!-- Actual value submitted to PHP -->
+                    <input type="hidden" name="amount" value="<?= htmlspecialchars($club->getMembershipFee()) ?>">
 
+                    <!-- Display amount -->
+                    <div
+                        class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 flex items-baseline justify-between">
 
+                        <span class="text-2xl font-bold tracking-tight text-slate-800">
+                            <?= number_format($club->getMembershipFee(), 0) ?>
+                        </span>
+
+                        <span class="text-sm font-bold text-blue-600">
+                            MMK
+                        </span>
+
+                    </div>
+                </div>
 
             </div>
 
@@ -204,20 +217,45 @@
 
             </div>
 
-            <button type="submit"
-                class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition">
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+
+                <!-- Cancel -->
+                <a href="<?= BASE_URL ?>/clubs/<?= $clubId ?>" class="flex-1 inline-flex items-center justify-center gap-2
+               px-6 py-3 rounded-xl
+               border border-slate-200
+               bg-white
+               text-slate-600
+               font-semibold text-sm
+               hover:bg-slate-50
+               hover:border-slate-300
+               hover:text-slate-800
+               transition-all duration-200">
+
+                    <i data-lucide="x" class="w-4 h-4"></i>
+
+                    Cancel
+                </a>
 
 
-                <span class="flex items-center justify-center gap-2">
+                <!-- Submit Payment -->
+                <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2
+               px-6 py-3 rounded-xl
+               bg-gradient-to-r from-blue-600 to-indigo-600
+               hover:from-blue-700 hover:to-indigo-700
+               text-white
+               font-semibold text-sm
+               shadow-md shadow-blue-200/50
+               hover:shadow-lg
+               hover:-translate-y-0.5
+               transition-all duration-200">
 
-                    <i data-lucide="send" class="w-5 h-5"></i>
+                    <i data-lucide="send" class="w-4 h-4"></i>
 
                     Submit Payment
 
-                </span>
+                </button>
 
-
-            </button>
+            </div>
 
 
 

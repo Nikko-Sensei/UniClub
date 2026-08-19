@@ -37,6 +37,12 @@ use App\EventAttendance\Presentation\Controllers\EventAttendanceController;
 use App\EventCertificate\Presentation\Controllers\EventCertificateController;
 use App\EventCertificate\Presentation\Controllers\AdminEventCertificateController;
 use App\PaymentAccount\Presentation\Controllers\AdminPaymentAccountController;
+use App\FAQ\Presentation\Controllers\FaqController;
+
+$router->get(
+    '/faq',
+    [FaqController::class, 'index']
+);
 
 
 $router->get(

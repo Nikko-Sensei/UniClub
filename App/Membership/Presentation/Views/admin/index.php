@@ -593,32 +593,29 @@
 
                                         <form method="POST"
                                             action="<?= BASE_URL ?>/admin/memberships/<?= (int)$membership['id'] ?>/approve"
-                                            onsubmit="return confirm('Approve this membership request?');">
+                                            class="approve-membership-form">
 
+                                            <button type="button" class="
+                approve-membership-btn
+                px-4
+                py-2
+                inline-flex
+                items-center
+                gap-2
+                rounded-lg
+                bg-green-600
+                hover:bg-green-700
+                text-white
+                text-xs
+                font-semibold
+                transition
+            " data-member-name="<?= htmlspecialchars($membership['user_name'] ?? 'this member', ENT_QUOTES, 'UTF-8') ?>">
 
-                                            <button type="submit" class="
-            px-4
-            py-2
-            inline-flex
-            items-center
-            gap-2
-            rounded-lg
-            bg-green-600
-            hover:bg-green-700
-            text-white
-            text-xs
-            font-semibold
-            transition">
-
-
-                                                <i data-lucide="circle-check" class="w-4 h-4">
-                                                </i>
+                                                <i data-lucide="circle-check" class="w-4 h-4"></i>
 
                                                 Approve
 
-
                                             </button>
-
 
                                         </form>
 
@@ -630,33 +627,34 @@
 
                                         <form method="POST"
                                             action="<?= BASE_URL ?>/admin/memberships/<?= (int)$membership['id'] ?>/reject"
-                                            onsubmit="return confirm('Reject this membership request?');">
+                                            class="reject-membership-form">
 
+                                            <button type="button" class="
+                reject-membership-btn
+                px-4
+                py-2
+                inline-flex
+                items-center
+                gap-2
+                rounded-lg
+                border
+                border-red-200
+                text-red-600
+                hover:bg-red-50
+                text-xs
+                font-semibold
+                transition
+            " data-member-name="<?= htmlspecialchars(
+                                    $membership['user_name'] ?? 'this member',
+                                    ENT_QUOTES,
+                                    'UTF-8'
+                                ) ?>">
 
-                                            <button type="submit" class="
-            px-4
-            py-2
-            inline-flex
-            items-center
-            gap-2
-            rounded-lg
-            border
-            border-red-200
-            text-red-600
-            hover:bg-red-50
-            text-xs
-            font-semibold
-            transition">
-
-
-                                                <i data-lucide="circle-x" class="w-4 h-4">
-                                                </i>
+                                                <i data-lucide="circle-x" class="w-4 h-4"></i>
 
                                                 Reject
 
-
                                             </button>
-
 
                                         </form>
 
@@ -687,3 +685,674 @@
 
 
 </div>
+
+<!-- Approve Membership Modal -->
+<div id="approveMembershipModal" class="fixed inset-0 z-[100] hidden">
+
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onclick="closeApproveModal()"></div>
+
+    <!-- Modal Container -->
+    <div class="relative min-h-full flex items-center justify-center p-4">
+
+        <div id="approveModalContent" class="
+                w-full
+                max-w-md
+                bg-white
+                rounded-2xl
+                shadow-2xl
+                overflow-hidden
+                transform
+                scale-95
+                opacity-0
+                transition-all
+                duration-200
+             ">
+
+            <!-- Header -->
+            <div class="px-6 pt-6">
+
+                <div class="flex items-start gap-4">
+
+                    <!-- Icon -->
+                    <div class="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-green-100
+                        text-green-600
+                        flex
+                        items-center
+                        justify-center
+                        shrink-0
+                    ">
+                        <i data-lucide="circle-check" class="w-6 h-6"></i>
+                    </div>
+
+                    <div class="flex-1">
+
+                        <h3 class="
+                            text-lg
+                            font-bold
+                            text-slate-900
+                        ">
+                            Approve Membership?
+                        </h3>
+
+                        <p class="
+                            mt-1
+                            text-sm
+                            text-slate-500
+                            leading-6
+                        ">
+                            You are about to approve the membership request
+                            for
+                            <span id="approveMemberName" class="font-semibold text-slate-700">
+                            </span>.
+                        </p>
+
+                    </div>
+
+                    <!-- Close -->
+                    <button type="button" onclick="closeApproveModal()" class="
+                                w-8
+                                h-8
+                                rounded-lg
+                                text-slate-400
+                                hover:text-slate-600
+                                hover:bg-slate-100
+                                flex
+                                items-center
+                                justify-center
+                                transition
+                            ">
+
+                        <i data-lucide="x" class="w-5 h-5"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- Information -->
+            <div class="px-6 py-5">
+
+                <div class="
+                    rounded-xl
+                    border
+                    border-green-200
+                    bg-green-50
+                    p-4
+                ">
+
+                    <div class="flex gap-3">
+
+                        <i data-lucide="info" class="
+                                w-5
+                                h-5
+                                text-green-600
+                                shrink-0
+                                mt-0.5
+                           ">
+                        </i>
+
+                        <div>
+
+                            <p class="
+                                text-sm
+                                font-semibold
+                                text-green-800
+                            ">
+                                Membership will become active
+                            </p>
+
+                            <p class="
+                                mt-1
+                                text-xs
+                                leading-5
+                                text-green-700
+                            ">
+                                The member will be able to access the club
+                                and its member-only features.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Actions -->
+            <div class="
+                px-6
+                py-4
+                bg-slate-50
+                border-t
+                border-slate-200
+                flex
+                items-center
+                justify-end
+                gap-3
+            ">
+
+                <button type="button" onclick="closeApproveModal()" class="
+                            px-4
+                            py-2.5
+                            rounded-xl
+                            border
+                            border-slate-200
+                            bg-white
+                            text-slate-700
+                            text-sm
+                            font-semibold
+                            hover:bg-slate-100
+                            transition
+                        ">
+                    Cancel
+                </button>
+
+                <button type="button" id="confirmApproveButton" onclick="confirmApproveMembership()" class="
+                            px-4
+                            py-2.5
+                            rounded-xl
+                            bg-green-600
+                            hover:bg-green-700
+                            text-white
+                            text-sm
+                            font-semibold
+                            inline-flex
+                            items-center
+                            gap-2
+                            shadow-sm
+                            transition
+                        ">
+
+                    <i data-lucide="check" class="w-4 h-4"></i>
+
+                    Approve Membership
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Reject Membership Modal -->
+<div id="rejectMembershipModal" class="fixed inset-0 z-[100] hidden">
+
+    <!-- Backdrop -->
+    <div class="
+        absolute
+        inset-0
+        bg-slate-950/60
+        backdrop-blur-sm
+    " onclick="closeRejectModal()"></div>
+
+
+    <!-- Modal -->
+    <div class="
+        relative
+        min-h-full
+        flex
+        items-center
+        justify-center
+        p-4
+    ">
+
+        <div id="rejectModalContent" class="
+                w-full
+                max-w-md
+                bg-white
+                rounded-2xl
+                shadow-2xl
+                overflow-hidden
+                scale-95
+                opacity-0
+                transition-all
+                duration-200
+             ">
+
+            <!-- Header -->
+            <div class="px-6 pt-6">
+
+                <div class="flex items-start gap-4">
+
+                    <!-- Icon -->
+                    <div class="
+                        w-12
+                        h-12
+                        rounded-2xl
+                        bg-red-100
+                        text-red-600
+                        flex
+                        items-center
+                        justify-center
+                        shrink-0
+                    ">
+
+                        <i data-lucide="circle-x" class="w-6 h-6"></i>
+
+                    </div>
+
+
+                    <!-- Text -->
+                    <div class="flex-1">
+
+                        <h3 class="
+                            text-lg
+                            font-bold
+                            text-slate-900
+                        ">
+                            Reject Membership?
+                        </h3>
+
+                        <p class="
+                            mt-1
+                            text-sm
+                            text-slate-500
+                            leading-6
+                        ">
+                            Are you sure you want to reject the
+                            membership request for
+
+                            <span id="rejectMemberName" class="
+                                    font-semibold
+                                    text-slate-700
+                                  ">
+                            </span>?
+                        </p>
+
+                    </div>
+
+
+                    <!-- Close -->
+                    <button type="button" onclick="closeRejectModal()" class="
+                                w-8
+                                h-8
+                                rounded-lg
+                                text-slate-400
+                                hover:text-slate-600
+                                hover:bg-slate-100
+                                flex
+                                items-center
+                                justify-center
+                                transition
+                            ">
+
+                        <i data-lucide="x" class="w-5 h-5"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Warning -->
+            <div class="px-6 py-5">
+
+                <div class="
+                    rounded-xl
+                    border
+                    border-red-200
+                    bg-red-50
+                    p-4
+                ">
+
+                    <div class="flex items-start gap-3">
+
+                        <i data-lucide="triangle-alert" class="
+                                w-5
+                                h-5
+                                text-red-600
+                                shrink-0
+                                mt-0.5
+                           ">
+                        </i>
+
+                        <p class="
+                            text-sm
+                            leading-6
+                            text-red-700
+                        ">
+                            This membership request will be marked
+                            as rejected.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="
+                px-6
+                py-4
+                bg-slate-50
+                border-t
+                border-slate-200
+                flex
+                items-center
+                justify-end
+                gap-3
+            ">
+
+                <button type="button" onclick="closeRejectModal()" class="
+                            px-4
+                            py-2.5
+                            rounded-xl
+                            border
+                            border-slate-200
+                            bg-white
+                            text-slate-700
+                            text-sm
+                            font-semibold
+                            hover:bg-slate-100
+                            transition
+                        ">
+
+                    Cancel
+
+                </button>
+
+
+                <button type="button" id="confirmRejectButton" onclick="confirmRejectMembership()" class="
+                            px-4
+                            py-2.5
+                            rounded-xl
+                            bg-red-600
+                            hover:bg-red-700
+                            text-white
+                            text-sm
+                            font-semibold
+                            inline-flex
+                            items-center
+                            gap-2
+                            shadow-sm
+                            transition
+                        ">
+
+                    <i data-lucide="circle-x" class="w-4 h-4"></i>
+
+                    Reject Membership
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const approveButtons = document.querySelectorAll('.approve-membership-btn');
+
+        approveButtons.forEach(function(button) {
+
+            button.addEventListener('click', function() {
+
+                const form = this.closest('.approve-membership-form');
+
+                const memberName = this.dataset.memberName || 'this member';
+
+                openApproveModal(memberName, form);
+
+            });
+
+        });
+
+    });
+
+
+    let approveForm = null;
+
+
+    function openApproveModal(memberName, form) {
+
+        approveForm = form;
+
+        const modal = document.getElementById('approveMembershipModal');
+        const content = document.getElementById('approveModalContent');
+        const nameElement = document.getElementById('approveMemberName');
+
+        nameElement.textContent = memberName;
+
+        modal.classList.remove('hidden');
+
+        requestAnimationFrame(function() {
+
+            content.classList.remove('scale-95', 'opacity-0');
+
+            content.classList.add(
+                'scale-100',
+                'opacity-100'
+            );
+
+        });
+
+        document.body.classList.add('overflow-hidden');
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    }
+
+
+    function closeApproveModal() {
+
+        const modal = document.getElementById('approveMembershipModal');
+        const content = document.getElementById('approveModalContent');
+
+        content.classList.remove(
+            'scale-100',
+            'opacity-100'
+        );
+
+        content.classList.add(
+            'scale-95',
+            'opacity-0'
+        );
+
+        setTimeout(function() {
+
+            modal.classList.add('hidden');
+
+            document.body.classList.remove('overflow-hidden');
+
+            approveForm = null;
+
+        }, 200);
+    }
+
+
+    function confirmApproveMembership() {
+
+        if (!approveForm) {
+            return;
+        }
+
+        const button = document.getElementById('confirmApproveButton');
+
+        button.disabled = true;
+
+        button.innerHTML = `
+        <i data-lucide="loader-2"
+           class="w-4 h-4 animate-spin"></i>
+        Approving...
+    `;
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        approveForm.submit();
+    }
+
+
+    document.addEventListener('keydown', function(event) {
+
+        if (event.key === 'Escape') {
+            closeApproveModal();
+        }
+
+    });
+</script>
+<script>
+    let rejectForm = null;
+
+
+    /* Open modal */
+    document.addEventListener('DOMContentLoaded', function() {
+
+        document
+            .querySelectorAll('.reject-membership-btn')
+            .forEach(function(button) {
+
+                button.addEventListener('click', function() {
+
+                    const form =
+                        this.closest('.reject-membership-form');
+
+                    const memberName =
+                        this.dataset.memberName || 'this member';
+
+                    openRejectModal(memberName, form);
+
+                });
+
+            });
+
+    });
+
+
+    function openRejectModal(memberName, form) {
+
+        rejectForm = form;
+
+        const modal =
+            document.getElementById('rejectMembershipModal');
+
+        const content =
+            document.getElementById('rejectModalContent');
+
+        const nameElement =
+            document.getElementById('rejectMemberName');
+
+
+        nameElement.textContent = memberName;
+
+        modal.classList.remove('hidden');
+
+
+        requestAnimationFrame(function() {
+
+            content.classList.remove(
+                'scale-95',
+                'opacity-0'
+            );
+
+            content.classList.add(
+                'scale-100',
+                'opacity-100'
+            );
+
+        });
+
+
+        document.body.classList.add('overflow-hidden');
+
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+    }
+
+
+    function closeRejectModal() {
+
+        const modal =
+            document.getElementById('rejectMembershipModal');
+
+        const content =
+            document.getElementById('rejectModalContent');
+
+
+        content.classList.remove(
+            'scale-100',
+            'opacity-100'
+        );
+
+        content.classList.add(
+            'scale-95',
+            'opacity-0'
+        );
+
+
+        setTimeout(function() {
+
+            modal.classList.add('hidden');
+
+            document.body.classList.remove('overflow-hidden');
+
+            rejectForm = null;
+
+        }, 200);
+
+    }
+
+
+    function confirmRejectMembership() {
+
+        if (!rejectForm) {
+            return;
+        }
+
+
+        const button =
+            document.getElementById('confirmRejectButton');
+
+
+        // Prevent double submission
+        button.disabled = true;
+
+
+        button.innerHTML = `
+        <i data-lucide="loader-2"
+           class="w-4 h-4 animate-spin"></i>
+        Rejecting...
+    `;
+
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+
+        rejectForm.submit();
+
+    }
+
+
+    /* Escape key */
+    document.addEventListener('keydown', function(event) {
+
+        if (event.key === 'Escape') {
+            closeRejectModal();
+        }
+
+    });
+</script>

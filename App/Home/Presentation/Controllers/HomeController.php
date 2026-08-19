@@ -17,8 +17,7 @@ class HomeController extends BaseController
 
         parent::__construct();
 
-        $this->homeService =
-            $homeService;
+        $this->homeService = $homeService;
     }
 
 

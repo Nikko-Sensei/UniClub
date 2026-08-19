@@ -22,322 +22,322 @@
     </script>
 
     <style>
-    /* ── Base ── */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        background: #F8FAFC;
-        color: #111827;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        overflow-x: hidden;
-    }
-
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #CBD5E1;
-        border-radius: 9999px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #94A3B8;
-    }
-
-    /* ── Animation Keyframes ── */
-    @keyframes fadeInUp {
-        0% {
-            opacity: 0;
-            transform: translateY(30px);
+        /* ── Base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes fadeInDown {
-        0% {
-            opacity: 0;
-            transform: translateY(-20px);
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #F8FAFC;
+            color: #111827;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
 
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes scaleIn {
-        0% {
-            opacity: 0;
-            transform: scale(0.9);
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
 
-        100% {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-
-    @keyframes float {
-
-        0%,
-        100% {
-            transform: translateY(0px);
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
 
-        50% {
-            transform: translateY(-10px);
-        }
-    }
-
-    @keyframes pulseGlow {
-
-        0%,
-        100% {
-            opacity: 0.3;
-            transform: scale(1);
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 9999px;
         }
 
-        50% {
-            opacity: 0.8;
-            transform: scale(1.1);
-        }
-    }
-
-    @keyframes shimmer {
-        0% {
-            background-position: -200% 0;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
         }
 
-        100% {
-            background-position: 200% 0;
-        }
-    }
+        /* ── Animation Keyframes ── */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
 
-    @keyframes borderGlow {
-
-        0%,
-        100% {
-            border-color: rgba(59, 130, 246, 0.1);
-        }
-
-        50% {
-            border-color: rgba(59, 130, 246, 0.3);
-        }
-    }
-
-    @keyframes slideInLeft {
-        0% {
-            opacity: 0;
-            transform: translateX(-30px);
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        100% {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
 
-    /* ── Animation Classes ── */
-    .animate-fadeInUp {
-        animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    .animate-fadeInDown {
-        animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    .animate-scaleIn {
-        animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    .animate-float {
-        animation: float 5s ease-in-out infinite;
-    }
-
-    .animate-pulseGlow {
-        animation: pulseGlow 3.5s ease-in-out infinite;
-    }
-
-    .animate-borderGlow {
-        animation: borderGlow 3s ease-in-out infinite;
-    }
-
-    .animate-slideInLeft {
-        animation: slideInLeft 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    /* ── Stagger Delays ── */
-    .delay-100 {
-        animation-delay: 100ms;
-    }
-
-    .delay-200 {
-        animation-delay: 200ms;
-    }
-
-    .delay-300 {
-        animation-delay: 300ms;
-    }
-
-    .delay-400 {
-        animation-delay: 400ms;
-    }
-
-    .delay-500 {
-        animation-delay: 500ms;
-    }
-
-    .delay-600 {
-        animation-delay: 600ms;
-    }
-
-    .delay-700 {
-        animation-delay: 700ms;
-    }
-
-    .delay-800 {
-        animation-delay: 800ms;
-    }
-
-    /* ── Glassmorphism ── */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .glass-card-light {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-    }
-
-    .glass-card-light:hover {
-        border-color: rgba(37, 99, 235, 0.2);
-        box-shadow: 0 12px 40px rgba(37, 99, 235, 0.08);
-    }
-
-    /* ── Button Shine Effect ── */
-    .btn-shine {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .btn-shine::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .btn-shine:hover::before {
-        left: 100%;
-    }
-
-    /* ── Back Button Animation ── */
-    .back-btn {
-        transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .back-btn:hover {
-        transform: translateX(-4px) scale(1.05);
-        box-shadow: 0 8px 30px -8px rgba(37, 99, 235, 0.3);
-    }
-
-    .back-btn:active {
-        transform: scale(0.95);
-    }
-
-    /* ── Card Hover Effects ── */
-    .card-hover {
-        transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .card-hover:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 20px 40px -12px rgba(37, 99, 235, 0.15);
-    }
-
-    /* ── Image Zoom ── */
-    .img-zoom {
-        transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .group:hover .img-zoom {
-        transform: scale(1.05);
-    }
-
-    /* ── Utilities ── */
-    .line-clamp-1 {
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .line-clamp-3 {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    /* ── Focus States ── */
-    *:focus-visible {
-        outline: 2px solid #2563EB;
-        outline-offset: 2px;
-        border-radius: 4px;
-    }
-
-    /* ── Background Mesh ── */
-    .bg-mesh {
-        background: radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
-            #F8FAFC;
-    }
-
-    /* ── Responsive Tweaks ── */
-    @media (max-width: 768px) {
-        .hero-content {
-            padding: 1.5rem;
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
+        @keyframes scaleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes borderGlow {
+
+            0%,
+            100% {
+                border-color: rgba(59, 130, 246, 0.1);
+            }
+
+            50% {
+                border-color: rgba(59, 130, 246, 0.3);
+            }
+        }
+
+        @keyframes slideInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ── Animation Classes ── */
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .animate-fadeInDown {
+            animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .animate-scaleIn {
+            animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .animate-pulseGlow {
+            animation: pulseGlow 3.5s ease-in-out infinite;
+        }
+
+        .animate-borderGlow {
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        .animate-slideInLeft {
+            animation: slideInLeft 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* ── Stagger Delays ── */
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
+
+        .delay-400 {
+            animation-delay: 400ms;
+        }
+
+        .delay-500 {
+            animation-delay: 500ms;
+        }
+
+        .delay-600 {
+            animation-delay: 600ms;
+        }
+
+        .delay-700 {
+            animation-delay: 700ms;
+        }
+
+        .delay-800 {
+            animation-delay: 800ms;
+        }
+
+        /* ── Glassmorphism ── */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-card-light {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-card-light:hover {
+            border-color: rgba(37, 99, 235, 0.2);
+            box-shadow: 0 12px 40px rgba(37, 99, 235, 0.08);
+        }
+
+        /* ── Button Shine Effect ── */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-shine::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .btn-shine:hover::before {
+            left: 100%;
+        }
+
+        /* ── Back Button Animation ── */
         .back-btn {
-            padding: 0.5rem 0.75rem;
-            font-size: 0.8rem;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
-    }
+
+        .back-btn:hover {
+            transform: translateX(-4px) scale(1.05);
+            box-shadow: 0 8px 30px -8px rgba(37, 99, 235, 0.3);
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ── Card Hover Effects ── */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px -12px rgba(37, 99, 235, 0.15);
+        }
+
+        /* ── Image Zoom ── */
+        .img-zoom {
+            transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .group:hover .img-zoom {
+            transform: scale(1.05);
+        }
+
+        /* ── Utilities ── */
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ── Focus States ── */
+        *:focus-visible {
+            outline: 2px solid #2563EB;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* ── Background Mesh ── */
+        .bg-mesh {
+            background: radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+                #F8FAFC;
+        }
+
+        /* ── Responsive Tweaks ── */
+        @media (max-width: 768px) {
+            .hero-content {
+                padding: 1.5rem;
+            }
+
+            .back-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 
@@ -366,10 +366,10 @@
 
             </php> <!-- Background image / gradient -->
             <?php if ($club->getBanner()): ?>
-            <img src="<?= BASE_URL ?>/uploads/clubs/<?= $club->getBanner() ?>"
-                class="absolute inset-0 w-full h-full object-cover img-zoom">
+                <img src="<?= BASE_URL ?>/uploads/clubs/<?= $club->getBanner() ?>"
+                    class="absolute inset-0 w-full h-full object-cover img-zoom">
             <?php else: ?>
-            <div class="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-blue-900"></div>
             <?php endif; ?>
 
             <!-- Overlay with glass effect and pattern -->
@@ -425,11 +425,18 @@
                                 <div
                                     class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
                                     <i data-lucide="wallet" class="w-4 h-4 text-blue-300"></i>
-                                    <span>
-                                        <?= $club->getMembershipFee() > 0
-                                            ? 'MMK ' . number_format($club->getMembershipFee(), 2)
-                                            : 'Free Membership' ?>
-                                    </span>
+                                    <?php if ($club->getMembershipFee() > 0): ?>
+                                        <div class="flex items-baseline gap-1.5">
+                                            <span class="text-sm font-bold text-white">
+                                                <?= number_format($club->getMembershipFee(), 0) ?>
+                                            </span>
+                                            <span class="text-[10px] font-semibold uppercase tracking-wide text-blue-300">
+                                                MMK
+                                            </span>
+                                        </div>
+                                    <?php else: ?>
+                                        <span>Free Membership</span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -439,109 +446,114 @@
                             <?php if (isset($_SESSION['user'])): ?>
 
 
-                            <?php if ($membershipStatus === 'pending'): ?>
+                                <?php if ($membershipStatus === 'pending'): ?>
 
-                            <!-- Pending Membership Card -->
-                            <div
-                                class="w-72 glass-card-light rounded-2xl p-5 border border-yellow-200 animate-fadeInUp">
-
-                                <div class="flex items-center gap-4">
-
+                                    <!-- Pending Membership Card -->
                                     <div
-                                        class="w-12 h-12 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center">
+                                        class="w-72 glass-card-light rounded-2xl p-5 border border-yellow-200 animate-fadeInUp">
 
-                                        <i data-lucide="clock" class="w-6 h-6"></i>
+                                        <div class="flex items-center gap-4">
+
+                                            <div
+                                                class="w-12 h-12 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center">
+
+                                                <i data-lucide="clock" class="w-6 h-6"></i>
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <h3 class="font-bold text-slate-800">
+                                                    Request Pending
+                                                </h3>
+
+                                                <p class="text-xs text-slate-500 mt-1">
+                                                    Waiting for approval
+                                                </p>
+
+                                            </div>
+
+                                        </div>
 
                                     </div>
 
 
-                                    <div>
-
-                                        <h3 class="font-bold text-slate-800">
-                                            Request Pending
-                                        </h3>
-
-                                        <p class="text-xs text-slate-500 mt-1">
-                                            Waiting for approval
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
+                                <?php elseif ($membershipStatus === 'approved'): ?>
 
 
-                            <?php elseif ($membershipStatus === 'approved'): ?>
-
-
-                            <!-- Approved Membership Card -->
-                            <div
-                                class="w-72 glass-card-light rounded-2xl p-5 border border-emerald-200 animate-fadeInUp">
-
-                                <div class="flex items-center gap-4">
-
+                                    <!-- Approved Membership Card -->
                                     <div
-                                        class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                                        class="w-72 glass-card-light rounded-2xl p-5 border border-emerald-200 animate-fadeInUp">
 
-                                        <i data-lucide="badge-check" class="w-6 h-6"></i>
+                                        <div class="flex items-center gap-4">
+
+                                            <div
+                                                class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+
+                                                <i data-lucide="badge-check" class="w-6 h-6"></i>
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <h3 class="font-bold text-slate-800">
+                                                    You are a Member
+                                                </h3>
+
+
+                                                <p class="text-xs text-slate-500 mt-1">
+                                                    You can join club activities
+                                                </p>
+
+                                            </div>
+
+
+                                        </div>
 
                                     </div>
 
 
-                                    <div>
 
-                                        <h3 class="font-bold text-slate-800">
-                                            You are a Member
-                                        </h3>
+                                <?php else: ?>
 
+                                    <button type="button" onclick="openJoinModal()"
+                                        class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 px-8 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg shadow-blue-600/30 btn-shine">
 
-                                        <p class="text-xs text-slate-500 mt-1">
-                                            You can join club activities
-                                        </p>
+                                        <div class="flex flex-col items-center">
 
-                                    </div>
+                                            <span class="flex items-center gap-2">
+                                                <i data-lucide="user-plus" class="w-4 h-4"></i>
+                                                Join Club
+                                            </span>
 
+                                            <?php if ($club->getMembershipFee() > 0): ?>
+                                                <span class="flex items-baseline gap-1 text-xs text-blue-100 mt-1">
+                                                    Membership Fee:
+                                                    <span class="font-bold text-white">
+                                                        <?= number_format($club->getMembershipFee(), 0) ?>
+                                                    </span>
+                                                    <span class="text-[10px] font-semibold text-blue-200">
+                                                        MMK
+                                                    </span>
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="text-xs text-blue-100 mt-1">
+                                                    Free Membership
+                                                </span>
+                                            <?php endif; ?>
 
-                                </div>
+                                        </div>
 
-                            </div>
-
-
-
+                                    </button>
+                                    </form>
+                                <?php endif; ?>
                             <?php else: ?>
-
-                            <button type="button" onclick="openJoinModal()"
-                                class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 px-8 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-lg shadow-blue-600/30 btn-shine">
-
-                                <div class="flex flex-col items-center">
-
-                                    <span class="flex items-center gap-2">
-                                        <i data-lucide="user-plus" class="w-4 h-4"></i>
-                                        Join Club
-                                    </span>
-
-                                    <?php if ($club->getMembershipFee() > 0): ?>
-                                    <span class="text-xs text-blue-100 mt-1">
-                                        Membership Fee:
-                                        $<?= number_format($club->getMembershipFee(), 2) ?>
-                                    </span>
-                                    <?php else: ?>
-                                    <span class="text-xs text-blue-100 mt-1">
-                                        Free Membership
-                                    </span>
-                                    <?php endif; ?>
-
-                                </div>
-
-                            </button>
-                            </form>
-                            <?php endif; ?>
-                            <?php else: ?>
-                            <a href="<?= BASE_URL ?>/login"
-                                class="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-center py-3 px-8 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2">
-                                <i data-lucide="log-in" class="w-4 h-4"></i> Login to Join
-                            </a>
+                                <a href="<?= BASE_URL ?>/login"
+                                    class="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-center py-3 px-8 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2">
+                                    <i data-lucide="log-in" class="w-4 h-4"></i> Login to Join
+                                </a>
                             <?php endif; ?>
                         </div>
 
@@ -603,13 +615,23 @@
                     <div
                         class="glass-card-light rounded-xl p-4 text-center transition-all hover:shadow-lg animate-fadeInUp delay-500">
 
-                        <div class="text-2xl font-bold text-blue-600">
-                            <?= $club->getMembershipFee() > 0
-                                ? 'MMK ' . number_format($club->getMembershipFee(), 0)
-                                : 'Free' ?>
-                        </div>
+                        <?php if ($club->getMembershipFee() > 0): ?>
+                            <div class="flex items-baseline justify-center gap-1.5">
+                                <span class="text-2xl font-extrabold tracking-tight text-slate-800">
+                                    <?= number_format($club->getMembershipFee(), 0) ?>
+                                </span>
 
-                        <div class="text-xs text-slate-500 font-medium">
+                                <span class="text-xs font-bold text-blue-600">
+                                    MMK
+                                </span>
+                            </div>
+                        <?php else: ?>
+                            <div class="text-2xl font-extrabold text-emerald-600">
+                                Free
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="text-xs text-slate-500 font-medium mt-1">
                             Membership Fee
                         </div>
 
@@ -651,11 +673,21 @@
                                 Membership Fee
                             </span>
 
-                            <span class="font-semibold text-slate-800">
-                                <?= $club->getMembershipFee() > 0
-                                    ? 'MMK ' . number_format($club->getMembershipFee(), 2)
-                                    : 'Free' ?>
-                            </span>
+                            <?php if ($club->getMembershipFee() > 0): ?>
+                                <div class="flex items-baseline gap-1.5">
+                                    <span class="font-bold text-slate-800">
+                                        <?= number_format($club->getMembershipFee(), 0) ?>
+                                    </span>
+
+                                    <span class="text-xs font-semibold text-blue-600">
+                                        MMK
+                                    </span>
+                                </div>
+                            <?php else: ?>
+                                <span class="font-semibold text-emerald-600">
+                                    Free
+                                </span>
+                            <?php endif; ?>
                         </div>
 
                         <div class="flex justify-between items-center pt-3">
@@ -742,7 +774,9 @@
         <!-- ========================================================== -->
         <!-- LEADERSHIP (Grid with Staggered Animations)                -->
         <!-- ========================================================== -->
-        <?php use App\Shared\Core\Auth; ?>
+        <?php
+
+        use App\Shared\Core\Auth; ?>
         <section class="mt-12">
 
             <div class="flex items-center justify-between mb-6">
@@ -758,19 +792,19 @@
 
                 <?php foreach ($leadership as $index => $leader): ?>
 
-                <div class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-200/50 animate-scaleIn"
-                    style="animation-delay: <?= $index * 100 + 400 ?>ms;">
+                    <div class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-6 text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-200/50 animate-scaleIn"
+                        style="animation-delay: <?= $index * 100 + 400 ?>ms;">
 
-                    <!-- Avatar -->
-                    <?php if (!empty(Auth::profileImage())): ?>
+                        <!-- Avatar -->
+                        <?php if (!empty(Auth::profileImage())): ?>
 
-                    <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars(Auth::profileImage()) ?>"
-                        class="w-24 h-24 rounded-full object-cover mx-auto mb-4 ring-2 ring-blue-100 transition group-hover:ring-blue-300"
-                        alt="Profile">
+                            <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars(Auth::profileImage()) ?>"
+                                class="w-24 h-24 rounded-full object-cover mx-auto mb-4 ring-2 ring-blue-100 transition group-hover:ring-blue-300"
+                                alt="Profile">
 
-                    <?php else: ?>
+                        <?php else: ?>
 
-                    <?php
+                            <?php
                             $name = Auth::user()['name'] ?? 'User';
 
                             $words = preg_split('/\s+/', trim($name));
@@ -789,24 +823,24 @@
                             }
                             ?>
 
-                    <div
-                        class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 flex items-center justify-center mx-auto mb-4 text-3xl font-bold ring-2 ring-blue-100 transition group-hover:ring-blue-300">
+                            <div
+                                class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 flex items-center justify-center mx-auto mb-4 text-3xl font-bold ring-2 ring-blue-100 transition group-hover:ring-blue-300">
 
-                        <?= htmlspecialchars($initials) ?>
+                                <?= htmlspecialchars($initials) ?>
+
+                            </div>
+
+                        <?php endif; ?>
+
+                        <h3 class="font-bold text-slate-800 text-lg">
+                            <?= htmlspecialchars($leader['name']) ?>
+                        </h3>
+
+                        <p class="text-sm text-blue-600 mt-1 inline-block bg-blue-50 px-3 py-0.5 rounded-full font-medium">
+                            <?= htmlspecialchars($leader['role']) ?>
+                        </p>
 
                     </div>
-
-                    <?php endif; ?>
-
-                    <h3 class="font-bold text-slate-800 text-lg">
-                        <?= htmlspecialchars($leader['name']) ?>
-                    </h3>
-
-                    <p class="text-sm text-blue-600 mt-1 inline-block bg-blue-50 px-3 py-0.5 rounded-full font-medium">
-                        <?= htmlspecialchars($leader['role']) ?>
-                    </p>
-
-                </div>
 
                 <?php endforeach; ?>
 
@@ -836,77 +870,77 @@
 
             <?php if (empty($events)): ?>
 
-            <!-- Empty State -->
-            <div
-                class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-12 text-center animate-fadeInUp delay-500">
+                <!-- Empty State -->
+                <div
+                    class="glass-card-light rounded-2xl border border-slate-100/60 shadow-xl p-12 text-center animate-fadeInUp delay-500">
 
-                <div class="w-20 h-20 mx-auto rounded-full bg-blue-100 flex items-center justify-center text-3xl">
-                    🎉
+                    <div class="w-20 h-20 mx-auto rounded-full bg-blue-100 flex items-center justify-center text-3xl">
+                        🎉
+                    </div>
+
+                    <h3 class="mt-4 font-bold text-xl text-slate-800">No Upcoming Events</h3>
+                    <p class="text-slate-500 text-sm mt-2 max-w-sm mx-auto">This club has no scheduled events yet. Check
+                        back later or suggest an event!</p>
+
                 </div>
-
-                <h3 class="mt-4 font-bold text-xl text-slate-800">No Upcoming Events</h3>
-                <p class="text-slate-500 text-sm mt-2 max-w-sm mx-auto">This club has no scheduled events yet. Check
-                    back later or suggest an event!</p>
-
-            </div>
 
             <?php else: ?>
 
-            <!-- Event Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Event Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <?php foreach ($events as $index => $event): ?>
+                    <?php foreach ($events as $index => $event): ?>
 
-                <div class="glass-card-light rounded-2xl overflow-hidden border border-slate-100/60 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-200/50 group animate-scaleIn"
-                    style="animation-delay: <?= $index * 100 + 600 ?>ms;">
+                        <div class="glass-card-light rounded-2xl overflow-hidden border border-slate-100/60 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-200/50 group animate-scaleIn"
+                            style="animation-delay: <?= $index * 100 + 600 ?>ms;">
 
-                    <!-- Event Image -->
-                    <div class="relative h-48 bg-slate-100 overflow-hidden">
+                            <!-- Event Image -->
+                            <div class="relative h-48 bg-slate-100 overflow-hidden">
 
-                        <?php if (!empty($event['banner'])): ?>
-                        <img src="<?= BASE_URL ?>/uploads/events/<?= $event['banner'] ?>"
-                            class="w-full h-full object-cover img-zoom">
-                        <?php else: ?>
-                        <div class="w-full h-full flex items-center justify-center text-slate-300 text-5xl">
-                            📅
-                        </div>
-                        <?php endif; ?>
+                                <?php if (!empty($event['banner'])): ?>
+                                    <img src="<?= BASE_URL ?>/uploads/events/<?= $event['banner'] ?>"
+                                        class="w-full h-full object-cover img-zoom">
+                                <?php else: ?>
+                                    <div class="w-full h-full flex items-center justify-center text-slate-300 text-5xl">
+                                        📅
+                                    </div>
+                                <?php endif; ?>
 
-                        <!-- Date Badge -->
-                        <div
-                            class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-blue-600 shadow flex items-center gap-1.5">
-                            <i data-lucide="calendar" class="w-3 h-3"></i>
-                            <?= date('d M Y', strtotime($event['event_date'])) ?>
-                        </div>
+                                <!-- Date Badge -->
+                                <div
+                                    class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-blue-600 shadow flex items-center gap-1.5">
+                                    <i data-lucide="calendar" class="w-3 h-3"></i>
+                                    <?= date('d M Y', strtotime($event['event_date'])) ?>
+                                </div>
 
-                        <!-- Time Badge -->
-                        <?php if (!empty($event['event_time'])): ?>
-                        <div
-                            class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium shadow flex items-center gap-1.5">
-                            <i data-lucide="clock" class="w-3 h-3"></i>
-                            <?= date('h:i A', strtotime($event['event_time'])) ?>
-                        </div>
-                        <?php endif; ?>
+                                <!-- Time Badge -->
+                                <?php if (!empty($event['event_time'])): ?>
+                                    <div
+                                        class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium shadow flex items-center gap-1.5">
+                                        <i data-lucide="clock" class="w-3 h-3"></i>
+                                        <?= date('h:i A', strtotime($event['event_time'])) ?>
+                                    </div>
+                                <?php endif; ?>
 
-                    </div>
+                            </div>
 
-                    <!-- Content -->
-                    <div class="p-5">
+                            <!-- Content -->
+                            <div class="p-5">
 
-                        <h3 class="font-bold text-lg text-slate-800 line-clamp-1">
-                            <?= htmlspecialchars($event['title']) ?>
-                        </h3>
+                                <h3 class="font-bold text-lg text-slate-800 line-clamp-1">
+                                    <?= htmlspecialchars($event['title']) ?>
+                                </h3>
 
-                        <p class="text-sm text-slate-600 mt-2 line-clamp-2">
-                            <?= htmlspecialchars($event['description']) ?>
-                        </p>
+                                <p class="text-sm text-slate-600 mt-2 line-clamp-2">
+                                    <?= htmlspecialchars($event['description']) ?>
+                                </p>
 
-                        <div class="mt-4 flex items-center justify-between">
+                                <div class="mt-4 flex items-center justify-between">
 
-                            <span class="text-xs text-slate-500 flex items-center gap-1">
-                                <i data-lucide="map-pin" class="w-3 h-3"></i> <?= htmlspecialchars($event['venue']) ?>
-                            </span>
-                            <!-- 
+                                    <span class="text-xs text-slate-500 flex items-center gap-1">
+                                        <i data-lucide="map-pin" class="w-3 h-3"></i> <?= htmlspecialchars($event['venue']) ?>
+                                    </span>
+                                    <!-- 
                             <a href="<?= BASE_URL ?>/events/<?= $event['id'] ?>"
                                 class="text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 group-hover:gap-2 transition-all">
                                 View Details
@@ -914,15 +948,15 @@
                                     class="w-3 h-3 transition-transform group-hover:translate-x-0.5"></i>
                             </a> -->
 
+                                </div>
+
+                            </div>
+
                         </div>
 
-                    </div>
+                    <?php endforeach; ?>
 
                 </div>
-
-                <?php endforeach; ?>
-
-            </div>
 
             <?php endif; ?>
 
@@ -996,12 +1030,20 @@
 
                             <?php if ($club->getMembershipFee() > 0): ?>
 
-                            MMK <?= number_format($club->getMembershipFee(), 2) ?>
+                                <span class="flex items-baseline gap-1.5">
+                                    <span class="font-bold text-blue-600">
+                                        <?= number_format($club->getMembershipFee(), 0) ?>
+                                    </span>
+
+                                    <span class="text-xs font-semibold text-blue-500">
+                                        MMK
+                                    </span>
+                                </span>
 
 
                             <?php else: ?>
 
-                            Free Membership
+                                Free Membership
 
 
                             <?php endif; ?>
@@ -1051,63 +1093,63 @@
     <!-- ════════════════════════════════════════════════════════════════ -->
 
     <script>
-    function openJoinModal() {
-        document
-            .getElementById('joinModal')
-            .classList
-            .remove('hidden');
-    }
-
-
-
-    function closeJoinModal() {
-        document
-            .getElementById('joinModal')
-            .classList
-            .add('hidden');
-    }
-
-
-
-    function confirmJoin() {
-
-        const form =
-            document.getElementById('joinForm');
-
-
-        if (form) {
-            form.submit();
+        function openJoinModal() {
+            document
+                .getElementById('joinModal')
+                .classList
+                .remove('hidden');
         }
 
-    }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // ── Lucide Icons ──
-        lucide.createIcons();
 
-        // ── Intersection Observer for cards on scroll ──
-        const animatedElements = document.querySelectorAll('.animate-scaleIn, .animate-fadeInUp');
+        function closeJoinModal() {
+            document
+                .getElementById('joinModal')
+                .classList
+                .add('hidden');
+        }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    observer.unobserve(entry.target);
+
+
+        function confirmJoin() {
+
+            const form =
+                document.getElementById('joinForm');
+
+
+            if (form) {
+                form.submit();
+            }
+
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // ── Lucide Icons ──
+            lucide.createIcons();
+
+            // ── Intersection Observer for cards on scroll ──
+            const animatedElements = document.querySelectorAll('.animate-scaleIn, .animate-fadeInUp');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            animatedElements.forEach(el => {
+                if (el.classList.contains('animate-scaleIn') || el.classList.contains('animate-fadeInUp')) {
+                    observer.observe(el);
                 }
             });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
 
-        animatedElements.forEach(el => {
-            if (el.classList.contains('animate-scaleIn') || el.classList.contains('animate-fadeInUp')) {
-                observer.observe(el);
-            }
+            console.log('🚀 UniClub · Best UI/UX club detail page ready!');
         });
-
-        console.log('🚀 UniClub · Best UI/UX club detail page ready!');
-    });
     </script>
 
 </body>
