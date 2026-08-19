@@ -375,6 +375,8 @@ class EventFeedbackRepository extends BaseRepository implements EventFeedbackRep
 
             $row['user_name'] ?? null,
 
+            $row['profile_image'] ?? null,
+
             $row['event_title'] ?? null
 
 

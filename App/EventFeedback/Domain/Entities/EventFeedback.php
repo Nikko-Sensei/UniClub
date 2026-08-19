@@ -14,6 +14,8 @@ class EventFeedback
 
     private ?string $userName;
 
+    private ?string $profileImage;
+
     private ?string $eventTitle;
 
     private int $rating;
@@ -32,6 +34,7 @@ class EventFeedback
         ?string $comment,
         string $createdAt,
         ?string $userName = null,
+        ?string $profileImage = null,
         ?string $eventTitle = null
     ) {
 
@@ -48,6 +51,8 @@ class EventFeedback
         $this->createdAt = $createdAt;
 
         $this->userName = $userName;
+
+        $this->profileImage = $profileImage;
 
         $this->eventTitle = $eventTitle;
     }
@@ -78,6 +83,10 @@ class EventFeedback
         return $this->userName;
     }
 
+    public function getProfileImage(): ?string
+    {
+        return $this->profileImage;
+    }
 
     public function getEventTitle(): ?string
     {

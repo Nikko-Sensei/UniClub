@@ -29,19 +29,76 @@ class AdminPaymentController extends BaseController
     /**
      * Payment List
      */
+    // public function index()
+    // {
+
+
+    //     $payments =
+    //         $this->paymentService
+    //         ->getPayments();
+
+    //     $statistics = $this->paymentService->getStatistics();
+
+
+    //     $this->view(
+
+    //         'Payment/Presentation/Views/admin/index',
+
+    //         [
+
+    //             'title' => 'Payment Management',
+
+
+    //             'payments' => $payments,
+
+    //             'statistics' => $statistics
+
+    //         ],
+
+    //         'admin'
+
+    //     );
+    // }
+
+
+    /**
+     * Payment List
+     */
     public function index()
     {
+        $page = max(
+            1,
+            (int) ($_GET['page'] ?? 1)
+        );
 
+        $limit = 10;
 
-        $payments =
+        $filters = [
+
+            'search' =>
+            trim($_GET['search'] ?? ''),
+
+            'status' =>
+            $_GET['status'] ?? '',
+
+            'payment_method' =>
+            $_GET['payment_method'] ?? ''
+
+        ];
+
+        $result =
             $this->paymentService
-            ->getPayments();
+            ->getPayments(
+                $page,
+                $limit,
+                $filters
+            );
 
+        $statistics =
+            $this->paymentService
+            ->getStatistics();
 
-
-
-
-        $this->view(
+        return $this->view(
 
             'Payment/Presentation/Views/admin/index',
 
@@ -50,14 +107,21 @@ class AdminPaymentController extends BaseController
                 'title' =>
                 'Payment Management',
 
-
                 'payments' =>
-                $payments
+                $result['payments'],
+
+                'filters' =>
+                $filters,
+
+                'pagination' =>
+                $result['pagination'],
+
+                'statistics' =>
+                $statistics
 
             ],
 
             'admin'
-
         );
     }
 
@@ -169,7 +233,7 @@ class AdminPaymentController extends BaseController
         $adminId =
             $_SESSION['user']['id'];
 
-$reason = $_POST['reason'] ?? null;
+        $reason = $_POST['reason'] ?? null;
 
 
         try {
@@ -184,7 +248,7 @@ $reason = $_POST['reason'] ?? null;
 
             //     );
 
-           
+
 
 
             if (!$reason) {
@@ -211,7 +275,7 @@ $reason = $_POST['reason'] ?? null;
 
                 );
 
- 
+
 
             Flash::set(
 

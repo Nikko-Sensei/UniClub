@@ -174,6 +174,8 @@ class ContactRepository extends BaseRepository implements ContactRepositoryInter
 
             $row['status'],
 
+            $row['profile_image'] ?? null,
+
             $row['created_at'] ?? null,
 
             $row['updated_at'] ?? null

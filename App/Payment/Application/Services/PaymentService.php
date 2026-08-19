@@ -193,15 +193,104 @@ class PaymentService
             );
     }
 
+    public function getStatistics(): array
+    {
+        return $this->repository->getStatistics();
+    }
+
     /**
      * Get Admin Payments
      */
-    public function getPayments(): array
-    {
+    // public function getPayments(): array
+    // {
 
 
-        return $this->repository
-            ->getAll();
+    //     return $this->repository
+    //         ->getAll();
+    // }
+
+
+    /**
+     * Get Admin Payments
+     */
+    public function getPayments(
+        int $page,
+        int $limit,
+        array $filters = []
+    ): array {
+
+        $page = max(
+            1,
+            $page
+        );
+
+        $limit = max(
+            1,
+            min($limit, 100)
+        );
+
+        $offset =
+            ($page - 1) * $limit;
+
+
+        $payments =
+            $this->repository
+            ->getAll(
+                $limit,
+                $offset,
+                $filters
+            );
+
+
+        $total =
+            $this->repository
+            ->countAll(
+                $filters
+            );
+
+
+        $totalPages =
+            max(
+                1,
+                (int) ceil(
+                    $total / $limit
+                )
+            );
+
+
+        return [
+
+            'payments' =>
+            $payments,
+
+            'pagination' => [
+
+                'current_page' =>
+                $page,
+
+                'per_page' =>
+                $limit,
+
+                'total' =>
+                $total,
+
+                'total_pages' =>
+                $totalPages,
+
+                'from' =>
+                $total > 0
+                    ? $offset + 1
+                    : 0,
+
+                'to' =>
+                min(
+                    $offset + $limit,
+                    $total
+                )
+
+            ]
+
+        ];
     }
 
     /**

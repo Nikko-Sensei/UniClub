@@ -2,7 +2,6 @@
 
 namespace App\Contact\Domain\Entities;
 
-
 class ContactMessage
 {
     private ?int $id;
@@ -19,6 +18,8 @@ class ContactMessage
 
     private string $status;
 
+    private ?string $profileImage;
+
     private ?string $createdAt;
 
     private ?string $updatedAt;
@@ -32,6 +33,7 @@ class ContactMessage
         string $subject,
         string $message,
         string $status = 'pending',
+        ?string $profileImage = null,
         ?string $createdAt = null,
         ?string $updatedAt = null
     ) {
@@ -42,6 +44,7 @@ class ContactMessage
         $this->subject = $subject;
         $this->message = $message;
         $this->status = $status;
+        $this->profileImage = $profileImage;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
     }
@@ -86,6 +89,12 @@ class ContactMessage
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+
+    public function getProfileImage(): ?string
+    {
+        return $this->profileImage;
     }
 
 

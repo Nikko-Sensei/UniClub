@@ -54,7 +54,7 @@
             </h1>
 
             <!-- Short name + status -->
-            <div class="mt-2 flex flex-wrap items-center gap-3 text-sm text-slate-200">
+            <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-200">
                 <span><?= htmlspecialchars($club->getShortName() ?? '') ?></span>
                 <span class="text-slate-400">•</span>
                 <span
@@ -83,7 +83,7 @@
             Edit Club
         </a>
         <a href="<?= BASE_URL ?>/admin/clubs/<?= $club->getId() ?>/members"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm transition-all duration-300 shadow-md shadow-slate-200/50 hover:shadow-xl hover:scale-[1.02]">
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold text-sm transition-all duration-300 shadow-md shadow-blue-200/50 hover:shadow-xl hover:scale-[1.02] btn-shine">
             <i data-lucide="users" class="w-4 h-4"></i>
             Manage Members
         </a>
@@ -253,9 +253,36 @@
             <div
                 class="glass-card-light rounded-xl border border-slate-100/60 shadow-sm p-5 transition-all duration-300 hover:shadow-md hover:border-blue-200/50 hover:-translate-y-1">
                 <div class="flex items-center gap-4">
-                    <div
-                        class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 flex items-center justify-center font-bold text-lg shadow-sm">
-                        <?= strtoupper(substr($leader['name'], 0, 1)) ?>
+                    <div class="w-12 h-12 rounded-full overflow-hidden
+           bg-gradient-to-br from-blue-100 to-blue-200
+           text-blue-700 flex items-center justify-center
+           font-bold text-lg shadow-sm">
+
+                        <?php if (!empty($leader['profile_image'])): ?>
+
+                        <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars($leader['profile_image']) ?>"
+                            alt="<?= htmlspecialchars($leader['name']) ?>" class="w-full h-full object-cover">
+
+                        <?php else: ?>
+
+                        <?php
+                                    $name = trim($leader['name']);
+                                    $words = preg_split('/\s+/', $name);
+
+                                    if (count($words) >= 2) {
+                                        $initials = strtoupper(
+                                            substr($words[0], 0, 1) .
+                                                substr($words[1], 0, 1)
+                                        );
+                                    } else {
+                                        $initials = strtoupper(substr($words[0], 0, 1));
+                                    }
+                                    ?>
+
+                        <?= htmlspecialchars($initials) ?>
+
+                        <?php endif; ?>
+
                     </div>
                     <div>
                         <p class="text-xs uppercase text-slate-400 font-semibold tracking-wider">
@@ -309,6 +336,7 @@
                     class="bg-slate-50/50 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200/60">
                     <tr>
                         <th class="px-6 py-3 text-left">Member</th>
+                        <th class="px-6 py-3 text-left">Member ID</th>
                         <th class="px-6 py-3 text-left">Current Role</th>
                         <th class="px-6 py-3 text-left">Status</th>
                         <th class="px-6 py-3 text-left">Joined</th>
@@ -321,9 +349,37 @@
                     <tr class="hover:bg-slate-50/40 transition">
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700 flex items-center justify-center font-bold flex-shrink-0 shadow-sm">
-                                    <?= strtoupper(substr($member['name'], 0, 1)) ?>
+                                <div class="w-10 h-10 rounded-full overflow-hidden
+           bg-gradient-to-br from-blue-100 to-blue-200
+           text-blue-700 flex items-center justify-center
+           font-bold flex-shrink-0 shadow-sm">
+
+                                    <?php if (!empty($member['profile_image'])): ?>
+
+                                    <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars($member['profile_image']) ?>"
+                                        alt="<?= htmlspecialchars($member['name']) ?>"
+                                        class="w-full h-full object-cover">
+
+                                    <?php else: ?>
+
+                                    <?php
+                                                $name = trim($member['name']);
+                                                $words = preg_split('/\s+/', $name);
+
+                                                if (count($words) >= 2) {
+                                                    $initials = strtoupper(
+                                                        substr($words[0], 0, 1) .
+                                                            substr($words[1], 0, 1)
+                                                    );
+                                                } else {
+                                                    $initials = strtoupper(substr($words[0], 0, 1));
+                                                }
+                                                ?>
+
+                                    <?= htmlspecialchars($initials) ?>
+
+                                    <?php endif; ?>
+
                                 </div>
                                 <div>
                                     <p class="font-semibold text-slate-800"><?= htmlspecialchars($member['name']) ?></p>
@@ -331,6 +387,29 @@
                                     </p>
                                 </div>
                             </div>
+                        </td>
+
+                        <td class="px-6 py-4">
+
+                            <span class="
+                            inline-flex
+                            items-center
+                            px-3
+                            py-1
+                            rounded-lg
+                            bg-blue-50
+                            text-blue-600
+                            text-xs
+                            font-semibold
+                            whitespace-nowrap
+                        ">
+
+                                <?= htmlspecialchars(
+                                            $member['student_id'] ?? '-'
+                                        ) ?>
+
+                            </span>
+
                         </td>
                         <td class="px-6 py-4">
                             <span
@@ -340,13 +419,13 @@
                         </td>
                         <td class="px-6 py-4">
                             <?php
-                                $statusClass = match ($member['status']) {
-                                    'approved' => 'bg-emerald-50 text-emerald-700 border-emerald-200/50',
-                                    'pending' => 'bg-amber-50 text-amber-700 border-amber-200/50',
-                                    'rejected' => 'bg-red-50 text-red-700 border-red-200/50',
-                                    default => 'bg-slate-100 text-slate-600 border-slate-200/50'
-                                };
-                            ?>
+                                    $statusClass = match ($member['status']) {
+                                        'approved' => 'bg-emerald-50 text-emerald-700 border-emerald-200/50',
+                                        'pending' => 'bg-amber-50 text-amber-700 border-amber-200/50',
+                                        'rejected' => 'bg-red-50 text-red-700 border-red-200/50',
+                                        default => 'bg-slate-100 text-slate-600 border-slate-200/50'
+                                    };
+                                    ?>
                             <span
                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold <?= $statusClass ?> border">
                                 <?= ucfirst(htmlspecialchars($member['status'])) ?>

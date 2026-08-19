@@ -136,8 +136,12 @@ class AdminClubController extends BaseController
         $leadership = $this->clubService
             ->getLeadership($id);
 
+            // Debugging line to check the contents of $leadership
+
         $members = $this->clubService
             ->getMembers($id);
+
+            // Debugging line to check the contents of $members
 
         $roles = $this->clubService
             ->getClubRoles();

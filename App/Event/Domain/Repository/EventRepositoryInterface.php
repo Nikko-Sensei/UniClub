@@ -36,6 +36,11 @@ interface EventRepositoryInterface
     ): int;
 
 
+    public function countAllEvents(
+        int $userId
+    );
+
+
     public function statistics();
 
 

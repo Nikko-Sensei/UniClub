@@ -1,6 +1,13 @@
 <div class="space-y-6">
 
-
+    <div class="animate-slideInLeft">
+        <a href="<?= BASE_URL ?>/admin/clubs"
+            class="back-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card-light text-slate-700 font-medium text-sm shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:border-blue-200 group">
+            <i data-lucide="arrow-left"
+                class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"></i>
+            <span>Back to Clubs</span>
+        </a>
+    </div>
     <!-- Header -->
 
     <div class="
@@ -91,7 +98,7 @@
                     font-bold
                     text-slate-800">
 
-                    <?= $statistics['pending_requests']?? 0 ?>
+                    <?= $statistics['pending_requests'] ?? 0 ?>
 
                 </p>
 
@@ -282,13 +289,13 @@
         <?php if (empty($memberships)): ?>
 
 
-        <!-- Empty State -->
+            <!-- Empty State -->
 
 
-        <div class="py-16 text-center">
+            <div class="py-16 text-center">
 
 
-            <div class="
+                <div class="
                 w-14
                 h-14
                 mx-auto
@@ -300,36 +307,36 @@
                 justify-center">
 
 
-                <i data-lucide="users-round" class="w-7 h-7"></i>
+                    <i data-lucide="users-round" class="w-7 h-7"></i>
 
 
-            </div>
+                </div>
 
 
 
-            <h3 class="
+                <h3 class="
                 mt-4
                 text-lg
                 font-bold
                 text-slate-800">
 
-                No Pending Requests
+                    No Pending Requests
 
-            </h3>
+                </h3>
 
 
 
-            <p class="
+                <p class="
                 text-sm
                 text-slate-500
                 mt-2">
 
-                All membership requests have been processed.
+                    All membership requests have been processed.
 
-            </p>
+                </p>
 
 
-        </div>
+            </div>
 
 
 
@@ -340,16 +347,16 @@
 
 
 
-        <!-- Desktop Table -->
+            <!-- Desktop Table -->
 
 
-        <!-- Desktop Table -->
+            <!-- Desktop Table -->
 
-        <div class="overflow-x-auto">
+            <div class="overflow-x-auto">
 
-            <table class="w-full text-sm text-slate-700">
+                <table class="w-full text-sm text-slate-700">
 
-                <thead class="
+                    <thead class="
             bg-slate-50/80
             text-xs
             font-semibold
@@ -359,130 +366,194 @@
             border-b
             border-slate-200">
 
-                    <tr>
+                        <tr>
 
-                        <th class="px-5 py-3.5 text-center whitespace-nowrap">
-                            Student
-                        </th>
+                            <th class="px-5 py-3.5 text-center whitespace-nowrap">
+                                Student
+                            </th>
 
-                        <th class="px-5 py-3.5 text-center whitespace-nowrap">
-                            Student ID
-                        </th>
+                            <th class="px-5 py-3.5 text-center whitespace-nowrap">
+                                Student ID
+                            </th>
 
-                        <th class="px-5 py-3.5 text-center whitespace-nowrap">
-                            Club
-                        </th>
+                            <th class="px-5 py-3.5 text-center whitespace-nowrap">
+                                Club
+                            </th>
 
-                        <th class="px-5 py-3.5 text-center whitespace-nowrap">
-                            Department
-                        </th>
+                            <th class="px-5 py-3.5 text-center whitespace-nowrap">
+                                Department
+                            </th>
 
-                        <th class="px-5 py-3.5 text-center whitespace-nowrap">
-                            Year
-                        </th>
+                            <th class="px-5 py-3.5 text-center whitespace-nowrap">
+                                Year
+                            </th>
 
-                        <th class="px-5 py-3.5 text-center whitespace-nowrap">
-                            Status
-                        </th>
+                            <th class="px-5 py-3.5 text-center whitespace-nowrap">
+                                Status
+                            </th>
 
-                        <th class="px-5 py-3.5 text-center whitespace-nowrap">
-                            Actions
-                        </th>
+                            <th class="px-5 py-3.5 text-center whitespace-nowrap">
+                                Actions
+                            </th>
 
-                    </tr>
+                        </tr>
 
-                </thead>
+                    </thead>
 
 
-                <tbody class="divide-y divide-slate-100">
+                    <tbody class="divide-y divide-slate-100">
 
-                    <?php foreach ($memberships as $membership): ?>
+                        <?php foreach ($memberships as $membership): ?>
 
-                    <tr class="
+                            <tr class="
                 hover:bg-slate-50/60
                 transition-colors">
 
-                        <!-- Student -->
+                                <!-- Student -->
 
-                        <td class="px-5 py-3.5">
+                                <!-- Student -->
 
-                            <p class="font-medium text-slate-800 whitespace-nowrap">
+                                <td class="px-5 py-3.5">
 
-                                <?= htmlspecialchars(
-                                            $membership['student_name']
-                                        ) ?>
+                                    <div class="flex items-center gap-3">
 
-                            </p>
+                                        <!-- Profile Avatar -->
 
-                        </td>
+                                        <div class="
+            w-9 h-9
+            rounded-full
+            overflow-hidden
+            flex
+            items-center
+            justify-center
+            bg-gradient-to-br
+            from-blue-100
+            to-blue-200
+            text-blue-700
+            font-semibold
+            text-xs
+            shadow-sm
+            flex-shrink-0
+        ">
+
+                                            <?php if (!empty($membership['profile_image'])): ?>
+
+                                                <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars($membership['profile_image']) ?>"
+                                                    alt="<?= htmlspecialchars($membership['student_name']) ?>"
+                                                    class="w-full h-full object-cover" loading="lazy">
+
+                                            <?php else: ?>
+
+                                                <?php
+                                                $name = trim($membership['student_name'] ?? '');
+                                                $words = preg_split('/\s+/', $name);
+
+                                                if (count($words) >= 2) {
+                                                    $initials = strtoupper(
+                                                        substr($words[0], 0, 1) .
+                                                            substr($words[1], 0, 1)
+                                                    );
+                                                } else {
+                                                    $initials = strtoupper(
+                                                        substr($words[0] ?? 'U', 0, 1)
+                                                    );
+                                                }
+                                                ?>
+
+                                                <?= htmlspecialchars($initials) ?>
+
+                                            <?php endif; ?>
+
+                                        </div>
 
 
-                        <!-- Student ID -->
+                                        <!-- Student Information -->
 
-                        <td class="px-5 py-3.5">
+                                        <div class="min-w-0">
 
-                            <span class="
+                                            <p class="
+                                            font-medium
+                                            text-slate-800
+                                            whitespace-nowrap
+                                        ">
+
+                                                <?= htmlspecialchars($membership['student_name']) ?>
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Student ID -->
+
+                                <td class="px-5 py-3.5">
+
+                                    <span class="
                         text-sm
                         font-medium
                         text-slate-600
                         whitespace-nowrap">
 
-                                <?= htmlspecialchars(
+                                        <?= htmlspecialchars(
                                             $membership['student_id']
                                         ) ?>
 
-                            </span>
+                                    </span>
 
-                        </td>
+                                </td>
 
 
-                        <!-- Club -->
+                                <!-- Club -->
 
-                        <td class="px-5 py-3.5">
+                                <td class="px-5 py-3.5">
 
-                            <p class="
+                                    <p class="
                         font-medium
                         text-slate-700
                         whitespace-nowrap">
 
-                                <?= htmlspecialchars(
+                                        <?= htmlspecialchars(
                                             $membership['club_name']
                                         ) ?>
 
-                            </p>
+                                    </p>
 
-                        </td>
+                                </td>
 
 
-                        <!-- Department -->
+                                <!-- Department -->
 
-                        <td class="px-5 py-3.5 text-slate-600">
+                                <td class="px-5 py-3.5 text-slate-600">
 
-                            <?= htmlspecialchars(
+                                    <?= htmlspecialchars(
                                         $membership['department_name']
                                             ?? '-'
                                     ) ?>
 
-                        </td>
+                                </td>
 
 
-                        <!-- Year -->
+                                <!-- Year -->
 
-                        <td class="px-5 py-3.5 text-slate-600 whitespace-nowrap">
+                                <td class="px-5 py-3.5 text-slate-600 whitespace-nowrap">
 
-                            <?= htmlspecialchars(
+                                    <?= htmlspecialchars(
                                         $membership['academic_year']
                                             ?? '-'
                                     ) ?>
 
-                        </td>
+                                </td>
 
 
-                        <!-- Status -->
+                                <!-- Status -->
 
-                        <td class="px-5 py-3.5">
+                                <td class="px-5 py-3.5">
 
-                            <span class="
+                                    <span class="
                         inline-flex
                         items-center
                         px-3
@@ -493,39 +564,39 @@
                         text-xs
                         font-medium">
 
-                                <span class="
+                                        <span class="
                             w-2
                             h-2
                             rounded-full
                             bg-amber-500
                             mr-1.5">
-                                </span>
+                                        </span>
 
-                                Pending
+                                        Pending
 
-                            </span>
+                                    </span>
 
-                        </td>
+                                </td>
 
 
-                        <!-- Actions -->
+                                <!-- Actions -->
 
-                        <td class="px-5 py-3.5 text-right">
+                                <td class="px-5 py-3.5 text-right">
 
-                            <div class="
+                                    <div class="
     flex
     justify-end
     gap-2">
 
 
-                                <!-- Approve -->
+                                        <!-- Approve -->
 
-                                <form method="POST"
-                                    action="<?= BASE_URL ?>/admin/memberships/<?= (int)$membership['id'] ?>/approve"
-                                    onsubmit="return confirm('Approve this membership request?');">
+                                        <form method="POST"
+                                            action="<?= BASE_URL ?>/admin/memberships/<?= (int)$membership['id'] ?>/approve"
+                                            onsubmit="return confirm('Approve this membership request?');">
 
 
-                                    <button type="submit" class="
+                                            <button type="submit" class="
             px-4
             py-2
             inline-flex
@@ -540,29 +611,29 @@
             transition">
 
 
-                                        <i data-lucide="circle-check" class="w-4 h-4">
-                                        </i>
+                                                <i data-lucide="circle-check" class="w-4 h-4">
+                                                </i>
 
-                                        Approve
-
-
-                                    </button>
+                                                Approve
 
 
-                                </form>
+                                            </button>
 
 
+                                        </form>
 
 
 
-                                <!-- Reject -->
-
-                                <form method="POST"
-                                    action="<?= BASE_URL ?>/admin/memberships/<?= (int)$membership['id'] ?>/reject"
-                                    onsubmit="return confirm('Reject this membership request?');">
 
 
-                                    <button type="submit" class="
+                                        <!-- Reject -->
+
+                                        <form method="POST"
+                                            action="<?= BASE_URL ?>/admin/memberships/<?= (int)$membership['id'] ?>/reject"
+                                            onsubmit="return confirm('Reject this membership request?');">
+
+
+                                            <button type="submit" class="
             px-4
             py-2
             inline-flex
@@ -578,31 +649,31 @@
             transition">
 
 
-                                        <i data-lucide="circle-x" class="w-4 h-4">
-                                        </i>
+                                                <i data-lucide="circle-x" class="w-4 h-4">
+                                                </i>
 
-                                        Reject
-
-
-                                    </button>
+                                                Reject
 
 
-                                </form>
+                                            </button>
 
 
-                            </div>
+                                        </form>
 
-                        </td>
 
-                    </tr>
+                                    </div>
 
-                    <?php endforeach; ?>
+                                </td>
 
-                </tbody>
+                            </tr>
 
-            </table>
+                        <?php endforeach; ?>
 
-        </div>
+                    </tbody>
+
+                </table>
+
+            </div>
 
 
 

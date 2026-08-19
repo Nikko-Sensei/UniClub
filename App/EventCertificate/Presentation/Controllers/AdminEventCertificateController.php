@@ -69,7 +69,7 @@ class AdminEventCertificateController extends BaseController
 
             );
 
-
+// Debugging line to check the contents of $certificates
 
         return $this->view(
 

@@ -237,7 +237,30 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
     }
 
 
+    public function getStatistics(): array
+    {
+        $stmt = $this->db->prepare(
+            "CALL sp_payment_statistics()"
+        );
 
+        $stmt->execute();
+
+        $statistics = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        while ($stmt->nextRowset()) {
+            // Consume remaining result sets
+        }
+
+        return [
+            'pending_count' => (int) ($statistics['pending_count'] ?? 0),
+
+            'verified_count' => (int) ($statistics['verified_count'] ?? 0),
+
+            'rejected_count' => (int) ($statistics['rejected_count'] ?? 0),
+
+            'verified_amount' => (float) ($statistics['verified_amount'] ?? 0),
+        ];
+    }
 
 
 
@@ -247,19 +270,93 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
      * Get All Payments
      * Admin Payment Management
      */
-    public function getAll(): array
-    {
+    // public function getAll(): array
+    // {
+
+
+    //     $stmt = $this->db->prepare(
+
+    //         "CALL sp_payment_find_all()"
+
+    //     );
+
+
+    //     $stmt->execute();
+
+
+
+    //     $payments =
+    //         $stmt->fetchAll(
+    //             PDO::FETCH_ASSOC
+    //         );
+
+
+    //     $stmt->closeCursor();
+
+
+
+    //     return $payments;
+    // }
+
+
+
+    /**
+     * Get All Payments
+     * Admin Payment Management
+     */
+    public function getAll(
+        int $limit,
+        int $offset,
+        array $filters
+    ): array {
+
+        $search =
+            trim(
+                $filters['search'] ?? ''
+            );
+
+        $status =
+            trim(
+                $filters['status'] ?? ''
+            );
+
+        $paymentMethod =
+            trim(
+                $filters['payment_method'] ?? ''
+            );
 
 
         $stmt = $this->db->prepare(
 
-            "CALL sp_payment_find_all()"
+            "CALL sp_payment_find_all(
+            :search,
+            :status,
+            :payment_method,
+            :limit,
+            :offset
+        )"
 
         );
 
 
-        $stmt->execute();
+        $stmt->execute([
 
+            'search' =>
+            $search,
+
+            'status' =>
+            $status,
+
+            'payment_method' =>
+            $paymentMethod,
+
+            'limit' =>
+            $limit,
+
+            'offset' =>
+            $offset
+
+        ]);
 
 
         $payments =
@@ -271,13 +368,72 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
         $stmt->closeCursor();
 
 
-
         return $payments;
     }
 
 
+    /**
+     * Count Payments
+     * Used for pagination
+     */
+    public function countAll(
+        array $filters
+    ): int {
+
+        $search =
+            trim(
+                $filters['search'] ?? ''
+            );
+
+        $status =
+            trim(
+                $filters['status'] ?? ''
+            );
+
+        $paymentMethod =
+            trim(
+                $filters['payment_method'] ?? ''
+            );
 
 
+        $stmt = $this->db->prepare(
+
+            "CALL sp_payment_count_all(
+            :search,
+            :status,
+            :payment_method
+        )"
+
+        );
+
+
+        $stmt->execute([
+
+            'search' =>
+            $search,
+
+            'status' =>
+            $status,
+
+            'payment_method' =>
+            $paymentMethod
+
+        ]);
+
+
+        $result =
+            $stmt->fetch(
+                PDO::FETCH_ASSOC
+            );
+
+
+        $stmt->closeCursor();
+
+
+        return (int) (
+            $result['total'] ?? 0
+        );
+    }
 
 
 
@@ -387,7 +543,7 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
     //     ) > 0;
     // }
 
-  
+
 
     public function reject(
         int $paymentId,

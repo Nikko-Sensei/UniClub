@@ -13,6 +13,8 @@ class EventCertificate
 
     private ?string $studentName;
 
+    private ?string $profileImage;
+
     private string $certificateNumber;
 
     private ?string $filePath;
@@ -37,6 +39,8 @@ class EventCertificate
 
         ?string $studentName = null,
 
+        ?string $profileImage ,
+
         string $certificateNumber,
 
         ?string $filePath,
@@ -58,6 +62,8 @@ class EventCertificate
         $this->userId = $userId;
 
         $this->studentName = $studentName;
+
+        $this->profileImage = $profileImage;
 
         $this->certificateNumber = $certificateNumber;
 
@@ -96,6 +102,11 @@ class EventCertificate
     public function getStudentName(): ?string
     {
         return $this->studentName;
+    }
+
+    public function getProfileImage(): ?string
+    {
+        return $this->profileImage;
     }
 
     public function getCertificateNumber(): string

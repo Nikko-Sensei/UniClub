@@ -49,18 +49,41 @@
 
             <!-- SEARCH -->
 
-            <div class="relative flex-1">
+            <div class="flex-1">
 
+                <div class="
+        flex
+        items-center
+        gap-3
+        w-full
+        px-4
+        py-2.5
+        rounded-xl
+        border
+        border-slate-200
+        bg-white
+        focus-within:ring-2
+        focus-within:ring-blue-500/30
+        focus-within:border-blue-400
+        transition
+    ">
 
-                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400">
-                </i>
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 flex-shrink-0">
+                    </i>
 
+                    <input type="text" name="search" value="<?= htmlspecialchars($filters['search'] ?? '') ?>"
+                        placeholder="Search members..." onkeyup="this.form.submit()" class="
+                flex-1
+                bg-transparent
+                text-sm
+                text-slate-700
+                placeholder:text-slate-400
+                outline-none
+                border-0
+                focus:ring-0
+            ">
 
-
-                <input type="text" name="search" value="<?= htmlspecialchars($filters['search'] ?? '') ?>"
-                    placeholder="Search members..." oninput="this.form.submit()"
-                    class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none">
-
+                </div>
 
             </div>
 
@@ -178,6 +201,10 @@
                             Member
                         </th>
 
+                        <th class="px-6 py-4">
+                            Member ID
+                        </th>
+
 
                         <th class="px-6 py-4">
                             Current Role
@@ -251,52 +278,80 @@
 
                                 <div class="flex items-center gap-3">
 
+                                    <!-- Profile Image -->
+                                    <div class="
+                                w-10 h-10
+                                rounded-full
+                                overflow-hidden
+                                flex
+                                items-center
+                                justify-center
+                                bg-gradient-to-br
+                                from-blue-100
+                                to-blue-200
+                                text-blue-700
+                                font-semibold
+                                text-xs
+                                shadow-sm
+                                flex-shrink-0
+                            ">
 
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
+                                        <?php if (!empty($member['profile_image'])): ?>
 
+                                            <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars($member['profile_image']) ?>"
+                                                alt="<?= htmlspecialchars($member['name']) ?>"
+                                                class="w-full h-full object-cover">
 
-                                        <?= strtoupper(
-                                            substr(
-                                                $member['name'],
-                                                0,
-                                                1
-                                            )
-                                        ) ?>
+                                        <?php else: ?>
 
+                                            <?php
+                                            $name = trim($member['name'] ?? '');
+
+                                            $words = preg_split('/\s+/', $name);
+
+                                            if (count($words) >= 2) {
+                                                $initials = strtoupper(
+                                                    substr($words[0], 0, 1) .
+                                                        substr($words[1], 0, 1)
+                                                );
+                                            } else {
+                                                $initials = strtoupper(
+                                                    substr($words[0] ?? '?', 0, 1)
+                                                );
+                                            }
+                                            ?>
+
+                                            <?= htmlspecialchars($initials) ?>
+
+                                        <?php endif; ?>
 
                                     </div>
 
 
+                                    <!-- Student Information -->
+                                    <div class="min-w-0">
 
-                                    <div>
+                                        <p class="
+                                    font-semibold
+                                    text-slate-800
+                                    truncate
+                                ">
 
-
-                                        <p class="font-semibold text-slate-800">
-
-
-                                            <?= htmlspecialchars(
-                                                $member['name']
-                                            ) ?>
-
-
-                                        </p>
-
-
-
-                                        <p class="text-xs text-slate-500">
-
-
-                                            <?= htmlspecialchars(
-                                                $member['email']
-                                            ) ?>
-
+                                            <?= htmlspecialchars($member['name']) ?>
 
                                         </p>
 
+                                        <p class="
+                                        text-xs
+                                        text-slate-500
+                                        truncate
+                                    ">
+
+                                            <?= htmlspecialchars($member['email']) ?>
+
+                                        </p>
 
                                     </div>
-
 
                                 </div>
 
@@ -304,7 +359,30 @@
                             </td>
 
 
+                            <!-- Student ID -->
 
+                            <td class="px-6 py-4">
+
+                                <span class="
+                            inline-flex
+                            items-center
+                            px-3
+                            py-1
+                            rounded-lg
+                            bg-blue-50
+                            text-blue-600
+                            text-xs
+                            font-semibold
+                            whitespace-nowrap
+                        ">
+
+                                    <?= htmlspecialchars(
+                                        $member['student_id'] ?? '-'
+                                    ) ?>
+
+                                </span>
+
+                            </td>
 
 
                             <!-- ROLE -->

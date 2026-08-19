@@ -72,6 +72,8 @@ class AdminEventAttendanceController extends BaseController
                 $eventId
             );
 
+            // Debugging line to check the contents of $attendances
+
 
         $statistics =
             $this->attendanceService

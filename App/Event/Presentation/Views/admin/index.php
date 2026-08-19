@@ -94,12 +94,43 @@ foreach ($categories as $category) {
 
                 <!-- Search input -->
                 <div class="relative flex-1 min-w-[200px]">
-                    <i data-lucide="search"
-                        class="absolute left-3.5 top-0 h-full flex items-center text-slate-400 w-4 h-4 pointer-events-none"></i>
-                    <input type="text" name="search" placeholder="Search by event title..."
-                        value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-                        onkeypress="if(event.key==='Enter') this.form.submit()"
-                        class="w-full h-11 pl-10 pr-4 border border-slate-200/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition text-sm bg-white/50 backdrop-blur-sm hover:border-blue-200" />
+
+                    <div class="
+        flex
+        items-center
+        gap-3
+        w-full
+        h-11
+        px-4
+        rounded-xl
+        border
+        border-slate-200/80
+        bg-white/50
+        backdrop-blur-sm
+        hover:border-blue-200
+        focus-within:ring-2
+        focus-within:ring-blue-500/30
+        focus-within:border-blue-500
+        transition
+    ">
+
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 flex-shrink-0">
+                        </i>
+
+                        <input type="text" name="search" placeholder="Search by event title..."
+                            value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
+                            onkeypress="if(event.key==='Enter') this.form.submit()" class="
+                flex-1
+                h-full
+                bg-transparent
+                text-sm
+                text-slate-700
+                outline-none
+                placeholder:text-slate-400
+            ">
+
+                    </div>
+
                 </div>
 
                 <!-- Category filter -->
@@ -108,10 +139,10 @@ foreach ($categories as $category) {
                         class="w-full h-11 pl-4 pr-10 border border-slate-200/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition text-sm bg-white/50 backdrop-blur-sm hover:border-blue-200 appearance-none">
                         <option value="">All Categories</option>
                         <?php foreach ($categories as $category): ?>
-                        <option value="<?= $category['id'] ?>"
-                            <?= (isset($filters['category_id']) && $filters['category_id'] == $category['id']) ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($category['name']) ?>
-                        </option>
+                            <option value="<?= $category['id'] ?>"
+                                <?= (isset($filters['category_id']) && $filters['category_id'] == $category['id']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($category['name']) ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                     <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
@@ -125,10 +156,10 @@ foreach ($categories as $category) {
                         class="w-full h-11 pl-4 pr-10 border border-slate-200/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition text-sm bg-white/50 backdrop-blur-sm hover:border-blue-200 appearance-none">
                         <option value="">All Status</option>
                         <?php foreach (['draft', 'published', 'completed', 'cancelled'] as $status): ?>
-                        <option value="<?= $status ?>"
-                            <?= (isset($filters['status']) && $filters['status'] == $status) ? 'selected' : '' ?>>
-                            <?= ucfirst($status) ?>
-                        </option>
+                            <option value="<?= $status ?>"
+                                <?= (isset($filters['status']) && $filters['status'] == $status) ? 'selected' : '' ?>>
+                                <?= ucfirst($status) ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                     <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
@@ -155,104 +186,104 @@ foreach ($categories as $category) {
                 </thead>
                 <tbody>
                     <?php if (empty($events)): ?>
-                    <tr>
-                        <td colspan="7" class="px-5 py-10 text-center text-slate-400">
-                            <i data-lucide="calendar-days" class="w-8 h-8 mx-auto mb-2 text-slate-300 block"></i>
-                            No events found.
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="7" class="px-5 py-10 text-center text-slate-400">
+                                <i data-lucide="calendar-days" class="w-8 h-8 mx-auto mb-2 text-slate-300 block"></i>
+                                No events found.
+                            </td>
+                        </tr>
                     <?php else: ?>
-                    <?php foreach ($events as $event): ?>
-                    <tr class="border-b border-slate-100/60 hover:bg-slate-50/40 transition-colors">
-                        <!-- Event -->
-                        <td class="px-5 py-3.5">
-                            <div class="flex items-center gap-4">
-                                <div
-                                    class="w-12 h-12 rounded-xl bg-blue-50/80 overflow-hidden flex items-center justify-center shadow-sm">
-                                    <?php if ($event->getBanner()): ?>
-                                    <img src="<?= BASE_URL ?>/uploads/events/<?= htmlspecialchars($event->getBanner()) ?>"
-                                        class="w-full h-full object-cover">
-                                    <?php else: ?>
-                                    <i data-lucide="calendar-days" class="text-blue-500 w-5 h-5"></i>
-                                    <?php endif; ?>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-slate-800"><?= htmlspecialchars($event->getTitle()) ?>
+                        <?php foreach ($events as $event): ?>
+                            <tr class="border-b border-slate-100/60 hover:bg-slate-50/40 transition-colors">
+                                <!-- Event -->
+                                <td class="px-5 py-3.5">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-12 h-12 rounded-xl bg-blue-50/80 overflow-hidden flex items-center justify-center shadow-sm">
+                                            <?php if ($event->getBanner()): ?>
+                                                <img src="<?= BASE_URL ?>/uploads/events/<?= htmlspecialchars($event->getBanner()) ?>"
+                                                    class="w-full h-full object-cover">
+                                            <?php else: ?>
+                                                <i data-lucide="calendar-days" class="text-blue-500 w-5 h-5"></i>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold text-slate-800"><?= htmlspecialchars($event->getTitle()) ?>
+                                            </p>
+                                            <p class="text-xs text-slate-500">
+                                                <?= htmlspecialchars(
+                                                    method_exists($event, 'getClubName')
+                                                        ? $event->getClubName()
+                                                        : 'University Club'
+                                                ) ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!-- Category -->
+                                <td class="px-5 py-3.5 text-slate-600">
+                                    <?= htmlspecialchars($categoryMap[$event->getCategoryId()] ?? '-') ?>
+                                </td>
+                                <!-- Date -->
+                                <td class="px-5 py-3.5 text-slate-600">
+                                    <?= date('M d, Y', strtotime($event->getEventDate())) ?>
+                                    <p class="text-xs text-slate-400">
+                                        <?= date('h:i A', strtotime($event->getStartTime())) ?>
                                     </p>
-                                    <p class="text-xs text-slate-500">
-                                        <?= htmlspecialchars(
-                                            method_exists($event, 'getClubName')
-                                                ? $event->getClubName()
-                                                : 'University Club'
-                                        ) ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </td>
-                        <!-- Category -->
-                        <td class="px-5 py-3.5 text-slate-600">
-                            <?= htmlspecialchars($categoryMap[$event->getCategoryId()] ?? '-') ?>
-                        </td>
-                        <!-- Date -->
-                        <td class="px-5 py-3.5 text-slate-600">
-                            <?= date('M d, Y', strtotime($event->getEventDate())) ?>
-                            <p class="text-xs text-slate-400">
-                                <?= date('h:i A', strtotime($event->getStartTime())) ?>
-                            </p>
-                        </td>
-                        <!-- Venue -->
-                        <td class="px-5 py-3.5 text-slate-600">
-                            <div class="flex items-center gap-2">
-                                <i data-lucide="map-pin" class="w-4 h-4 text-blue-500"></i>
-                                <?= htmlspecialchars($event->getVenue()) ?>
-                            </div>
-                        </td>
-                        <!-- Capacity -->
-                        <td class="px-5 py-3.5">
-                            <span class="font-semibold"><?= number_format($event->getCapacity()) ?></span>
-                            <span class="text-slate-400">students</span>
-                        </td>
-                        <!-- Status -->
-                        <td class="px-5 py-3.5">
-                            <?php
-                                $status = $event->getStatus();
-                                $statusClass = match ($status) {
-                                    'published' => 'bg-emerald-50 text-emerald-700 border-emerald-200/50',
-                                    'cancelled' => 'bg-red-50 text-red-700 border-red-200/50',
-                                    default => 'bg-yellow-50 text-yellow-700 border-yellow-200/50'
-                                };
-                            ?>
-                            <span
-                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?= $statusClass ?> border">
-                                <?= ucfirst(htmlspecialchars($status)) ?>
-                            </span>
-                        </td>
-                        <!-- Actions -->
-                        <td class="px-5 py-3.5">
-                            <div class="flex justify-end gap-1">
+                                </td>
+                                <!-- Venue -->
+                                <td class="px-5 py-3.5 text-slate-600">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="map-pin" class="w-4 h-4 text-blue-500"></i>
+                                        <?= htmlspecialchars($event->getVenue()) ?>
+                                    </div>
+                                </td>
+                                <!-- Capacity -->
+                                <td class="px-5 py-3.5">
+                                    <span class="font-semibold"><?= number_format($event->getCapacity()) ?></span>
+                                    <span class="text-slate-400">students</span>
+                                </td>
+                                <!-- Status -->
+                                <td class="px-5 py-3.5">
+                                    <?php
+                                    $status = $event->getStatus();
+                                    $statusClass = match ($status) {
+                                        'published' => 'bg-emerald-50 text-emerald-700 border-emerald-200/50',
+                                        'cancelled' => 'bg-red-50 text-red-700 border-red-200/50',
+                                        default => 'bg-yellow-50 text-yellow-700 border-yellow-200/50'
+                                    };
+                                    ?>
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?= $statusClass ?> border">
+                                        <?= ucfirst(htmlspecialchars($status)) ?>
+                                    </span>
+                                </td>
+                                <!-- Actions -->
+                                <td class="px-5 py-3.5">
+                                    <div class="flex justify-end gap-1">
 
-                                <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/show"
-                                    class="p-1.5 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors"
-                                    title="View">
-                                    <i data-lucide="eye" class="w-4 h-4"></i>
-                                </a>
-                                <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/edit"
-                                    class="p-1.5 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
-                                    title="Edit">
-                                    <i data-lucide="square-pen" class="w-4 h-4"></i>
-                                </a>
-                                <form method="POST" action="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/delete"
-                                    onsubmit="return confirm('Delete this event?')" class="inline">
-                                    <button type="submit"
-                                        class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                        title="Delete">
-                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
+                                        <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/show"
+                                            class="p-1.5 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors"
+                                            title="View">
+                                            <i data-lucide="eye" class="w-4 h-4"></i>
+                                        </a>
+                                        <a href="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/edit"
+                                            class="p-1.5 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                                            title="Edit">
+                                            <i data-lucide="square-pen" class="w-4 h-4"></i>
+                                        </a>
+                                        <form method="POST" action="<?= BASE_URL ?>/admin/events/<?= $event->getId() ?>/delete"
+                                            onsubmit="return confirm('Delete this event?')" class="inline">
+                                            <button type="submit"
+                                                class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                title="Delete">
+                                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -260,81 +291,81 @@ foreach ($categories as $category) {
 
         <!-- Pagination -->
         <?php if ($pagination !== null && $pagination['total'] > 0): ?>
-        <div
-            class="px-5 py-3.5 border-t border-slate-200/60 bg-slate-50/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-slate-500">
-            <span>
-                Showing
-                <span class="font-medium text-slate-700">
-                    <?= (($pagination['current_page'] - 1) * $pagination['per_page'] + 1) ?>
-                    -
-                    <?= min($pagination['current_page'] * $pagination['per_page'], $pagination['total']) ?>
+            <div
+                class="px-5 py-3.5 border-t border-slate-200/60 bg-slate-50/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-slate-500">
+                <span>
+                    Showing
+                    <span class="font-medium text-slate-700">
+                        <?= (($pagination['current_page'] - 1) * $pagination['per_page'] + 1) ?>
+                        -
+                        <?= min($pagination['current_page'] * $pagination['per_page'], $pagination['total']) ?>
+                    </span>
+                    of
+                    <span class="font-medium text-slate-700"><?= $pagination['total'] ?></span>
+                    events.
                 </span>
-                of
-                <span class="font-medium text-slate-700"><?= $pagination['total'] ?></span>
-                events.
-            </span>
-            <div class="flex items-center gap-2">
-                <!-- Previous -->
-                <?php if ($pagination['current_page'] > 1): ?>
-                <a href="<?= buildEventPaginationUrl($pagination['current_page'] - 1, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">
-                    <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
-                </a>
-                <?php else: ?>
-                <span
-                    class="w-8 h-8 border border-slate-200 rounded-lg opacity-50 pointer-events-none flex items-center justify-center">
-                    <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
-                </span>
-                <?php endif; ?>
+                <div class="flex items-center gap-2">
+                    <!-- Previous -->
+                    <?php if ($pagination['current_page'] > 1): ?>
+                        <a href="<?= buildEventPaginationUrl($pagination['current_page'] - 1, $_GET) ?>"
+                            class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">
+                            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                        </a>
+                    <?php else: ?>
+                        <span
+                            class="w-8 h-8 border border-slate-200 rounded-lg opacity-50 pointer-events-none flex items-center justify-center">
+                            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                        </span>
+                    <?php endif; ?>
 
-                <!-- Page Numbers -->
-                <?php
+                    <!-- Page Numbers -->
+                    <?php
                     $totalPages = $pagination['total_pages'];
                     $current = $pagination['current_page'];
                     $range = 2;
                     $start = max(1, $current - $range);
                     $end = min($totalPages, $current + $range);
-                ?>
-                <?php if ($start > 1): ?>
-                <a href="<?= buildEventPaginationUrl(1, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">1</a>
-                <?php if ($start > 2): ?>
-                <span class="px-1">…</span>
-                <?php endif; ?>
-                <?php endif; ?>
+                    ?>
+                    <?php if ($start > 1): ?>
+                        <a href="<?= buildEventPaginationUrl(1, $_GET) ?>"
+                            class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">1</a>
+                        <?php if ($start > 2): ?>
+                            <span class="px-1">…</span>
+                        <?php endif; ?>
+                    <?php endif; ?>
 
-                <?php for ($i = $start; $i <= $end; $i++): ?>
-                <?php if ($i == $current): ?>
-                <span
-                    class="w-8 h-8 bg-blue-600 text-white rounded-lg text-xs font-medium flex items-center justify-center shadow-sm"><?= $i ?></span>
-                <?php else: ?>
-                <a href="<?= buildEventPaginationUrl($i, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center"><?= $i ?></a>
-                <?php endif; ?>
-                <?php endfor; ?>
+                    <?php for ($i = $start; $i <= $end; $i++): ?>
+                        <?php if ($i == $current): ?>
+                            <span
+                                class="w-8 h-8 bg-blue-600 text-white rounded-lg text-xs font-medium flex items-center justify-center shadow-sm"><?= $i ?></span>
+                        <?php else: ?>
+                            <a href="<?= buildEventPaginationUrl($i, $_GET) ?>"
+                                class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center"><?= $i ?></a>
+                        <?php endif; ?>
+                    <?php endfor; ?>
 
-                <?php if ($end < $totalPages): ?>
-                <?php if ($end < $totalPages - 1): ?>
-                <span class="px-1">…</span>
-                <?php endif; ?>
-                <a href="<?= buildEventPaginationUrl($totalPages, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center"><?= $totalPages ?></a>
-                <?php endif; ?>
+                    <?php if ($end < $totalPages): ?>
+                        <?php if ($end < $totalPages - 1): ?>
+                            <span class="px-1">…</span>
+                        <?php endif; ?>
+                        <a href="<?= buildEventPaginationUrl($totalPages, $_GET) ?>"
+                            class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center"><?= $totalPages ?></a>
+                    <?php endif; ?>
 
-                <!-- Next -->
-                <?php if ($pagination['current_page'] < $totalPages): ?>
-                <a href="<?= buildEventPaginationUrl($pagination['current_page'] + 1, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-                </a>
-                <?php else: ?>
-                <span
-                    class="w-8 h-8 border border-slate-200 rounded-lg opacity-50 pointer-events-none flex items-center justify-center">
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-                </span>
-                <?php endif; ?>
+                    <!-- Next -->
+                    <?php if ($pagination['current_page'] < $totalPages): ?>
+                        <a href="<?= buildEventPaginationUrl($pagination['current_page'] + 1, $_GET) ?>"
+                            class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    <?php else: ?>
+                        <span
+                            class="w-8 h-8 border border-slate-200 rounded-lg opacity-50 pointer-events-none flex items-center justify-center">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                        </span>
+                    <?php endif; ?>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
 
     </div>
@@ -357,9 +388,9 @@ function buildEventPaginationUrl(int $page, array $query): string
 
 <!-- ── Scripts for Lucide Icons ── -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
 </script>

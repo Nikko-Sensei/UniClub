@@ -280,7 +280,24 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
         );
     }
 
+    public function countAllEvents(
+        int $userId
+    ): int {
 
+        $stmt = $this->db->prepare(
+            "CALL sp_event_count_all(?)"
+        );
+
+        $stmt->execute([
+            $userId
+        ]);
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $stmt->closeCursor();
+
+        return (int) ($result['total'] ?? 0);
+    }
 
     public function statistics()
     {

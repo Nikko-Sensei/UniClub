@@ -103,7 +103,7 @@ class EventController extends BaseController
 
             );
 
-
+           
 
         $this->view(
 
@@ -115,6 +115,9 @@ class EventController extends BaseController
 
                 'events' =>
                 $result['events'],
+
+                'totalEvents' =>
+                $result['totalEvents'],
 
                 'pagination' =>
                 $result['pagination'],

@@ -23,9 +23,7 @@ class AdminMembershipController extends BaseController
 
         parent::__construct();
 
-
-        $this->membershipService =
-            $membershipService;
+        $this->membershipService = $membershipService;
     }
 
 
@@ -210,6 +208,7 @@ class AdminMembershipController extends BaseController
                 $page
             );
 
+            // Debugging line to check the contents of $data
 
         $roles =
             $this->membershipService

@@ -249,6 +249,7 @@ class EventCertificateService
     ): array {
 
 
+
         return $this->certificateRepository
             ->findByEvent(
 

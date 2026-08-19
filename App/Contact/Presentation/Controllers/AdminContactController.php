@@ -26,8 +26,7 @@ class AdminContactController extends BaseController
         parent::__construct();
 
 
-        $this->contactService =
-            $contactService;
+        $this->contactService = $contactService;
     }
 
 

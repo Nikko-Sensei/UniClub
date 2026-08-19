@@ -308,7 +308,6 @@ class EventAttendanceService
             );
 
 
-
         $attendanceList = [];
 
 
@@ -327,7 +326,6 @@ class EventAttendanceService
                 );
 
 
-
             $attendanceList[] = [
 
 
@@ -342,9 +340,14 @@ class EventAttendanceService
                 'student_id' =>
                 $participant['student_id'],
 
+                'profile_image' =>
+                $participant['profile_image'],
 
-                'attendance' =>
-                $attendance
+                'email' =>
+                $participant['email'],
+
+
+                'attendance' => $attendance
 
 
             ];

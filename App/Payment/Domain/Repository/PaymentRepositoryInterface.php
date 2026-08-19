@@ -59,10 +59,18 @@ interface PaymentRepositoryInterface
      * Get All Payments
      * Admin Payment Management
      */
-    public function getAll(): array;
+    // public function getAll(): array;
+    public function getAll(
+        int $limit,
+        int $offset,
+        array $filters
+    ): array;
 
+    public function countAll(
+        array $filters
+    ): int;
 
-
+    public function getStatistics(): array;
 
     /**
      * Verify Payment

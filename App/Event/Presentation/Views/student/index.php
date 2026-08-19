@@ -208,7 +208,7 @@
 
             <div class="flex items-center gap-2 text-sm text-slate-500 bg-white/80 px-4 py-2 rounded-full shadow-sm">
                 <i data-lucide="calendar-days" class="w-4 h-4 text-blue-500"></i>
-                <?= $pagination['total'] ?> events
+                <?= (int) $totalEvents ?> events
             </div>
         </div>
     </div>
@@ -336,19 +336,221 @@
                 </div>
 
                 <!-- Status Badge -->
-                <?php if (method_exists($event, 'getStatus')): ?>
-                <?php if ($event->getStatus() === 'published'): ?>
-                <div
-                    class="absolute top-4 right-4 bg-emerald-500/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                    Upcoming
+                <!-- STATUS BADGE -->
+                <?php
+                        $eventStatus = method_exists($event, 'getStatus')
+                            ? $event->getStatus()
+                            : null;
+
+                        /*
+     * Only calculate public display status
+     * for published/completed events.
+     */
+                        $badgeText = null;
+                        $badgeClass = '';
+                        $showPulse = false;
+
+                        if ($eventStatus === 'published') {
+
+                            $eventDate = $event->getEventDate();
+
+                            /*
+         * If your Event entity has separate
+         * start/end time methods.
+         */
+                            $startTime = method_exists($event, 'getStartTime')
+                                ? $event->getStartTime()
+                                : null;
+
+                            $endTime = method_exists($event, 'getEndTime')
+                                ? $event->getEndTime()
+                                : null;
+
+                            /*
+         * Current time
+         */
+                            $now = new DateTime();
+
+                            /*
+         * Event start/end
+         */
+                            if ($startTime) {
+                                $eventStart = new DateTime(
+                                    $eventDate . ' ' . $startTime
+                                );
+                            } else {
+                                $eventStart = new DateTime(
+                                    $eventDate . ' 00:00:00'
+                                );
+                            }
+
+                            if ($endTime) {
+                                $eventEnd = new DateTime(
+                                    $eventDate . ' ' . $endTime
+                                );
+                            } else {
+                                /*
+             * If no end time exists,
+             * assume event lasts until end of day.
+             */
+                                $eventEnd = new DateTime(
+                                    $eventDate . ' 23:59:59'
+                                );
+                            }
+
+                            /*
+         * Date-only comparison
+         */
+                            $today = new DateTime('today');
+
+                            $eventDateObj = new DateTime(
+                                $eventDate
+                            );
+
+                            $daysUntil = (int) $today
+                                ->diff($eventDateObj)
+                                ->format('%r%a');
+
+
+                            /*
+         * -----------------------------------------
+         * 1. EVENT IS CURRENTLY HAPPENING
+         * -----------------------------------------
+         */
+                            if (
+                                $now >= $eventStart &&
+                                $now <= $eventEnd
+                            ) {
+
+                                $badgeText = 'In Progress';
+
+                                $badgeClass =
+                                    'bg-blue-500/90';
+
+                                $showPulse = true;
+
+
+                                /*
+         * -----------------------------------------
+         * 2. EVENT HAS ALREADY FINISHED
+         * -----------------------------------------
+         */
+                            } elseif ($now > $eventEnd) {
+
+                                $badgeText = 'Past';
+
+                                $badgeClass =
+                                    'bg-slate-500/80';
+
+
+                                /*
+         * -----------------------------------------
+         * 3. EVENT IS LATER TODAY
+         * -----------------------------------------
+         */
+                            } elseif ($daysUntil === 0) {
+
+                                $badgeText = 'Today';
+
+                                $badgeClass =
+                                    'bg-emerald-500/90';
+
+                                $showPulse = true;
+
+
+                                /*
+         * -----------------------------------------
+         * 4. TOMORROW
+         * -----------------------------------------
+         */
+                            } elseif ($daysUntil === 1) {
+
+                                $badgeText = 'Tomorrow';
+
+                                $badgeClass =
+                                    'bg-amber-500/90';
+
+
+                                /*
+         * -----------------------------------------
+         * 5. 2–3 DAYS
+         * -----------------------------------------
+         */
+                            } elseif (
+                                $daysUntil >= 2 &&
+                                $daysUntil <= 3
+                            ) {
+
+                                $badgeText = 'Soon';
+
+                                $badgeClass =
+                                    'bg-blue-500/90';
+
+
+                                /*
+         * -----------------------------------------
+         * 6. 4–7 DAYS
+         * -----------------------------------------
+         */
+                            } elseif (
+                                $daysUntil >= 4 &&
+                                $daysUntil <= 7
+                            ) {
+
+                                $badgeText = 'Upcoming';
+
+                                $badgeClass =
+                                    'bg-indigo-500/90';
+
+
+                                /*
+         * -----------------------------------------
+         * 7. OUTSIDE 7 DAYS
+         * -----------------------------------------
+         */
+                            } else {
+
+                                $badgeText = null;
+                            }
+                        } elseif ($eventStatus === 'completed') {
+
+                            /*
+         * Explicit database completed status
+         */
+                            $badgeText = 'Past';
+
+                            $badgeClass =
+                                'bg-slate-500/80';
+                        }
+                        ?>
+
+                <?php if ($badgeText): ?>
+
+                <div class="absolute top-4 right-4
+           <?= $badgeClass ?>
+           backdrop-blur-sm
+           text-white
+           text-xs
+           font-semibold
+           px-3 py-1
+           rounded-full
+           shadow-lg
+           flex items-center gap-1.5">
+
+                    <?php if ($showPulse): ?>
+
+                    <span class="w-1.5 h-1.5
+                   rounded-full
+                   bg-white
+                   animate-pulse">
+                    </span>
+
+                    <?php endif; ?>
+
+                    <?= htmlspecialchars($badgeText) ?>
+
                 </div>
-                <?php elseif ($event->getStatus() === 'completed'): ?>
-                <div
-                    class="absolute top-4 right-4 bg-slate-500/80 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
-                    Past
-                </div>
-                <?php endif; ?>
+
                 <?php endif; ?>
             </div>
 

@@ -158,44 +158,114 @@
                 </thead>
                 <tbody>
                     <?php if (empty($messages)): ?>
-                    <tr>
-                        <td colspan="5" class="px-5 py-10 text-center text-slate-400">
-                            <i data-lucide="message-circle" class="w-8 h-8 mx-auto mb-2 text-slate-300 block"></i>
-                            No contact messages found.
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="5" class="px-5 py-10 text-center text-slate-400">
+                                <i data-lucide="message-circle" class="w-8 h-8 mx-auto mb-2 text-slate-300 block"></i>
+                                No contact messages found.
+                            </td>
+                        </tr>
                     <?php else: ?>
-                    <?php foreach ($messages as $message): ?>
-                    <tr class="border-b border-slate-100/60 hover:bg-slate-50/40 transition-colors">
-                        <!-- Student -->
-                        <td class="px-5 py-3.5">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-12 h-12 rounded-xl bg-blue-50/80 flex items-center justify-center text-blue-600 shadow-sm">
-                                    <i data-lucide="user" class="w-5 h-5"></i>
-                                </div>
-                                <div>
+                        <?php foreach ($messages as $message): ?>
+                            <tr class="border-b border-slate-100/60 hover:bg-slate-50/40 transition-colors">
+                                <!-- Student -->
+                                <td class="px-5 py-3.5">
+
+                                    <div class="flex items-center gap-3">
+
+                                        <!-- Profile -->
+                                        <div class="
+            w-9 h-9
+            rounded-full
+            overflow-hidden
+            flex items-center
+            justify-center
+            bg-gradient-to-br
+            from-blue-100
+            to-blue-200
+            text-blue-700
+            font-semibold
+            text-xs
+            flex-shrink-0
+            shadow-sm
+        ">
+
+                                            <?php if (!empty($message->getProfileImage())): ?>
+
+                                                <img src="<?= BASE_URL ?>/uploads/profile/<?= htmlspecialchars(
+                                                                                                $message->getProfileImage()
+                                                                                            ) ?>" alt="<?= htmlspecialchars($message->getName()) ?>" class="w-full h-full object-cover">
+
+                                            <?php else: ?>
+
+                                                <?php
+                                                $name = trim($message->getName() ?: 'Student');
+                                                $words = preg_split('/\s+/', $name);
+
+                                                if (count($words) >= 2) {
+
+                                                    $initials = strtoupper(
+                                                        substr($words[0], 0, 1) .
+                                                            substr($words[1], 0, 1)
+                                                    );
+                                                } else {
+
+                                                    $initials = strtoupper(
+                                                        substr($words[0] ?? 'S', 0, 1)
+                                                    );
+                                                }
+                                                ?>
+
+                                                <?= htmlspecialchars($initials) ?>
+
+                                            <?php endif; ?>
+
+                                        </div>
+
+
+                                        <!-- Student Information -->
+                                        <div class="min-w-0">
+
+                                            <p class="
+                font-medium
+                text-slate-800
+                whitespace-nowrap
+            ">
+
+                                                <?= htmlspecialchars(
+                                                    $message->getName()
+                                                ) ?>
+
+                                            </p>
+
+                                            <p class="
+                text-xs
+                text-slate-400
+                truncate
+            ">
+
+                                                <?= htmlspecialchars(
+                                                    $message->getEmail()
+                                                ) ?>
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+                                <!-- Message -->
+                                <td class="px-5 py-3.5">
                                     <p class="font-semibold text-slate-800">
-                                        <?= htmlspecialchars($message->getName()) ?>
+                                        <?= htmlspecialchars($message->getSubject()) ?>
                                     </p>
-                                    <p class="text-xs text-slate-500">
-                                        <?= htmlspecialchars($message->getEmail()) ?>
+                                    <p class="text-xs text-slate-500 max-w-xs truncate">
+                                        <?= htmlspecialchars($message->getMessage()) ?>
                                     </p>
-                                </div>
-                            </div>
-                        </td>
-                        <!-- Message -->
-                        <td class="px-5 py-3.5">
-                            <p class="font-semibold text-slate-800">
-                                <?= htmlspecialchars($message->getSubject()) ?>
-                            </p>
-                            <p class="text-xs text-slate-500 max-w-xs truncate">
-                                <?= htmlspecialchars($message->getMessage()) ?>
-                            </p>
-                        </td>
-                        <!-- Status -->
-                        <td class="px-5 py-3.5">
-                            <?php
+                                </td>
+                                <!-- Status -->
+                                <td class="px-5 py-3.5">
+                                    <?php
                                     $status = $message->getStatus();
                                     $statusClass = match ($status) {
                                         'pending' => 'bg-yellow-50 text-yellow-700 border-yellow-200/50',
@@ -204,60 +274,60 @@
                                         default   => 'bg-gray-100 text-gray-700 border-gray-200/50'
                                     };
                                     ?>
-                            <span
-                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?= $statusClass ?> border">
-                                <?= ucfirst($status) ?>
-                            </span>
-                        </td>
-                        <!-- Date -->
-                        <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">
-                            <?= date('M d, Y', strtotime($message->getCreatedAt())) ?>
-                        </td>
-                        <!-- Actions -->
-                        <td class="px-5 py-3.5">
-                            <div class="flex justify-end gap-1">
-                                <!-- View -->
-                                <a href="<?= BASE_URL ?>/admin/contacts/<?= $message->getId() ?>"
-                                    class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                    title="View">
-                                    <i data-lucide="eye" class="w-4 h-4"></i>
-                                </a>
-                                <!-- Reply -->
-                                <form method="POST"
-                                    action="<?= BASE_URL ?>/admin/contacts/<?= $message->getId() ?>/status"
-                                    class="inline">
-                                    <input type="hidden" name="status" value="replied">
-                                    <button type="submit"
-                                        class="p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                                        title="Mark as Replied">
-                                        <i data-lucide="reply" class="w-4 h-4"></i>
-                                    </button>
-                                </form>
-                                <!-- Close -->
-                                <form method="POST"
-                                    action="<?= BASE_URL ?>/admin/contacts/<?= $message->getId() ?>/status"
-                                    class="inline">
-                                    <input type="hidden" name="status" value="closed">
-                                    <button type="submit"
-                                        class="p-1.5 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-                                        title="Archive">
-                                        <i data-lucide="archive" class="w-4 h-4"></i>
-                                    </button>
-                                </form>
-                                <!-- Delete -->
-                                <form method="POST"
-                                    action="<?= BASE_URL ?>/admin/contacts/<?= $message->getId() ?>/delete"
-                                    onsubmit="return confirm('Delete this message?')" class="inline">
-                                    <button type="submit"
-                                        class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                        title="Delete">
-                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
+                                    <span
+                                        class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <?= $statusClass ?> border">
+                                        <?= ucfirst($status) ?>
+                                    </span>
+                                </td>
+                                <!-- Date -->
+                                <td class="px-5 py-3.5 text-slate-500 whitespace-nowrap">
+                                    <?= date('M d, Y', strtotime($message->getCreatedAt())) ?>
+                                </td>
+                                <!-- Actions -->
+                                <td class="px-5 py-3.5">
+                                    <div class="flex justify-end gap-1">
+                                        <!-- View -->
+                                        <a href="<?= BASE_URL ?>/admin/contacts/<?= $message->getId() ?>"
+                                            class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                            title="View">
+                                            <i data-lucide="eye" class="w-4 h-4"></i>
+                                        </a>
+                                        <!-- Reply -->
+                                        <form method="POST"
+                                            action="<?= BASE_URL ?>/admin/contacts/<?= $message->getId() ?>/status"
+                                            class="inline">
+                                            <input type="hidden" name="status" value="replied">
+                                            <button type="submit"
+                                                class="p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                                                title="Mark as Replied">
+                                                <i data-lucide="reply" class="w-4 h-4"></i>
+                                            </button>
+                                        </form>
+                                        <!-- Close -->
+                                        <form method="POST"
+                                            action="<?= BASE_URL ?>/admin/contacts/<?= $message->getId() ?>/status"
+                                            class="inline">
+                                            <input type="hidden" name="status" value="closed">
+                                            <button type="submit"
+                                                class="p-1.5 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                                                title="Archive">
+                                                <i data-lucide="archive" class="w-4 h-4"></i>
+                                            </button>
+                                        </form>
+                                        <!-- Delete -->
+                                        <form method="POST"
+                                            action="<?= BASE_URL ?>/admin/contacts/<?= $message->getId() ?>/delete"
+                                            onsubmit="return confirm('Delete this message?')" class="inline">
+                                            <button type="submit"
+                                                class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                title="Delete">
+                                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -265,78 +335,78 @@
 
         <!-- Pagination -->
         <?php if (isset($pagination) && $pagination['total'] > 0): ?>
-        <div
-            class="px-5 py-3.5 border-t border-slate-200/60 bg-slate-50/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-slate-500">
-            <span>
-                Showing
-                <span class="font-medium text-slate-700">
-                    <?= (($pagination['current_page'] - 1) * $pagination['per_page']) + 1 ?>
-                    -
-                    <?= min($pagination['current_page'] * $pagination['per_page'], $pagination['total']) ?>
+            <div
+                class="px-5 py-3.5 border-t border-slate-200/60 bg-slate-50/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-slate-500">
+                <span>
+                    Showing
+                    <span class="font-medium text-slate-700">
+                        <?= (($pagination['current_page'] - 1) * $pagination['per_page']) + 1 ?>
+                        -
+                        <?= min($pagination['current_page'] * $pagination['per_page'], $pagination['total']) ?>
+                    </span>
+                    of
+                    <span class="font-medium text-slate-700"><?= $pagination['total'] ?></span>
+                    messages.
                 </span>
-                of
-                <span class="font-medium text-slate-700"><?= $pagination['total'] ?></span>
-                messages.
-            </span>
-            <div class="flex items-center gap-2">
-                <?php if ($pagination['current_page'] > 1): ?>
-                <a href="<?= buildContactPaginationUrl($pagination['current_page'] - 1, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">
-                    <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
-                </a>
-                <?php else: ?>
-                <span
-                    class="w-8 h-8 border border-slate-200 rounded-lg opacity-50 pointer-events-none flex items-center justify-center">
-                    <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
-                </span>
-                <?php endif; ?>
+                <div class="flex items-center gap-2">
+                    <?php if ($pagination['current_page'] > 1): ?>
+                        <a href="<?= buildContactPaginationUrl($pagination['current_page'] - 1, $_GET) ?>"
+                            class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">
+                            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                        </a>
+                    <?php else: ?>
+                        <span
+                            class="w-8 h-8 border border-slate-200 rounded-lg opacity-50 pointer-events-none flex items-center justify-center">
+                            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                        </span>
+                    <?php endif; ?>
 
-                <?php
+                    <?php
                     $totalPages = $pagination['total_pages'];
                     $current = $pagination['current_page'];
                     $range = 2;
                     $start = max(1, $current - $range);
                     $end = min($totalPages, $current + $range);
                     ?>
-                <?php if ($start > 1): ?>
-                <a href="<?= buildContactPaginationUrl(1, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">1</a>
-                <?php if ($start > 2): ?>
-                <span class="px-1">…</span>
-                <?php endif; ?>
-                <?php endif; ?>
+                    <?php if ($start > 1): ?>
+                        <a href="<?= buildContactPaginationUrl(1, $_GET) ?>"
+                            class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">1</a>
+                        <?php if ($start > 2): ?>
+                            <span class="px-1">…</span>
+                        <?php endif; ?>
+                    <?php endif; ?>
 
-                <?php for ($i = $start; $i <= $end; $i++): ?>
-                <?php if ($i == $current): ?>
-                <span
-                    class="w-8 h-8 bg-blue-600 text-white rounded-lg text-xs font-medium flex items-center justify-center shadow-sm"><?= $i ?></span>
-                <?php else: ?>
-                <a href="<?= buildContactPaginationUrl($i, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center"><?= $i ?></a>
-                <?php endif; ?>
-                <?php endfor; ?>
+                    <?php for ($i = $start; $i <= $end; $i++): ?>
+                        <?php if ($i == $current): ?>
+                            <span
+                                class="w-8 h-8 bg-blue-600 text-white rounded-lg text-xs font-medium flex items-center justify-center shadow-sm"><?= $i ?></span>
+                        <?php else: ?>
+                            <a href="<?= buildContactPaginationUrl($i, $_GET) ?>"
+                                class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center"><?= $i ?></a>
+                        <?php endif; ?>
+                    <?php endfor; ?>
 
-                <?php if ($end < $totalPages): ?>
-                <?php if ($end < $totalPages - 1): ?>
-                <span class="px-1">…</span>
-                <?php endif; ?>
-                <a href="<?= buildContactPaginationUrl($totalPages, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center"><?= $totalPages ?></a>
-                <?php endif; ?>
+                    <?php if ($end < $totalPages): ?>
+                        <?php if ($end < $totalPages - 1): ?>
+                            <span class="px-1">…</span>
+                        <?php endif; ?>
+                        <a href="<?= buildContactPaginationUrl($totalPages, $_GET) ?>"
+                            class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center"><?= $totalPages ?></a>
+                    <?php endif; ?>
 
-                <?php if ($pagination['current_page'] < $totalPages): ?>
-                <a href="<?= buildContactPaginationUrl($pagination['current_page'] + 1, $_GET) ?>"
-                    class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-                </a>
-                <?php else: ?>
-                <span
-                    class="w-8 h-8 border border-slate-200 rounded-lg opacity-50 pointer-events-none flex items-center justify-center">
-                    <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-                </span>
-                <?php endif; ?>
+                    <?php if ($pagination['current_page'] < $totalPages): ?>
+                        <a href="<?= buildContactPaginationUrl($pagination['current_page'] + 1, $_GET) ?>"
+                            class="w-8 h-8 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors flex items-center justify-center">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    <?php else: ?>
+                        <span
+                            class="w-8 h-8 border border-slate-200 rounded-lg opacity-50 pointer-events-none flex items-center justify-center">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                        </span>
+                    <?php endif; ?>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
     </div>
 
@@ -358,9 +428,9 @@ function buildContactPaginationUrl($page, $query)
 
 <!-- ── Scripts for Lucide Icons ── -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
 </script>

@@ -639,6 +639,8 @@ class EventService
                 $filters
             );
 
+        $totalEvents = $this->eventRepository->countAllEvents($userId);
+
 
         $total =
             $this->eventRepository
@@ -656,15 +658,14 @@ class EventService
             'events' =>
             $events,
 
+            'totalEvents' => $totalEvents,
+
 
             'pagination' => [
 
-                'total' =>
-                $total,
+                'total' => $total,
 
-
-                'current_page' =>
-                $page,
+                'current_page' => $page,
 
 
                 'total_pages' =>

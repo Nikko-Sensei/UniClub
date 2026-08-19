@@ -58,7 +58,7 @@ class EventCertificateRepository extends BaseRepository implements EventCertific
 
 
             $data['file_path'] ?? null,
-            
+
 
             $data['issued_by'] ?? null
 
@@ -437,9 +437,12 @@ class EventCertificateRepository extends BaseRepository implements EventCertific
 
 
             $row['user_id'],
-            
+
 
             $row['student_name'] ?? null,
+
+
+            $row['profile_image'] ?? null,
 
 
             $row['certificate_number'],
